@@ -1,0 +1,51 @@
+﻿<Controls:MetroWindow x:Class="iisTestMetroApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:ViewModel="clr-namespace:IISBackup.ViewModels;assembly=IISBackup.ViewModels"
+        Title="IIS Backup" 
+        Height="550" 
+        Width="900"
+        Icon="images/mahapps.metro.logo2.ico"
+        ShowTitleBar="True"
+        ShowIconOnTitleBar="true">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Window.DataContext>
+        <ViewModel:IisInformationViewModel />
+    </Window.DataContext>
+
+    <Controls:MetroWindow.WindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="Export IIS" ToolTip="Will export the whole of IIS, every setting and value" Command="{Binding Path=ExportAllIisSettings}" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.WindowCommands>
+
+    <StackPanel Margin="10">
+        <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+
+            <Controls:Tile Title="_WebSites" Command="{Binding Path=ShowWebSiteViewModelCommand}">
+                <Controls:MetroImage Source="{StaticResource iis_website}" />
+            </Controls:Tile>
+
+            <Controls:Tile Title="A_pps" Command="{Binding Path=ShowVirtualDirectoryViewModelCommand}">
+                <Controls:MetroImage Source="{StaticResource iis_folder}" />
+            </Controls:Tile>
+
+            <Controls:Tile Title="_AppPools" Command="{Binding Path=ShowAppPoolViewModelCommand}">
+                <Controls:MetroImage Source="{StaticResource iis_appPool}" />
+            </Controls:Tile>
+        </StackPanel>
+
+        <ContentControl Content="{Binding CurrentViewModel}" Margin="0, 20, 0, 0"  />
+
+    </StackPanel>
+
+</Controls:MetroWindow>

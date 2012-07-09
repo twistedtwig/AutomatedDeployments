@@ -1,0 +1,56 @@
+using System;
+using System.IO;
+using DeploymentConfiguration.Actions;
+using DeploymentTask.Exceptions;
+using FileSystem.Helper;
+
+namespace DeploymentTask.Tasks
+{
+    public class LocalFileSystemCopyDeploymentTask : FileDeploymentTaskBase
+    {
+        public LocalFileSystemCopyDeploymentTask(FileCopyActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
+        {
+        }
+
+        public override int Execute()
+        {
+            if(!CheckSourceExists())
+            {
+                throw new DeploymentTaskException(string.Format("Source folder not found, '{0}'", ActionComponentGraph.SourceContentPath), -1);
+            }
+
+            if (ActionComponentGraph.ForceInstall)
+            {
+                DeleteDestination();
+            }
+
+            try
+            {
+                FileHelper.CopyContents(ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath);
+            }
+            catch (Exception exception)
+            {                
+                throw new DeploymentTaskException(exception.Message, -1, exception);
+            }
+
+            return 0;
+        }
+
+        public override string DisplayName
+        {
+            get { return "Local File System Copy"; }
+        }
+
+        public override int ExpectedReturnValue
+        {
+            get { return 0; }
+        }
+
+
+
+        protected void DeleteDestination()
+        {
+            Directory.Delete(ActionComponentGraph.DestinationContentPath, true);
+        }
+    }
+}

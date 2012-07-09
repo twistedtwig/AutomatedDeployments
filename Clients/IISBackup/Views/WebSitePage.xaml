@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="IISBackup.Views.WebSitePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:Common="clr-namespace:Clients.Common;assembly=Clients.Common" mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/General.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+              
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Style="{StaticResource HeaderStyle}">
+             <TextBlock Text="Name" Width="100px" />
+            <TextBlock Text="App Pool Name" Width="100px" />
+            <TextBlock Text="No Apps" Width="100px" />
+        </StackPanel>
+        <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Websites}" SelectionMode="Single" SelectedItem="{Binding SelectedWebSiteOverView}"
+                 BorderThickness="0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" Width="100px" />
+                        <TextBlock Text="{Binding AppPoolName}" Width="100px" />
+                        <TextBlock Text="{Binding NumberOfApplications}" Width="100px" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Path" Width="100px" FontWeight="Bold" />
+            <TextBlock Text="App Pool Name" Width="100px" FontWeight="Bold"  />
+            <TextBlock Text="Protocols" Width="100px" FontWeight="Bold"  />
+        </StackPanel>
+        <ListBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding ApplicationOverviewViewModels}" BorderThickness="0" SelectionMode="Multiple">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <Common:EventToCommand Command="{Binding NavigateToApplicationCommand }" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=SelectedItem }" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path}" Width="100px" />
+                        <TextBlock Text="{Binding AppPoolName}" Width="100px" />
+                        <TextBlock Text="{Binding EnabledProtocols}" Width="100px" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!--        -->
+        <!--        <ListView Grid.Column="1" ItemsSource="{Binding ApplicationOverviewViewModels}" BorderThickness="0" Margin="10px 0" SelectionMode="Multiple">-->
+        <!--            <i:Interaction.Triggers>-->
+        <!--                <i:EventTrigger EventName="MouseDoubleClick">-->
+        <!--                    <Common:EventToCommand Command="{Binding NavigateToApplicationCommand }" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Path=SelectedItem }" />-->
+        <!--                </i:EventTrigger>-->
+        <!--            </i:Interaction.Triggers>-->
+        <!--            <ListView.View>-->
+        <!--                <GridView>-->
+        <!--                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path}" Width="175px" />-->
+        <!--                    <GridViewColumn Header="App Pool" DisplayMemberBinding="{Binding AppPoolName}" Width="Auto" />-->
+        <!--                    <GridViewColumn Header="Protocols" DisplayMemberBinding="{Binding EnabledProtocols}" Width="Auto" />-->
+        <!--                </GridView>-->
+        <!--            </ListView.View>-->
+        <!--        </ListView>-->
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,82 @@
+what it does / should do:
+
+
+-- Davids help required:
+
+help me make it pretty
+decent way of dealing with dialogs
+
+
+
+
+--imideiate todo:
+
+navigation
+make toast popup window thingy
+commands for each ViewModel to do exporting
+dialog for each command, params etc.
+
+
+/client app-iisbackup:
+
+want viewmodel for global (main page)
+	then one for app pool, website and vdirs
+	commands to load each viewmodel
+	command to export the whole IIS
+
+	viewmodel base:
+		notify property changed
+		refresh data, (clear all cache and reload data)
+
+	app pools:
+		list apppools
+		selected app pool
+		list of websites owned by that appPool
+		command to:
+			export app pool(s)
+			view selected website(s)
+
+
+
+
+
+
+- be able to interrogate the local machine to see what appPools, websites and Vdirs are setup currently
+	be able to create script / backup files of those settings
+		needs to be able to say well this website uses this app pool and has these vdirs, do you want it all?
+
+- copy files to a local or remote machine
+
+- check if apppool, website or vdir are setup locally or remotely
+	first task is to see if those names exist
+	secondly if you have the config you want setup check to see if all settings are the same.  could do this with dump destination server settings and check files are identical.
+
+- have command to be able to auto backup current website or vdir when doing a deploy, would rename folder to some backup name (date or something specified)
+
+- do iisreset, start stop commands etc on local or remote server
+
+- deploy apppool, website or vdir to local or remote server
+
+- be able to script all of these commands easily and fluently
+
+
+
+
+
+
+TODO:
+
+allow global fields per deployment for msdeploy location , ampcmd.exe loc +  destination -computername, username and password.
+	in configuration loader after line 35
+		want to get all global variables into a dictionary.
+		pass into component factory the dictionary
+		for the section want to get dictionary values
+			iterate over global dictionary, 
+				if local doesnt have global key, add to local dictionary
+
+website deployment
+description of what this is
+how to use it
+scan a computer to get deployment settings and deploy it to N servers
+
+vdir deployment

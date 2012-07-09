@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Views="clr-namespace:IISBackup.Views"
+                    xmlns:ViewModels="clr-namespace:IISBackup.ViewModels;assembly=IISBackup.ViewModels"
+                    xmlns:Administration="clr-namespace:Microsoft.Web.Administration;assembly=Microsoft.Web.Administration">
+
+    <DataTemplate DataType="{x:Type ViewModels:AppPoolViewModel}">
+        <Views:AppPoolPage />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type ViewModels:WebSiteViewModel}">
+        <Views:WebSitePage />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type ViewModels:ApplicationViewModel}">
+        <Views:ApplicationPage />
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type ViewModels:ApplicationOverVewViewModel}">
+        <Views:ApplicationDetailPage />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type Administration:ApplicationPool}">
+        <Views:AppPoolDetailPage />
+    </DataTemplate>
+
+    
+
+
+</ResourceDictionary>
