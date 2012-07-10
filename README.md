@@ -93,25 +93,25 @@ To run the app you would call "MYAPPCONSOLE.EXE /CONFIGSECTION=MYCONFIGSECTION"
 
 This would look for a config section with the name of "MYCONFIGSECTION".  A list of the parameters available are given below:
 
-param			|		value
-/CONFIGSECTION	|		MYCONFIGSECTION
-/FORCE			|		true / false
-/CONFIGPATH		|		C:\MYPATHTOCONFIGFILE.CONFIG
-/BREAKONERROR	|		true / false
+    param				|		value
+    /CONFIGSECTION		|		MYCONFIGSECTION
+    /FORCE				|		true / false
+    /CONFIGPATH			|		C:\MYPATHTOCONFIGFILE.CONFIG
+    /BREAKONERROR		|		true / false
 
 5.2) How is Automated Deployments configured?
 ---------------------------------------------
 
 To setup a process you will need to make some entries in either the app.config for the EXE or create your own configuration file and pass that in at runtime.  Firstly a configuraitonSection will need to be added:
-
+```xml
 <code>
 <configSections>
     <section name="deployments" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations"/>
   </configSections>
 </code>
-
+```
 This tells .Net to parse a custom section called "deployments" using our application.  The next step is to create our own configuration section to be able to run an automated deployment, (be careful as all elements are case sensitive):
-
+```xml
 <code>
 <deployments>
     <Configs>
@@ -119,9 +119,9 @@ This tells .Net to parse a custom section called "deployments" using our applica
     </Configs>
 </deployments>
 </code>
-
+```
 Lets start by showing one quick example and then expand that to show each type of Task that can be used:
-
+```xml
 <code>
 <deployments>
     <Configs>
@@ -144,7 +144,7 @@ Lets start by showing one quick example and then expand that to show each type o
     </Configs>
 </deployments>
 </code>
-
+```
 The above ConfigurationGroup is called "localtestSetup".  This is the section name that would be passed in at the command line to run this (/CONFIGSECTION=localtestSetup).  It then declares a list of items.  These are global values to the deployment and will be inherited to each child element.  The system needs to know certain bits of information:
 
 1.  where msdeploy is installed, (will default to the above if it is not given)
@@ -152,12 +152,12 @@ The above ConfigurationGroup is called "localtestSetup".  This is the section na
 3.  The destination computer name.
 
 The minimum that is required he would be the destinationComputerName.  This tells the application where things will be going.  If localhost is used it will consider it to be doing a local deployment so msdeploy would not be needed.  Otherwise it will consider it to be doing a remote deployment and need to invoke msdeploy.  If it is doing a remote deployment there are two other valueItem's that will almost certainly be required, (the destination machine should always be secured, do not allow anonymous access):
-
+```xml
 <code>
 	<ValueItem key="DestinationUserName" value="username"/>
     <ValueItem key="DestinationPassword" value="password"/>
 </code>
-
+```
 After the "ValueItems" collection there is a new element called "Collections".  This holds a list of "Collection" elements.  Each of these elements is a set of values which will result in one or more Tasks being invoked.  The above example shows a File Copy Task being setup.  The first ValueItem is the "ComponentType", this tells the application what it wants to do.  In this case, deploy some files.  The next two ValueItem's give the source and destination location (folders).
 
 When the application is run it will parse the configuration file, look for the section name given as a command line parameter, find that configurationGroup and run those Tasks in order. If BREAKONERROR is set to false, it will run through all the Tasks even if some of them return errors, otherwise it will exit after the first error is encountered.
