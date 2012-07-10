@@ -7,7 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerComponents", "Inst
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6505BED2-CB12-467C-8D97-91702A0E58BE}"
 	ProjectSection(SolutionItems) = preProject
-		README = README
+		README.md = README.md
+		todo = todo
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IisInterrogation", "IisInterrogation\IisInterrogation.csproj", "{90BBE7CF-6165-46F5-B76E-52ECA2EC9F90}"
