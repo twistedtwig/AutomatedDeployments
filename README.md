@@ -155,37 +155,75 @@ After the "ValueItems" collection there is a new element called "Collections".  
 
 When the application is run it will parse the configuration file, look for the section name given as a command line parameter, find that configurationGroup and run those Tasks in order. If BREAKONERROR is set to false, it will run through all the Tasks even if some of them return errors, otherwise it will exit after the first error is encountered.
 
+5.3) Global Configuration ValueItem's
+-------------------------------------
 
-5.3) Backuping up IIS Settings to file for Source Control
----------------------------------------------------------
+There are a number of settings that are global and are defined within the ValueItems collection at the beginning of the ConfigurationGroup.
 
-This has been covered above
-
-5.4) Copying files to a destination location
---------------------------------------------
-
-
-
-
-
-
-
-
-
+    param						|		value 				|	optional 	|	default
+    _________________________________________________________________________________________
+    DestinationComputerName		|		MYCONFIGSECTION		|	false		| 	NONE
+    DestinationUserName			|		string				|	true		|	NONE
+    DestinationPassword			|		string				|	true		|	NONE
+    ForceInstall				|		bool				|	true		|	false
+    SourceContentPath			|		string		    	|	false		|	NONE
+    DestinationContentPath		|		string				|	false		|	NONE
+    MsdeployExe					|		file path			|	false		|	"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe"
+    AppCmdExe					|		file path			|	false		|	"C:\Windows\System32\inetsrv\appcmd.exe"
 
 
+The secions below will deal with setting up each of the ComponentType's.
 
 List of all ComponentType's:
 ----------------------------
 
-1.  FileDeployment
-2.  
-3.  
-4.  
-5.  
-6.  
-7.  
-8.  
-9.  
+1.  FileDeployment        
+2.  AppPoolCreation
+3.  AppPoolRemoval
+4.  WebSiteCreation
+5.  WebsiteRemoval
+6.  AppCreation
+7.  AppRemoval
+8.  ApplicationExecution
+
+5.4) Backuping up IIS Settings to file for Source Control
+---------------------------------------------------------
+
+This has been covered above, (section 4, 4.1 and 4.2).
+
+5.5) Copying files to a destination location (Component Type: FileDeployment)
+-----------------------------------------------------------------------------
+
+There are two types of file copy, local or remote, depending on the DestinationComputerName given.  As stated above if the DestinationComputerName is "localhost" it will do a local copy, otherwise it will use msdeploy to sync the files to the remote machine.  Here is a list of the parameters available to FileDeployment.
+
+    param						|		value 				|	optional
+    ________________________________________________________________________
+    ComponentType				|		FileDeployment		|	false
+    DestinationComputerName		|		MYCONFIGSECTION		|	false
+    DestinationUserName			|		string				|	true
+    DestinationPassword			|		string				|	true
+    ForceInstall				|		bool				|	true
+    SourceContentPath			|		string		    	|	false
+    DestinationContentPath		|		string				|	false
+    
+Each parameter given above would need its own ValueItem.  Here is an example FileDeployment section:
+
+```xml
+<Collection name="CopyWebsite">
+	<ValueItems>
+	  <ValueItem key="ComponentType" value="FileDeployment"/>
+	  <ValueItem key="SourceContentPath" value="C:\temp\deploy\Website"/>
+	  <ValueItem key="DestinationContentPath" value="c:\websites\deploytest"/>                        
+	</ValueItems>
+</Collection>  
+```
+
+
+
+
+
+
+
+
 
 
