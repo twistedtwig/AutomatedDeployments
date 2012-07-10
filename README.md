@@ -11,13 +11,13 @@ Automated Deployments was designed to address this issue.  It has a number of be
 2.  Allows developers to use the same setup and deployment process when ever they build their solution with the same settings as will be used in the live system.
 3.  Automates the deployment process.
 
-How does it work?
------------------
+1) How does it work?
+--------------------
 
 The application uses configuration files gained from IIS via "appcmd.exe".  These configuration files can then be put into your source control process.  The application would then be configured to use these configuration files to create IIS app pools, web sites, and applications on an IIS Server, (be that locally or remotely).  It can also be configured to copy all the files to a drop location.
 
-What does it need?
-------------------
+2) What does it need?
+---------------------
 
 The application has a few requirements:
 
@@ -27,8 +27,8 @@ The application has a few requirements:
 4.  Appcmd needs to be installed on the source machine (if this machine is to be used to get IIS configuraiton settings to be put into source control).
 5.  Appcmd needs to be installed on the destination machine (if any IIS settings are to be updated).
 
-How to install MsDeploy?
-------------------------
+3) How to install MsDeploy?
+---------------------------
 
 You will need MsDeploy installed and setup correctly on your production / live / destination server(s).  Here is a reasonable guide from MS: http://technet.microsoft.com/en-us/library/dd569059(v=ws.10).aspx .  The main thing to be aware of is that it needs a port opened to communicate.  By default it wants to run on port 80.  This is not great if you already have websites on there as it can / could interfere.  I have found it best to install it on port 8172 or 8173 (sometimes there is already a process running on 8172).  To install it so it is not running on port 80 you need to use the command line:
 
@@ -36,21 +36,21 @@ msiexec /I <msi_filename> /passive ADDLOCAL=ALL LISTENURL=http://+:8172/MsDeploy
 
 This will need to be run on cmd that is running as admin.  If when it installs it rolls back it is pretty possible something is already running on that port, try 8173 instead.  Remember to open the firewall as well to allow traffic in.
 
-How to add your IIS configuration to Source Control?
-----------------------------------------------------
+4) How to add your IIS configuration to Source Control?
+-------------------------------------------------------
 
 There are two ways of getting your IIS settings:
 
 1.  Use the GUI tool to backup your settings (currently still under development and not functioning)
 2.  use Appcmd to backup the settings.
 
-Using the GUI:
---------------
+4.1) Using the GUI:
+-------------------
 
 Not ready yet................
 
-Using Appcmd:
--------------
+4.2) Using Appcmd:
+------------------
 
 Appcmd is a powerful tool designed to help administer IIS (7.x).  Here is a guide to getting started with Appcmd, http://learn.iis.net/page.aspx/114/getting-started-with-appcmdexe/ .  There are a few command we will need to use.  I am going to imagine you have a website on your machine called "stackoverflow", an appPool called "SOAppPool" and an application running within "Default Web Site" called "reddit".
 
@@ -69,8 +69,8 @@ C:\Windows\System32\inetsrv\appcmd.exe list app "Default Web site/reddit" /confi
 These files can now be added to your source control ready for future deployments.
 
 
-Automated Deployment Fuctions:
-------------------------------
+5) Automated Deployment Fuctions:
+---------------------------------
 
 The application has a number of functions, be it a local or remote machine:
 
@@ -84,14 +84,92 @@ The application has a number of functions, be it a local or remote machine:
 8.  Removing web sites from a destination machine.
 9.  Removing applications from a destination machine.
 
+5.1) How is Automated Deployments used?
+---------------------------------------
 
-Backuping up IIS Settings to file for Source Control
-----------------------------------------------------
+To run the app you will need to specify the configuration section you want to use.  There are a number of other parameters you can give that will override any settings in the configuration:
+
+To run the app you would call "MYAPPCONSOLE.EXE /CONFIGSECTION=MYCONFIGSECTION"
+
+This would look for a config section with the name of "MYCONFIGSECTION".  A list of the parameters available are given below:
+
+param			|		value
+/CONFIGSECTION	|		MYCONFIGSECTION
+/FORCE			|		true / false
+/CONFIGPATH		|		C:\MYPATHTOCONFIGFILE.CONFIG
+/BREAKONERROR	|		true / false
+
+5.2) How is Automated Deployments configured?
+---------------------------------------------
+
+To setup a process you will need to make some entries in either the app.config for the EXE or create your own configuration file and pass that in at runtime.  Firstly a configuraitonSection will need to be added:
+
+<code>
+<configSections>
+    <section name="deployments" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations"/>
+  </configSections>
+</code>
+
+This tells .Net to parse a custom section called "deployments" using our application.  The next step is to create our own configuration section to be able to run an automated deployment, (be careful as all elements are case sensitive):
+
+<code>
+<deployments>
+    <Configs>
+
+    </Configs>
+</deployments>
+</code>
+
+Lets start by showing one quick example and then expand that to show each type of Task that can be used:
+
+<code>
+<deployments>
+    <Configs>
+		<ConfigurationGroup name="localtestSetup">
+			<ValueItems>
+			  <ValueItem key="MsdeployExe" value="C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe"/>
+			  <ValueItem key="AppCmdExe" value="C:\Windows\System32\inetsrv\appcmd.exe"/>
+			  <ValueItem key="DestinationComputerName" value="localhost"/>          
+			</ValueItems>
+			<Collections>        
+			  <Collection name="CopyWebsite">
+				<ValueItems>
+				  <ValueItem key="ComponentType" value="FileDeployment"/>
+				  <ValueItem key="SourceContentPath" value="C:\temp\deploy\Website"/>
+				  <ValueItem key="DestinationContentPath" value="c:\websites\deploytest"/>                        
+				</ValueItems>
+			  </Collection>     
+			</Collections>
+		</ConfigurationGroup>
+    </Configs>
+</deployments>
+</code>
+
+The above ConfigurationGroup is called "localtestSetup".  This is the section name that would be passed in at the command line to run this (/CONFIGSECTION=localtestSetup).  It then declares a list of items.  These are global values to the deployment and will be inherited to each child element.  The system needs to know certain bits of information:
+
+1.  where msdeploy is installed, (will default to the above if it is not given)
+2.  where appcmd is installed, (will default to the above if it is not given)
+3.  The destination computer name.
+
+The minimum that is required he would be the destinationComputerName.  This tells the application where things will be going.  If localhost is used it will consider it to be doing a local deployment so msdeploy would not be needed.  Otherwise it will consider it to be doing a remote deployment and need to invoke msdeploy.  If it is doing a remote deployment there are two other valueItem's that will almost certainly be required, (the destination machine should always be secured, do not allow anonymous access):
+
+<code>
+	<ValueItem key="DestinationUserName" value="username"/>
+    <ValueItem key="DestinationPassword" value="password"/>
+</code>
+
+After the "ValueItems" collection there is a new element called "Collections".  This holds a list of "Collection" elements.  Each of these elements is a set of values which will result in one or more Tasks being invoked.  The above example shows a File Copy Task being setup.  The first ValueItem is the "ComponentType", this tells the application what it wants to do.  In this case, deploy some files.  The next two ValueItem's give the source and destination location (folders).
+
+When the application is run it will parse the configuration file, look for the section name given as a command line parameter, find that configurationGroup and run those Tasks in order. If BREAKONERROR is set to false, it will run through all the Tasks even if some of them return errors, otherwise it will exit after the first error is encountered.
+
+
+5.3) Backuping up IIS Settings to file for Source Control
+---------------------------------------------------------
 
 This has been covered above
 
-Copying files to a destination location
----------------------------------------
+5.4) Copying files to a destination location
+--------------------------------------------
 
 
 
@@ -103,4 +181,18 @@ Copying files to a destination location
 
 
 
-<code>some test code block</code>
+
+List of all ComponentType's:
+----------------------------
+
+1.  FileDeployment
+2.  
+3.  
+4.  
+5.  
+6.  
+7.  
+8.  
+9.  
+
+
