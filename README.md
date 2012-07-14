@@ -218,6 +218,10 @@ Each parameter given above would need its own ValueItem.  Here is an example Fil
 </Collection>  
 ```
 
+If forceInstall is used it will delete all the conents of the destination folder when copying, otherwise all the files from the source location will be appended to the destination folder, (where the files are the same the source file will overwrite the destination file).
+
+N.B. with remote deployments, if you give incorrect authentication details msdeploy will hang but the system will continue and not report the error.  If there is no output from this process you can tell there is an error (issue has been logged in GITHUB).
+
 
 
 
