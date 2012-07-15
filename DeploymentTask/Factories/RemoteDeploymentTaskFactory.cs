@@ -1,26 +1,15 @@
 ﻿using System;
-using System.Linq;
+using System.IO;
 using DeploymentConfiguration.Actions;
 using DeploymentConfiguration.DeploymentStrategies;
 using DeploymentTask.Tasks;
 
 namespace DeploymentTask.Factories
 {
-    public class RemoteDeploymentTaskFactory
+    public class RemoteDeploymentTaskFactory : RegionDeploymentTaskFactoryBase<RemoteDeploymentStrategyComponentGraphBase>
     {
-        public DeploymentTaskCollection Create(bool breakOnError, RemoteDeploymentStrategyComponentGraphBase deploymentStrategyComponentGraph)
-        {
-            if (deploymentStrategyComponentGraph == null) throw new ArgumentNullException("deploymentStrategyComponentGraph");
 
-            DeploymentTaskCollection deploymentTaskCollection = new DeploymentTaskCollection(breakOnError);
-            if (!deploymentStrategyComponentGraph.Actions.Any()) return deploymentTaskCollection;
-
-            CreateTasks(deploymentTaskCollection, deploymentStrategyComponentGraph);
-
-            return deploymentTaskCollection;
-        }
-
-        private static void CreateTasks(DeploymentTaskCollection deploymentTaskCollection, RemoteDeploymentStrategyComponentGraphBase deploymentComponentGraph)
+        protected override void CreateTasks(DeploymentTaskCollection deploymentTaskCollection, RemoteDeploymentStrategyComponentGraphBase deploymentComponentGraph)
         {
             foreach (ActionComponentGraphBase action in deploymentComponentGraph.Actions)
             {
@@ -31,6 +20,7 @@ namespace DeploymentTask.Factories
                         deploymentTaskCollection.DeploymentTasks.Add(new MsDeployFileCopyDeploymentTask(action as FileCopyActionComponentGraph));
                         break;
                     case ActionType.AppPoolCreation:
+                        deploymentTaskCollection.DeploymentTasks.Add(new MsDeployAppPoolInstallTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.AppPoolRemoval:
                         break;
@@ -49,5 +39,7 @@ namespace DeploymentTask.Factories
                 }
             }
         }
+
+        
     }
 }

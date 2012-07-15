@@ -35,13 +35,13 @@ namespace DeploymentTask.Tasks
             Console.WriteLine("Executing MSDEPLOY File Deployment command:");
             Console.WriteLine(msDeployParams.ToString());
 
-            InvokeExe(ActionComponentGraph.MsDeployExe, msDeployParams.ToString());
+            int result = InvokeExe(ActionComponentGraph.MsDeployExe, msDeployParams.ToString());
 
             Console.WriteLine("Completed file deployment.");
             Console.WriteLine(EndSectionBreaker);
 
-            //if we got here things went OK.
-            return ExpectedReturnValue;
+            //if we got here things went OK, (probably)
+            return result;
         }
 
         private string GetSource()

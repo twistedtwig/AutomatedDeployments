@@ -6,11 +6,17 @@ namespace DeploymentConfiguration.Actions
         {
             AppCmdExe = @"C:\Windows\System32\inetsrv\appcmd.exe";
             MsDeployExe = @"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe";
-        }
 
+            SourceContentPath= @"C:\websites\Installer";
+            DestinationContentPath = @"C:\websites\Installer";
+
+            CleanUp = true;
+            ForceInstall = false;
+        }
 
         public ActionType ActionType { get; set; }
         public bool ForceInstall { get; set; }
+        public bool CleanUp { get; set; }
 
         public string SourceContentPath { get; set; }
         public string DestinationContentPath { get; set; }

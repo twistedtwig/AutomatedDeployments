@@ -44,6 +44,8 @@
     <Compile Include="Factories\LocalRegionDeploymentTaskFactory.cs" />
     <Compile Include="Factories\RegionDeploymentTaskFactoryBase.cs" />
     <Compile Include="Factories\RemoteDeploymentTaskFactory.cs" />
+    <Compile Include="Tasks\AppPoolInstallTaskBase.cs" />
+    <Compile Include="Tasks\AppPoolRemovalTaskBase.cs" />
     <Compile Include="Tasks\DeploymentTaskBase.cs" />
     <Compile Include="DeploymentTaskCollection.cs" />
     <Compile Include="Exceptions\DeploymentTaskException.cs" />
@@ -51,6 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\DeploymentTaskRoot.cs" />
     <Compile Include="Tasks\FileDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\IisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\LocalAppPoolInstallTask.cs" />
+    <Compile Include="Tasks\MsDeployAppPoolInstallTask.cs" />
     <Compile Include="Tasks\MsDeployFileCopyDeploymentTask.cs" />
     <Compile Include="Tasks\LocalFileSystemCopyDeploymentTask.cs" />
   </ItemGroup>

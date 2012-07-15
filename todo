@@ -1,12 +1,20 @@
 what it does / should do:
 
-
+ensure both local and remote task factories create app pool install and check for force,  
+check that remote app pool install works
+create documentation for app pool install
+create app pool removal both local and remote
+add to task factories
+check removal on its own works
+check that force install works
+update documentation for app pool removal
 
 command line stuff:
 
 take in force
 take in config path
 take in config section name
+take in cleanup
 
 
 

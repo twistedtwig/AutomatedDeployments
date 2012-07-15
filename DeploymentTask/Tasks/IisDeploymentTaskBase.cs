@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using DeploymentConfiguration.Actions;
+
+namespace DeploymentTask.Tasks
+{
+    public abstract class IisDeploymentTaskBase : DeploymentTaskBase<IisActionComponentGraph>
+    {
+        protected IisDeploymentTaskBase(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
+        {
+        }
+
+        protected string GetMsDeployExecuteCmdSource(string pathToCmd)
+        {
+            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-source:runCommand='{0}'", pathToCmd));
+        }
+
+        protected string GetMsDeployExecuteCmdDestination()
+        {
+            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-dest:auto,computerName='{0}',userName='{1}',password='{2}'", 
+                ActionComponentGraph.DestinationComputerName, ActionComponentGraph.DestinationUserName, ActionComponentGraph.DestinationPassword));
+        }
+
+        protected string GetMsDeployExecuteCmdSync()
+        {
+            return EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync");
+        }
+
+        protected string GetMsDeployExecuteCmdParams(string pathToCmd)
+        {
+            StringBuilder parameters = new StringBuilder();
+            parameters.Append(GetMsDeployExecuteCmdSource(pathToCmd));
+            parameters.Append(GetMsDeployExecuteCmdDestination());
+            parameters.Append(GetMsDeployExecuteCmdSync());
+
+            return parameters.ToString();
+        }
+
+
+        protected string GetMsDeployDeleteFileParams(string filePath)
+        {
+            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-dest:ContentPath='{0}',computerName='{1}',userName='{2}',password='{3}' -verb:delete",
+                filePath, ActionComponentGraph.DestinationComputerName, ActionComponentGraph.DestinationUserName, ActionComponentGraph.DestinationPassword));
+        }
+
+        protected IList<string> FindIisSettingsNamesFromConfig(string pathToConfigFile, Regex regex)
+        {
+            IList<string> iisSettingNames = new List<string>();
+
+            foreach (string line in File.ReadAllLines(pathToConfigFile))
+            {
+                Match match = regex.Match(line);
+                if (match.Success)
+                {
+                    string settingName = match.Groups[3].Value;
+                    if (string.IsNullOrWhiteSpace(settingName))
+                    {
+                        throw new ArgumentException("Error reading IIS Setting from config for removal: " + pathToConfigFile);
+                    }
+
+                    if (!iisSettingNames.Contains(settingName))
+                    {
+                        iisSettingNames.Add(settingName);
+                    }
+                }
+            }
+
+            return iisSettingNames;
+        }
+
+        protected abstract string CreateParameterString(string destinationConfigPath);
+    }
+}

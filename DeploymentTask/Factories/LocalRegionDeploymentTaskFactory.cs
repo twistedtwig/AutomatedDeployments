@@ -19,6 +19,7 @@ namespace DeploymentTask.Factories
                         deploymentTaskCollection.DeploymentTasks.Add(new LocalFileSystemCopyDeploymentTask(action as FileCopyActionComponentGraph));
                         break;
                     case ActionType.AppPoolCreation:
+                        deploymentTaskCollection.DeploymentTasks.Add(new LocalAppPoolInstallTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.AppPoolRemoval:
                         break;
