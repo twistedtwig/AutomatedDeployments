@@ -226,7 +226,7 @@ If forceInstall is used it will delete all the conents of the destination folder
 
 N.B. with remote deployments, if you give incorrect authentication details msdeploy will hang but the system will continue and not report the error.  If there is no output from this process you can tell there is an error (issue has been logged in GITHUB).
 
-5.6) Installing an AppPool (Component Tyype: AppPoolCreation)
+5.6) Installing an AppPool (Component Type: AppPoolCreation)
 -------------------------------------------------------------
 
 To Install an AppPool either locally or remotely requires a Collection configuration section, such as:
