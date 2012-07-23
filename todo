@@ -1,23 +1,12 @@
 what it does / should do:
 
+create local and remote Application installers
+create config entries to test
+update documentation.
 
-document the above after creation, before doing ANYTHING else.
-
-
-
-app pool removal when there is no such app pool (same for any IIS object).
-
-
-
-
-ensure both local and remote task factories create app pool install and check for force,  
-check that remote app pool install works
-create documentation for app pool install
-create app pool removal both local and remote
-add to task factories
-check removal on its own works
-check that force install works
-update documentation for app pool removal
+create local and remote website installers
+create config entries to test
+update documentation.
 
 command line stuff:
 
