@@ -1,7 +1,7 @@
 ﻿using System;
 using DeploymentConfiguration.Actions;
 using DeploymentConfiguration.DeploymentStrategies;
-using DeploymentTask.Tasks;
+using DeploymentTask.Tasks.LocalTasks;
 
 namespace DeploymentTask.Factories
 {
@@ -16,12 +16,18 @@ namespace DeploymentTask.Factories
                 switch (action.ActionType)
                 {
                     case ActionType.FileDeployment:
-                        deploymentTaskCollection.DeploymentTasks.Add(new LocalFileSystemCopyDeploymentTask(action as FileCopyActionComponentGraph));
+                        deploymentTaskCollection.Add(new LocalFileSystemCopyDeploymentTask(action as FileCopyActionComponentGraph));
                         break;
                     case ActionType.AppPoolCreation:
-                        deploymentTaskCollection.DeploymentTasks.Add(new LocalAppPoolInstallTask(action as IisActionComponentGraph));
+                        if (action.ForceInstall)
+                        {
+                            deploymentTaskCollection.Add(new LocalAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));
+                            deploymentTaskCollection.Add(new LocalAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));
+                        }
+                        deploymentTaskCollection.Add(new LocalAppPoolInstallIisDeploymentTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.AppPoolRemoval:
+                        deploymentTaskCollection.Add(new LocalAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));                        
                         break;
                     case ActionType.WebSiteCreation:
                         break;

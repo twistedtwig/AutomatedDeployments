@@ -13,7 +13,7 @@ namespace DeploymentTask.Factories
         {
             if (deploymentStrategyComponentGraph == null) throw new ArgumentNullException("deploymentStrategyComponentGraph");
 
-            DeploymentTaskCollection deploymentTaskCollection = new DeploymentTaskCollection(breakOnError);
+            DeploymentTaskCollection deploymentTaskCollection = new DeploymentTaskCollection(breakOnError, deploymentStrategyComponentGraph.ShouldSortTasks);
             if (!deploymentStrategyComponentGraph.Actions.Any()) return deploymentTaskCollection;
 
             CreateTasks(deploymentTaskCollection, deploymentStrategyComponentGraph);

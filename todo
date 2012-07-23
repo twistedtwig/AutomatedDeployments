@@ -1,5 +1,15 @@
 what it does / should do:
 
+
+document the above after creation, before doing ANYTHING else.
+
+
+
+app pool removal when there is no such app pool (same for any IIS object).
+
+
+
+
 ensure both local and remote task factories create app pool install and check for force,  
 check that remote app pool install works
 create documentation for app pool install

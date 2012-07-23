@@ -44,8 +44,6 @@
     <Compile Include="Factories\LocalRegionDeploymentTaskFactory.cs" />
     <Compile Include="Factories\RegionDeploymentTaskFactoryBase.cs" />
     <Compile Include="Factories\RemoteDeploymentTaskFactory.cs" />
-    <Compile Include="Tasks\AppPoolInstallTaskBase.cs" />
-    <Compile Include="Tasks\AppPoolRemovalTaskBase.cs" />
     <Compile Include="Tasks\DeploymentTaskBase.cs" />
     <Compile Include="DeploymentTaskCollection.cs" />
     <Compile Include="Exceptions\DeploymentTaskException.cs" />
@@ -54,15 +52,29 @@
     <Compile Include="Tasks\DeploymentTaskRoot.cs" />
     <Compile Include="Tasks\FileDeploymentTaskBase.cs" />
     <Compile Include="Tasks\IisDeploymentTaskBase.cs" />
-    <Compile Include="Tasks\LocalAppPoolInstallTask.cs" />
-    <Compile Include="Tasks\MsDeployAppPoolInstallTask.cs" />
-    <Compile Include="Tasks\MsDeployFileCopyDeploymentTask.cs" />
-    <Compile Include="Tasks\LocalFileSystemCopyDeploymentTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalApplicationRemovalIisDeploymentTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalAppPoolInstallIisDeploymentTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalAppPoolRemovalIisDeploymentTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalInstallIisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalRemovalIisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalSiteRemovalIisDeploymentTask.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployApplicationRemovalIisDeploymentTask.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployAppPoolInstallIisDeploymentTask.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployAppPoolRemovalIisDeploymentTask.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployFileCopyDeploymentTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalFileSystemCopyDeploymentTask.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployInstallIisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployRemovalIisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeploySiteRemovalIisDeploymentTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\FileSystem.Helper\FileSystem.Helper.csproj">
       <Project>{843F18EB-8B48-4648-99AE-4DD5FB6B057D}</Project>
       <Name>FileSystem.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\GenericMethods\GenericMethods.csproj">
+      <Project>{243FB269-48E7-42D9-A880-37B5B981783D}</Project>
+      <Name>GenericMethods</Name>
     </ProjectReference>
     <ProjectReference Include="..\DeploymentConfiguration\DeploymentConfiguration.csproj">
       <Project>{C31936E5-CB3E-489F-A5A5-C3D005467A55}</Project>

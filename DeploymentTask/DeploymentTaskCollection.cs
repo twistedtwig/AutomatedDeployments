@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeploymentConfiguration.Actions;
 using DeploymentTask.Exceptions;
 using DeploymentTask.Tasks;
 
@@ -12,16 +11,14 @@ namespace DeploymentTask
     public class DeploymentTaskCollection
     {
         private readonly bool BreakOnError;
-
-        public DeploymentTaskCollection() : this(false) { }
-
-        public DeploymentTaskCollection(bool breakOnError)
+        private readonly bool ShouldSortTasks;
+        
+        public DeploymentTaskCollection(bool breakOnError, bool shouldSortTasks)
         {
             DeploymentTasks = new List<DeploymentTaskRoot>();
             BreakOnError = breakOnError;
+            ShouldSortTasks = shouldSortTasks;
         }
-
-        public IList<DeploymentTaskRoot> DeploymentTasks { get; set; }
 
         /// <summary>
         /// Execute each Task in turn.
@@ -29,6 +26,7 @@ namespace DeploymentTask
         public void Execute()
         {
             if (DeploymentTasks == null) throw new ArgumentException("Deployment Tasks not setup correctly");
+            if(ShouldSortTasks) { Sort(); }
 
             DeploymentCollectionException collectionException = null;
             foreach (DeploymentTaskRoot task in DeploymentTasks)
@@ -60,6 +58,25 @@ namespace DeploymentTask
             }
 
             if (collectionException != null) throw collectionException;
+        }
+
+        protected List<DeploymentTaskRoot> DeploymentTasks { get; private set; }
+
+        public void Add(DeploymentTaskRoot item)
+        {
+            if (!DeploymentTasks.Contains(item))
+            {
+                DeploymentTasks.Add(item);
+            }
+        }
+
+        public int Count { get { return DeploymentTasks.Count; } }
+
+        public DeploymentTaskRoot this[int index] { get { return DeploymentTasks[index]; } }
+
+        public void Sort()
+        {
+            DeploymentTasks.Sort();
         }
     }
 }

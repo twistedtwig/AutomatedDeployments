@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using DeploymentConfiguration.Actions;
+using GenericMethods;
 
 namespace DeploymentTask.Tasks
 {
@@ -13,7 +14,6 @@ namespace DeploymentTask.Tasks
         {
             ActionComponentGraph = actionComponentGraph;
         }
-
         
         protected string EnsureStringhasOnlyOneTrailingWhiteSpace(string value)
         {
@@ -94,5 +94,36 @@ namespace DeploymentTask.Tasks
         private const string SectionBreaker = "----------------------------------------------------";
         protected readonly string StartSectionBreaker = Environment.NewLine + SectionBreaker;
         protected readonly string EndSectionBreaker = SectionBreaker + Environment.NewLine;
+
+
+        
+        public int CompareComponentGraph(DeploymentTaskBase<T> other)
+        {
+            if (other.DoesObjectInheritFromGenericBaseClass(typeof(FileDeploymentTaskBase)))
+            {
+                var thisTask = this as FileDeploymentTaskBase;
+                if (thisTask == null) return 1;
+
+                var othertask = other as FileDeploymentTaskBase;
+                if (othertask== null) return -1;
+
+                return thisTask.CompareFileComponentGraph(othertask);
+            }
+
+            if (other.DoesObjectInheritFromGenericBaseClass(typeof(IisDeploymentTaskBase)))
+            {
+                var thisTask = this as IisDeploymentTaskBase;
+                if (thisTask == null) return 1;
+
+                var othertask = other as IisDeploymentTaskBase;
+                if (othertask == null) return -1;
+
+                return thisTask.CompareIisComponentGraph(othertask);
+            }
+
+            throw new ArgumentOutOfRangeException();
+        }
+
+
     }
 }

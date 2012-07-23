@@ -14,6 +14,21 @@ namespace DeploymentTask.Tasks
         {
             return Directory.Exists(ActionComponentGraph.SourceContentPath);
         }
+
+        public int CompareFileComponentGraph(FileDeploymentTaskBase other)
+        {
+            if (other== null) return -1;
+            int value = 0;
+            value = ActionComponentGraph.DestinationComputerName.CompareTo(other.ActionComponentGraph.DestinationComputerName);
+            if (value != 0) return value;
+
+            value = ActionComponentGraph.SourceContentPath.CompareTo(other.ActionComponentGraph.SourceContentPath);
+            if (value != 0) return value;
+
+            return ActionComponentGraph.DestinationContentPath.CompareTo(other.ActionComponentGraph.DestinationContentPath);
+        }
+
+
         
     }
 }

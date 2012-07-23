@@ -70,7 +70,23 @@ namespace DeploymentTask.Tasks
 
             return iisSettingNames;
         }
+       
+        public int CompareIisComponentGraph(IisDeploymentTaskBase other)
+        {
+            if (other == null) return -1;
+            int value = 0;
+            value = ActionComponentGraph.DestinationComputerName.CompareTo(other.ActionComponentGraph.DestinationComputerName);
+            if (value != 0) return value;
 
-        protected abstract string CreateParameterString(string destinationConfigPath);
+            value = ActionComponentGraph.SourceContentPath.CompareTo(other.ActionComponentGraph.SourceContentPath);
+            if (value != 0) return value;
+
+            value = ActionComponentGraph.DestinationContentPath.CompareTo(other.ActionComponentGraph.DestinationContentPath);
+            if (value != 0) return value;
+
+            return ActionComponentGraph.PathToConfigFile.CompareTo(other.ActionComponentGraph.PathToConfigFile);
+        }
+
+        protected abstract string CreateParameterString(string parameter);
     }
 }

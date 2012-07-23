@@ -4,7 +4,7 @@ using DeploymentConfiguration.Actions;
 using DeploymentTask.Exceptions;
 using FileSystem.Helper;
 
-namespace DeploymentTask.Tasks
+namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalFileSystemCopyDeploymentTask : FileDeploymentTaskBase
     {

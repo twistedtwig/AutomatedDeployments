@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using DeploymentConfiguration.Actions;
 
-namespace DeploymentTask.Tasks
+namespace DeploymentTask.Tasks.MsDeployTasks
 {
     public class MsDeployFileCopyDeploymentTask : FileDeploymentTaskBase
     {

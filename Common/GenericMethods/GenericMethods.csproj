@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C24B3E6F-533A-4E13-8ABE-2B3F7D8BDF68}</ProjectGuid>
+    <ProjectGuid>{243FB269-48E7-42D9-A880-37B5B981783D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeploymentStrategies</RootNamespace>
-    <AssemblyName>DeploymentStrategies</AssemblyName>
+    <RootNamespace>GenericMethods</RootNamespace>
+    <AssemblyName>GenericMethods</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,28 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileDeployments\FileDeploymentFactory.cs" />
-    <Compile Include="FileDeployments\FileDeploymentStrategyType.cs" />
-    <Compile Include="FileDeployments\FileDeploymentstrategyBase.cs" />
-    <Compile Include="FileDeployments\MsDeployFileInstallerDeploymentStrategy.cs" />
-    <Compile Include="FileDeployments\MsDeployFileRemovalDeploymentStrategy.cs" />
-    <Compile Include="IisCreation\AppPoolCreationTask.cs" />
-    <Compile Include="IisCreation\IisTaskCreation.cs" />
-    <Compile Include="IisRemoval\AppPoolRemover.cs" />
-    <Compile Include="IisRemoval\IisTaskRemoval.cs" />
+    <Compile Include="GenericEtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DeploymentStrategy.cs" />
-    <Compile Include="DeploymentStrategyFactory.cs" />
-    <Compile Include="ExecutionStratagies\MsDeployRemoteExecutionStrategy.cs" />
-    <Compile Include="ExecutionStratagies\RemoteExecutionStrategy.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\InstallerComponents\InstallerComponents.csproj">
-      <Project>{4EF9C208-74D5-4C60-A3AB-B82E14132BF6}</Project>
-      <Name>InstallerComponents</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
