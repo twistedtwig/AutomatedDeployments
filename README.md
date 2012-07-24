@@ -289,7 +289,7 @@ The above example is a local removal, it gives the component type, source folder
 
 
 5.8) Installing an Application into an existing website (Component Type: AppCreation)
-
+-------------------------------------------------------------------------------------
 
 To Install an applicaiton (what used to be referred to as a virtual directory) either locally or remotely requires a Collection configuration section, such as:
 
