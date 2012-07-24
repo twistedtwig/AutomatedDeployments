@@ -5,7 +5,7 @@ namespace InstallerComponents
 {
     public class VdirInstallerComponentGraph : IisInstallerComponentBaseGraph
     {
-        public VdirInstallerComponentGraph(string name, IDictionary<string, string> values) : base(name, values, ComponentType.VdirInstaller)
+        public VdirInstallerComponentGraph(string name, IDictionary<string, string> values) : base(name, values, ComponentType.ApplicationInstaller)
         {
         }
 

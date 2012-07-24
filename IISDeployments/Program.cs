@@ -6,9 +6,9 @@ using DeploymentTask.Factories;
 
 namespace IISDeployments
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             DeploymentStrategyComponentGraphBase localdeploymentComponentGraph = ConfigurationLoader.Load("localtestSetup", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
 
@@ -22,27 +22,6 @@ namespace IISDeployments
 
             DeploymentTaskCollection remotedeploymentTaskCollection = DeploymentTaskFactory.Create(remotedeploymentComponentGraph);
             remotedeploymentTaskCollection.Execute();
-
-
-
-//            IList<ComponentGraph> installerComponentGraphs = ConfigurationController.LoadInstallerComponentGraphs();
-//
-//            foreach (ComponentGraph componentGraph in installerComponentGraphs)
-//            {
-//                List<RemoteDeploymentStrategy> deploymentTasks = new List<RemoteDeploymentStrategy>();
-//                foreach (var installerComponent in componentGraph.Components)
-//                {
-//                    deploymentTasks.AddRange(RemoteDeploymentStrategyFactory.Create(installerComponent));
-//                }
-//
-//                deploymentTasks.Sort();
-//
-//                //created all tasks and files for this deployment, now execute tasks in order.
-//                foreach (RemoteDeploymentStrategy task in deploymentTasks)
-//                {
-//                    task.Execute();
-//                }                
-//            }
         }
     }
 }

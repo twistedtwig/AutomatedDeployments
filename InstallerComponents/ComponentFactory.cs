@@ -39,7 +39,7 @@ namespace InstallerComponents
                     item = new AppPoolInstallerComponentGraph(section.Name, localValues);
                     break;
                 case ComponentType.WebSiteInstaller:
-                case ComponentType.VdirInstaller:
+                case ComponentType.ApplicationInstaller:
                     item =  null;
                     break;
                 case ComponentType.RemoteExecutionComponent:
@@ -51,8 +51,8 @@ namespace InstallerComponents
                 case ComponentType.WebSiteRemover:
                     item = new IisRemoverComponentGraph(section.Name, localValues, ComponentType.WebSiteRemover);
                     break;
-                case ComponentType.VdirRemover:
-                    item = new IisRemoverComponentGraph(section.Name, localValues, ComponentType.VdirRemover);
+                case ComponentType.ApplicationRemover:
+                    item = new IisRemoverComponentGraph(section.Name, localValues, ComponentType.ApplicationRemover);
                     break;
                 default:
                     throw new ArgumentException("unknown installer section: " + section[ComponentTypeString]);                

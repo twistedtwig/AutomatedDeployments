@@ -6,11 +6,11 @@ namespace InstallerComponents
         FileInstaller,
         AppPoolInstaller,
         WebSiteInstaller,
-        VdirInstaller,
+        ApplicationInstaller,
         RemoteExecutionComponent,
         AppPoolRemover,
         WebSiteRemover,
-        VdirRemover,
+        ApplicationRemover,
         FileRemover,
     }
 }

@@ -34,6 +34,7 @@ namespace DeploymentTask.Factories
                     case ActionType.WebsiteRemoval:
                         break;
                     case ActionType.AppCreation:
+                        deploymentTaskCollection.Add(new LocalApplicationInstallIisDeploymentTask(action as IisActionComponentGraph));                                                
                         break;
                     case ActionType.AppRemoval:
                         break;

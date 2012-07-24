@@ -288,9 +288,33 @@ The above example is a local removal, it gives the component type, source folder
     PathToConfigFile            |       string              |   false
 
 
+5.8) Installing an Application into an existing website (Component Type: AppCreation)
 
 
+To Install an applicaiton (what used to be referred to as a virtual directory) either locally or remotely requires a Collection configuration section, such as:
 
+```xml
+<Collection name="installApplication">
+    <ValueItems>
+      <ValueItem key="ComponentType" value="AppCreation"/>
+      <ValueItem key="SourceContentPath" value="C:\temp\deploy\installer"/>
+      <ValueItem key="PathToConfigFile" value="application.config"/>
+    </ValueItems>
+</Collection>
+```
 
+The above example is a local installation, it gives the component type, source folder location and the relative path (from source) to the config file that has the Application information.  For a remote installation it would require the destination content path and authentication details.  Below is a list of the parameters available for AppPoolCreation:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       AppPoolCreation     |   false
+    DestinationComputerName     |       string              |   false
+    DestinationUserName         |       string              |   true
+    DestinationPassword         |       string              |   true
+    ForceInstall                |       bool                |   true
+    CleanUp                     |       bool                |   true
+    SourceContentPath           |       string              |   false
+    DestinationContentPath      |       string              |   false
+    PathToConfigFile            |       string              |   false
 
 

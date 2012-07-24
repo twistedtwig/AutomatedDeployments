@@ -1,12 +1,18 @@
 what it does / should do:
 
-create local and remote Application installers
+create local and remote Application removers
 create config entries to test
 update documentation.
 
 create local and remote website installers
 create config entries to test
 update documentation.
+
+create local and remote website removers
+create config entries to test
+update documentation.
+
+Create same folder with config files.
 
 command line stuff:
 

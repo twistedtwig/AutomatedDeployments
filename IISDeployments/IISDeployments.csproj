@@ -56,10 +56,6 @@
       <Project>{7A404EAC-471C-47D6-AC08-6CFD1518EBB1}</Project>
       <Name>DeploymentTask</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InstallerComponents\InstallerComponents.csproj">
-      <Project>{4EF9C208-74D5-4C60-A3AB-B82E14132BF6}</Project>
-      <Name>InstallerComponents</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
