@@ -46,7 +46,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             foreach (string name in names)
             {                
                 //create tempfile to remove all pool by name given
-                string fileName = CreateRandomFileName(CmdFileName + name, CmdFileNameExtension);
+                string fileName = CreateRandomFileName(CmdFileName + CleanStringOfNonFileTypeCharacters(name), CmdFileNameExtension);
                 string filePath = Path.Combine(ActionComponentGraph.SourceContentPath, fileName);
                 CreateFile(filePath, CmdFileNameExe + " " + CreateParameterString(name), true);
                 //ensure cmd file has been pushed to remote server.

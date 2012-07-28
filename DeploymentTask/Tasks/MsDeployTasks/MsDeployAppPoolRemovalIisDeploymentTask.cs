@@ -12,12 +12,12 @@ namespace DeploymentTask.Tasks.MsDeployTasks
         {
         }
 
-        public override string DisplayName { get { return "MsDeploy Task To Remove App Pool"; } }
+        public override string DisplayName { get { return "MsDeploy Task To Remove an App Pool"; } }
         public override int ExpectedReturnValue { get { return 0; } }
 
         protected override string CreateParameterString(string parameter)
         {
-            return " delete apppool " + parameter;
+            return string.Format(" delete apppool \"{0}\"", parameter);
         }
         
         protected override string CmdFileName { get { return "RemoveAppPool"; } }

@@ -124,6 +124,18 @@ namespace DeploymentTask.Tasks
             throw new ArgumentOutOfRangeException();
         }
 
+        protected string CleanStringOfNonFileTypeCharacters(string value)
+        {
+            string newValue = value.Trim();
+            newValue = newValue.Replace(" ", "-");
+            newValue = newValue.Replace(@"\", "");
+            newValue = newValue.Replace(@"/", "");
+            newValue = newValue.Replace(@"@", "");
+            newValue = newValue.Replace(@".", "_");
+                        
+            return newValue;
+        }
+
 
     }
 }

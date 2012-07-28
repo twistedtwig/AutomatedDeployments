@@ -21,8 +21,7 @@ namespace DeploymentTask.Factories
                     case ActionType.AppPoolCreation:
                         if (action.ForceInstall)
                         {
-                            deploymentTaskCollection.Add(new LocalAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));
-                            deploymentTaskCollection.Add(new LocalAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));
+                            deploymentTaskCollection.Add(new LocalAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
                         }
                         deploymentTaskCollection.Add(new LocalAppPoolInstallIisDeploymentTask(action as IisActionComponentGraph));
                         break;
@@ -34,9 +33,14 @@ namespace DeploymentTask.Factories
                     case ActionType.WebsiteRemoval:
                         break;
                     case ActionType.AppCreation:
+                        if (action.ForceInstall)
+                        {
+                            deploymentTaskCollection.Add(new LocalApplicationRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
+                        }
                         deploymentTaskCollection.Add(new LocalApplicationInstallIisDeploymentTask(action as IisActionComponentGraph));                                                
                         break;
                     case ActionType.AppRemoval:
+                        deploymentTaskCollection.Add(new LocalApplicationRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
                         break;
                     case ActionType.ApplicationExecution:
                         break;

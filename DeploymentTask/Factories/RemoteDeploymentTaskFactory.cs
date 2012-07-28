@@ -33,9 +33,14 @@ namespace DeploymentTask.Factories
                     case ActionType.WebsiteRemoval:
                         break;
                     case ActionType.AppCreation:
+                        if (action.ForceInstall)
+                        {
+                            deploymentTaskCollection.Add(new MsDeployApplicationRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
+                        }
                         deploymentTaskCollection.Add(new MsDeployApplicationInstallIisDeploymentTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.AppRemoval:
+                            deploymentTaskCollection.Add(new MsDeployApplicationRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
                         break;
                     case ActionType.ApplicationExecution:
                         break;

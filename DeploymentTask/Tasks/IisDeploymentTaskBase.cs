@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
@@ -68,6 +69,10 @@ namespace DeploymentTask.Tasks
                 }
             }
 
+            if (!iisSettingNames.Any())
+            {
+                Console.WriteLine(string.Format("No matches found for regex '{0}' in file '{1}'", regex, pathToConfigFile));
+            }
             return iisSettingNames;
         }
        
