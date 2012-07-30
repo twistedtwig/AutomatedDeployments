@@ -1,5 +1,15 @@
 what it does / should do:
 
+the CreateFile in DeploymentTaskBase doesn't create the file path if the folders do not exist.
+need to be able to give relative file paths... I.E. don't know where the root is.. so take it from executing path
+test running from the EXE seems to be throwing error from running exe at work.
+
+
+
+
+
+update documentation.
+
 create local and remote website installers
 create config entries to test
 update documentation.
