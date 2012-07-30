@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security;
 using DeploymentConfiguration.Actions;
 using GenericMethods;
 
@@ -13,6 +14,14 @@ namespace DeploymentTask.Tasks
         protected DeploymentTaskBase(T actionComponentGraph)
         {
             ActionComponentGraph = actionComponentGraph;
+
+            if (RequiresAdminRights)
+            {
+                if (!IsAdministrator)
+                {
+                    throw new SecurityException("requires admin permission to execute this task");
+                }
+            }
         }
         
         protected string EnsureStringhasOnlyOneTrailingWhiteSpace(string value)
@@ -55,6 +64,15 @@ namespace DeploymentTask.Tasks
                 }
             }
 
+            if (path.Contains(@"\"))
+            {
+                string dir = path.Substring(0, path.LastIndexOf(@"\"));
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+            }
+            
             File.WriteAllText(path, content);
             return true;
         }

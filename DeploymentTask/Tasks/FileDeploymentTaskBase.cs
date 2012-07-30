@@ -28,7 +28,8 @@ namespace DeploymentTask.Tasks
             return ActionComponentGraph.DestinationContentPath.CompareTo(other.ActionComponentGraph.DestinationContentPath);
         }
 
-
+        public override bool RequiresAdminRights { get { return false; }
+        }
         
     }
 }

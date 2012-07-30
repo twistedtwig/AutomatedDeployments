@@ -1,15 +1,5 @@
 what it does / should do:
 
-the CreateFile in DeploymentTaskBase doesn't create the file path if the folders do not exist.
-need to be able to give relative file paths... I.E. don't know where the root is.. so take it from executing path
-test running from the EXE seems to be throwing error from running exe at work.
-
-
-
-
-
-update documentation.
-
 create local and remote website installers
 create config entries to test
 update documentation.
@@ -20,16 +10,22 @@ update documentation.
 
 Create same folder with config files.
 
-command line stuff:
-
-take in force
-take in config path
-take in config section name
-take in cleanup
 
 
+future ideas:
+
+- only do an update if there is a difference on the destination machine.
+	if you have the config you want setup check to see if all settings are the same.  could do this with dump destination server settings and check files are identical.
+
+- do iisreset, start stop commands etc on local or remote server
+
+- have command to be able to auto backup current website or vdir when doing a deploy, would rename folder to some backup name (date or something specified)
 
 
+
+
+UI related stuff:
+-----------------
 
 -- Davids help required:
 
@@ -66,47 +62,3 @@ want viewmodel for global (main page)
 			export app pool(s)
 			view selected website(s)
 
-
-
-
-
-
-- be able to interrogate the local machine to see what appPools, websites and Vdirs are setup currently
-	be able to create script / backup files of those settings
-		needs to be able to say well this website uses this app pool and has these vdirs, do you want it all?
-
-- copy files to a local or remote machine
-
-- check if apppool, website or vdir are setup locally or remotely
-	first task is to see if those names exist
-	secondly if you have the config you want setup check to see if all settings are the same.  could do this with dump destination server settings and check files are identical.
-
-- have command to be able to auto backup current website or vdir when doing a deploy, would rename folder to some backup name (date or something specified)
-
-- do iisreset, start stop commands etc on local or remote server
-
-- deploy apppool, website or vdir to local or remote server
-
-- be able to script all of these commands easily and fluently
-
-
-
-
-
-
-TODO:
-
-allow global fields per deployment for msdeploy location , ampcmd.exe loc +  destination -computername, username and password.
-	in configuration loader after line 35
-		want to get all global variables into a dictionary.
-		pass into component factory the dictionary
-		for the section want to get dictionary values
-			iterate over global dictionary, 
-				if local doesnt have global key, add to local dictionary
-
-website deployment
-description of what this is
-how to use it
-scan a computer to get deployment settings and deploy it to N servers
-
-vdir deployment

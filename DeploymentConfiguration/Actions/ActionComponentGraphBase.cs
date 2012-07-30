@@ -7,8 +7,8 @@ namespace DeploymentConfiguration.Actions
             AppCmdExe = @"C:\Windows\System32\inetsrv\appcmd.exe";
             MsDeployExe = @"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe";
 
-            SourceContentPath= @"C:\websites\Installer";
-            DestinationContentPath = @"C:\websites\Installer";
+            SourceContentPath = string.Empty;
+            DestinationContentPath = string.Empty;
 
             CleanUp = true;
             ForceInstall = false;

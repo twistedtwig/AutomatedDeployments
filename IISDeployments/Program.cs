@@ -1,27 +1,124 @@
 ﻿using System;
 using DeploymentConfiguration;
+using DeploymentConfiguration.Actions;
 using DeploymentConfiguration.DeploymentStrategies;
 using DeploymentTask;
+using DeploymentTask.Exceptions;
 using DeploymentTask.Factories;
 
 namespace IISDeployments
 {
-    internal class Program
+    public class Program
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
-            DeploymentStrategyComponentGraphBase localdeploymentComponentGraph = ConfigurationLoader.Load("localtestSetup", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+            try
+            {
+                SwitchParams consoleParams = ParseParameters(args);
 
-            DeploymentTaskCollection localdeploymentTaskCollection = DeploymentTaskFactory.Create(localdeploymentComponentGraph);
-            localdeploymentTaskCollection.Execute();
+                consoleParams.ConfigPath = string.IsNullOrWhiteSpace(consoleParams.ConfigPath) ? AppDomain.CurrentDomain.SetupInformation.ConfigurationFile : consoleParams.ConfigPath;
 
+                DeploymentStrategyComponentGraphBase deploymentComponentGraph = ConfigurationLoader.Load(consoleParams.ConfigSection, consoleParams.ConfigPath);
+                UpdateCompoentGraphWithOverLoads(deploymentComponentGraph, consoleParams);
 
-
-
-            DeploymentStrategyComponentGraphBase remotedeploymentComponentGraph = ConfigurationLoader.Load("remotetestSetup", AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-
-            DeploymentTaskCollection remotedeploymentTaskCollection = DeploymentTaskFactory.Create(remotedeploymentComponentGraph);
-            remotedeploymentTaskCollection.Execute();
+                DeploymentTaskCollection deploymentTaskCollection = consoleParams.BreakOnError.HasValue
+                    ? DeploymentTaskFactory.Create(consoleParams.BreakOnError.Value, deploymentComponentGraph)
+                    : DeploymentTaskFactory.Create(deploymentComponentGraph);
+                deploymentTaskCollection.Execute();
+            }
+            catch (DeploymentCollectionException exception)
+            {                
+                Console.WriteLine(exception.DeploymentTaskExceptions.Count <= 1 ? "There was an error" : "There were multiple errors");
+                foreach (DeploymentTaskException taskException in exception.DeploymentTaskExceptions)
+                {
+                    Console.WriteLine(taskException.Message + " - " + taskException.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("something bad happened: " + ex.Message);
+            }            
         }
+
+        private static SwitchParams ParseParameters(string[] args)
+        {
+            SwitchParams consoleParams = new SwitchParams();
+            if (args == null || args.Length == 0) return consoleParams;
+
+            try
+            {
+
+                for (int i = 0; i < args.Length; i++)
+                {
+                    switch (args[i].Trim().ToUpper())
+                    {
+                        case "/CONFIGSECTION":
+                            if (args.Length > i)
+                            {
+                                consoleParams.ConfigSection = args[++i];
+                                Console.WriteLine("ConfigSection set to: " + consoleParams.ConfigSection);
+                            }
+                            break;
+                        case "/CONFIGPATH":
+                            if (args.Length > i)
+                            {
+                                consoleParams.ConfigPath = args[++i];
+                                Console.WriteLine("ConfigPath set to: " + consoleParams.ConfigPath);
+                            }
+                            break;
+                        case "/FORCE":
+                            if (args.Length > i)
+                            {
+                                bool val;
+                                if (bool.TryParse(args[++i], out val))
+                                {
+                                    consoleParams.Force = val;
+                                    Console.WriteLine("Force install set to: " + consoleParams.Force);
+                                }
+                            }
+                            break;
+                        case "/BREAKONERROR":
+                            if (args.Length > i)
+                            {
+                                bool val;
+                                if (bool.TryParse(args[++i], out val))
+                                {
+                                    consoleParams.BreakOnError = val;
+                                    Console.WriteLine("Break on Error set to: " + consoleParams.BreakOnError);
+                                }
+                            }
+                            break;
+                        case "/CLEANUP":
+                            if (args.Length > i)
+                            {
+                                bool val;
+                                if (bool.TryParse(args[++i], out val))
+                                {
+                                    consoleParams.CleanUp = val;
+                                    Console.WriteLine("Clean up set to: " + consoleParams.CleanUp);
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error while reading params" + ex.Message);
+                Console.WriteLine("will continue with values gained so far");
+            }
+
+            return consoleParams;
+        }
+
+        private static void UpdateCompoentGraphWithOverLoads(DeploymentStrategyComponentGraphBase deploymentComponentGraph, SwitchParams consoleParams)
+        {
+            foreach (ActionComponentGraphBase action in deploymentComponentGraph.Actions)
+            {
+                if (consoleParams.CleanUp.HasValue) { action.CleanUp = consoleParams.CleanUp.Value; }
+                if (consoleParams.Force.HasValue) { action.ForceInstall = consoleParams.Force.Value; }                
+            }
+        }
+
     }
 }

@@ -93,5 +93,8 @@ namespace DeploymentTask.Tasks
         }
 
         protected abstract string CreateParameterString(string parameter);
+
+        public override bool RequiresAdminRights { get { return true; }
+        }
     }
 }

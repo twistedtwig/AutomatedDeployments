@@ -1,8 +1,8 @@
 using System;
+using System.Security.Principal;
 using DeploymentConfiguration.Actions;
 using DeploymentTask.Tasks.LocalTasks;
 using DeploymentTask.Tasks.MsDeployTasks;
-using GenericMethods;
 
 namespace DeploymentTask.Tasks
 {
@@ -19,7 +19,18 @@ namespace DeploymentTask.Tasks
 
         public abstract string DisplayName { get; }
         public abstract int ExpectedReturnValue { get; }
+        public abstract bool RequiresAdminRights { get; }
 
+        protected bool IsAdministrator
+        {
+            get
+            {
+                WindowsIdentity wi = WindowsIdentity.GetCurrent();
+                WindowsPrincipal wp = new WindowsPrincipal(wi);
+
+                return wp.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
 
         public int CompareTo(DeploymentTaskRoot other)
         {

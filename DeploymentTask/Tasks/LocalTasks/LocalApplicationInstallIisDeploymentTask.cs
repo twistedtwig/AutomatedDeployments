@@ -12,7 +12,7 @@ namespace DeploymentTask.Tasks.LocalTasks
         protected override string CmdFileName { get { return "localApplicationCmd"; } }
         protected override string CmdFileNameExtension { get { return "cmd"; } }
         protected override string CmdFileNameExe { get { return ActionComponentGraph.AppCmdExe; } }
-        protected override string CmdFileParameterDestinationPath { get { return ActionComponentGraph.SourceContentPath; } }
+        protected override string CmdFileParameterDestinationPath { get { return  ActionComponentGraph.SourceContentPath; } }
 
         public override string DisplayName { get { return "Local Task To Install Application"; } }
         public override int ExpectedReturnValue { get { return 0; } }

@@ -89,7 +89,7 @@ The application has a number of functions, be it a local or remote machine:
 
 To run the app you will need to specify the configuration section you want to use.  There are a number of other parameters you can give that will override any settings in the configuration:
 
-To run the app you would call "MYAPPCONSOLE.EXE /CONFIGSECTION=MYCONFIGSECTION"
+To run the app you would call "MYAPPCONSOLE.EXE /CONFIGSECTION MYCONFIGSECTION"
 
 This would look for a config section with the name of "MYCONFIGSECTION".  A list of the parameters available are given below:
 
