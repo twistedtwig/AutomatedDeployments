@@ -29,8 +29,14 @@ namespace DeploymentTask.Factories
                         deploymentTaskCollection.Add(new MsDeployAppPoolRemovalIisDeploymentTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.WebSiteCreation:
+                        if (action.ForceInstall)
+                        {
+                            deploymentTaskCollection.Add(new MsDeploySiteRemovalIisDeploymentTask(action as IisActionComponentGraph));
+                        }
+                        deploymentTaskCollection.Add(new MsDeploySiteInstallIisDeploymentTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.WebsiteRemoval:
+                        deploymentTaskCollection.Add(new MsDeploySiteRemovalIisDeploymentTask(action as IisActionComponentGraph));
                         break;
                     case ActionType.AppCreation:
                         if (action.ForceInstall)

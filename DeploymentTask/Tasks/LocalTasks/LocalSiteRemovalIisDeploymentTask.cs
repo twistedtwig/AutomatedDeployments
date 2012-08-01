@@ -5,48 +5,25 @@ namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalSiteRemovalIisDeploymentTask : LocalRemovalIisDeploymentTaskBase
     {
+        private const string Pattern = @"(SITE.NAME=(['''''',""""""]){0,1}(([\-a-z-A-Z0-9_/]|\s)+)\2)";
+        private readonly Regex Regex = new Regex(Pattern, RegexOptions.Compiled);
+
         public LocalSiteRemovalIisDeploymentTask(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
 
-        public override string DisplayName
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public override int ExpectedReturnValue
-        {
-            get { throw new System.NotImplementedException(); }
-        }
+        public override string DisplayName { get { return "Local Task To Remove a Site"; } }
+        public override int ExpectedReturnValue { get { return 0; } }
 
         protected override string CreateParameterString(string parameter)
         {
-            throw new System.NotImplementedException();
+            return string.Format(" delete site \"{0}\"", parameter);
         }
 
-        protected override string CmdFileName
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        protected override string CmdFileNameExtension
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        protected override string CmdFileNameExe
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        protected override string CmdFileParameterDestinationPath
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        protected override Regex ConfigFileNamePattern
-        {
-            get { throw new System.NotImplementedException(); }
-        }
+        protected override string CmdFileName { get { return "RemoveSite"; } }
+        protected override string CmdFileNameExtension { get { return "cmd"; } }
+        protected override string CmdFileNameExe { get { return ActionComponentGraph.AppCmdExe; } }
+        protected override string CmdFileParameterDestinationPath { get { return ActionComponentGraph.DestinationContentPath; } }
+        protected override Regex ConfigFileNamePattern { get { return Regex; } }
     }
 }

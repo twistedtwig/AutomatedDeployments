@@ -277,7 +277,7 @@ The above example is a local removal, it gives the component type, source folder
 
     param                       |       value               |   optional
     ________________________________________________________________________
-    ComponentType               |       AppPoolCreation     |   false
+    ComponentType               |       AppPoolRemoval      |   false
     DestinationComputerName     |       string              |   false
     DestinationUserName         |       string              |   true
     DestinationPassword         |       string              |   true
@@ -303,7 +303,7 @@ To Install an applicaiton (what used to be referred to as a virtual directory) e
 </Collection>
 ```
 
-The above example is a local installation, it gives the component type, source folder location and the relative path (from source) to the config file that has the Application information.  For a remote installation it would require the destination content path and authentication details.  Below is a list of the parameters available for AppPoolCreation:
+The above example is a local installation, it gives the component type, source folder location and the relative path (from source) to the config file that has the Application information.  For a remote installation it would require the destination content path and authentication details.  Below is a list of the parameters available for AppCreation:
 
     param                       |       value               |   optional
     ________________________________________________________________________
@@ -324,7 +324,7 @@ The above example is a local installation, it gives the component type, source f
 To Remove an Application (what used to be referred to as a virtual directory) either locally or remotely requires a Collection configuration section, such as:
 
 ```xml
-<Collection name="RemoveAppPool">
+<Collection name="RemoveApplication">
     <ValueItems>
       <ValueItem key="ComponentType" value="AppRemoval"/>
       <ValueItem key="SourceContentPath" value="C:\temp\deploy\installer"/>
@@ -346,3 +346,100 @@ The above example is a local removal, it gives the component type, source folder
     SourceContentPath           |       string              |   false
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
+
+
+5.10) Installing a Web Site (Component Type: WebSiteCreation)
+-------------------------------------------------------------------------------------
+
+To Install a Web Site either locally or remotely requires a Collection configuration section, such as:
+
+```xml
+<Collection name="installWebSite">
+    <ValueItems>
+      <ValueItem key="ComponentType" value="WebSiteCreation"/>
+      <ValueItem key="SourceContentPath" value="C:\temp\deploy\installer"/>
+      <ValueItem key="PathToConfigFile" value="site.config"/>
+    </ValueItems>
+</Collection>
+```
+
+The above example is a local installation, it gives the component type, source folder location and the relative path (from source) to the config file that has the Web Site information.  For a remote installation it would require the destination content path and authentication details.  Below is a list of the parameters available for WebSiteCreation:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       WebSiteCreation     |   false
+    DestinationComputerName     |       string              |   false
+    DestinationUserName         |       string              |   true
+    DestinationPassword         |       string              |   true
+    ForceInstall                |       bool                |   true
+    CleanUp                     |       bool                |   true
+    SourceContentPath           |       string              |   false
+    DestinationContentPath      |       string              |   false
+    PathToConfigFile            |       string              |   false
+
+
+5.11) Removing a WebSite (Component Type: WebSiteRemoval)
+---------------------------------------------------------
+
+To Remove a Web Site either locally or remotely requires a Collection configuration section, such as:
+
+```xml
+<Collection name="RemoveWebSite">
+    <ValueItems>
+      <ValueItem key="ComponentType" value="WebSiteRemoval"/>
+      <ValueItem key="SourceContentPath" value="C:\temp\deploy\installer"/>
+      <ValueItem key="PathToConfigFile" value="site.config"/>              
+    </ValueItems>
+</Collection>
+```
+
+The above example is a local removal, it gives the component type, source folder location and the relative path (from source) to the config file that has the Web Site information, it will search the config file for all site names matching SITE.NAME="".  All matches will be removed.  For a remote removal it would require the destination content path and authentication details.  Below is a list of the parameters available for WebSiteRemoval:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       WebSiteRemoval      |   false
+    DestinationComputerName     |       string              |   false
+    DestinationUserName         |       string              |   true
+    DestinationPassword         |       string              |   true
+    ForceInstall                |       bool                |   true
+    CleanUp                     |       bool                |   true
+    SourceContentPath           |       string              |   false
+    DestinationContentPath      |       string              |   false
+    PathToConfigFile            |       string              |   false
+
+
+
+6) Gotcha's and helpful hints
+-----------------------------
+
+6.1) Any appcmd (working with IIS) tasks will require admin permission.  It is best to always run the installer as admin to avoid these permission issues.
+
+6.2) Some appcmd tasks may not directly fail, (at least they do not report an unusual exit code), if the results are unexpected check the output of the installer, (pumping the installer to a log file if being used automatically is recommended).
+
+6.3) When installing a website they are given an ID such as the excert below:
+
+```xml
+    <SITE SITE.NAME="mywebsite" SITE.ID="2" bindings="http/*:99:" state="Started">
+        <site name="mywebsite" id="2">
+```
+
+The above example has an ID of "2".  This can be an issue when installing on a different machine.  IIS will not allow an install that already has that ID.  Unfortunately the error it reports doesn't lead directly to that result:
+
+```xml
+message:Failed to add duplicate collection element "mywebsite"
+```
+
+The only solution I have at this point is when you create your configuration file give it a large number to try avoid conflicts, (see road map).
+
+
+7) Road Map
+-----------
+
+There are a number of tasks I would like the application to do that it currently can't:
+
+1) Have a slightly more intelligent install
+1.1) When installing an element, (for example an app pool), check if the same name is already there.  If so, check the values, if they are identicial then no install required.
+1.2) When force is given only do the force if there is something to remove
+1.3) When installing web sites change the ID to be unique to avoid conflicts
+
+2) Have a client GUI (wpf) to allow the creation of the scripts and configuration files to be able to run the process and not need to open a text editor.  As well as allowing the whole process to be run from the UI if wanted, (not sure this last requirement is very needed as Visual Studio already does this pretty well).

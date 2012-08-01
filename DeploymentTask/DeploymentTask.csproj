@@ -58,6 +58,7 @@
     <Compile Include="Tasks\LocalTasks\LocalAppPoolRemovalIisDeploymentTask.cs" />
     <Compile Include="Tasks\LocalTasks\LocalInstallIisDeploymentTaskBase.cs" />
     <Compile Include="Tasks\LocalTasks\LocalRemovalIisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalSiteInstallIisDeploymentTask.cs" />
     <Compile Include="Tasks\LocalTasks\LocalSiteRemovalIisDeploymentTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployApplicationInstallIisDeploymentTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployApplicationRemovalIisDeploymentTask.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Tasks\LocalTasks\LocalFileSystemCopyDeploymentTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployInstallIisDeploymentTaskBase.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployRemovalIisDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeploySiteInstallIisDeploymentTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeploySiteRemovalIisDeploymentTask.cs" />
   </ItemGroup>
   <ItemGroup>

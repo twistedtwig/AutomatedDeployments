@@ -1,14 +1,8 @@
 what it does / should do:
 
-create local and remote website installers
-create config entries to test
-update documentation.
+what about MS Deploy when it is deploying zips!!! it unzips the file in the output location.  how... how can I do this locally?
 
-create local and remote website removers
-create config entries to test
-update documentation.
-
-Create same folder with config files.
+Create some examples with config files.
 
 
 
