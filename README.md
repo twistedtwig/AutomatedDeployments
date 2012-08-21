@@ -93,13 +93,16 @@ To run the app you would call "MYAPPCONSOLE.EXE /CONFIGSECTION MYCONFIGSECTION"
 
 This would look for a config section with the name of "MYCONFIGSECTION".  A list of the parameters available are given below:
 
-    param				|		value
-    _________________________________________________________
-    /CONFIGSECTION		|		MYCONFIGSECTION
-    /FORCE				|		true / false
-    /CONFIGPATH			|		C:\MYPATHTOCONFIGFILE.CONFIG
-    /BREAKONERROR		|		true / false
-    /CLEANUP            |       true / false
+    param				|		value								Description
+    __________________________________________________________________________________________________________________________________________________
+    /CONFIGSECTION		|		MYCONFIGSECTION					| The deployment configurationgroup name required
+    /FORCE				|		true / false					| Weather the application should force each action to happen
+    /CONFIGPATH			|		C:\MYPATHTOCONFIGFILE.CONFIG	| The full path to the configuration file
+    /BREAKONERROR		|		true / false					| Should the application stop when an error occurs
+    /CLEANUP            |       true / false					| Should the application delete any files it creates after running
+	/SETEXEPATH			|		true / false					| Should the applicaiton set the executing folder to the same as the exe's file path
+	
+The above parameters are all optional and would override anything given within the configuration file.
 
 5.2) How is Automated Deployments configured?
 ---------------------------------------------
@@ -430,6 +433,12 @@ message:Failed to add duplicate collection element "mywebsite"
 ```
 
 The only solution I have at this point is when you create your configuration file give it a large number to try avoid conflicts, (see road map).
+
+6.4) Error while using msdeploy, 'The application pool that you are trying to use has the 'managedRuntimeVersion' property set to 'v2.0'. This application requires 'v4.0'.':
+
+This normally is due to IIS not having .Net V4.0 registered.  using aspnet_regiis.exe /i normally fixes this (http://msdn.microsoft.com/en-us/library/ee942158.aspx).
+
+6.5) If when executing the application it doesn't find a file that has a relative file path given, you might need to set the SETEXEPATH flag to true at the command line.
 
 
 7) Road Map

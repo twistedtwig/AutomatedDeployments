@@ -47,6 +47,8 @@
     <Compile Include="Actions\ActionType.cs" />
     <Compile Include="Actions\FileCopyActionComponentGraph.cs" />
     <Compile Include="Actions\IisActionComponentGraph.cs" />
+    <Compile Include="Actions\PackageCreationComponentGraph.cs" />
+    <Compile Include="Actions\PackageDeploymentComponentGraph.cs" />
     <Compile Include="DeploymentStrategies\DeploymentStrategyComponentGraphBase.cs" />
     <Compile Include="ConfigurationLoader.cs" />
     <Compile Include="DeploymentStrategies\LocalDeploymentStrategyComponentGraphBase.cs" />

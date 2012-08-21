@@ -1,6 +1,43 @@
 what it does / should do:
 
-what about MS Deploy when it is deploying zips!!! it unzips the file in the output location.  how... how can I do this locally?
+
+Create package task
+
+
+Add to readme:
+ziping a folder structure and sending to remote server (doesnt explode on other end):
+"C:\Program Files\IIS\Microsoft Web Deploy\msdeploy.exe" -source:iisApp='D:\Work\Lumicom\MembersApplication' -dest:package="C:\websites\aa\membersapplication.zip",computername='107.21.229.99:8173',username='Administrator',password="p;L=&?q2QE" -verb:sync
+
+
+
+
+optional console param to set the executing folder to be the same as the exe's folder
+
+
+
+create task to copy a zip package / folder to a remote server then unzip the folder.
+	this will need to have a number of steps
+		check zip file exists
+			copy zip to remote server
+		if not check its a folder
+			if folder zip it and send to server
+		
+		if neither of above throw error
+
+		allow user to provide a destination path, if none given use the destination path given inside the zip, (for local the destination folder must already exist).
+
+			this could be done by checking the config first
+			if nothing given check the zip file and find the full path (including drive) given
+
+			explode zip to path.
+
+		will probably need a working dir to do the exploding to analysis path.
+
+
+
+
+exe action component stuff
+
 
 Create some examples with config files.
 

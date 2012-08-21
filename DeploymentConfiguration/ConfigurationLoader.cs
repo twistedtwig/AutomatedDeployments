@@ -79,6 +79,12 @@ namespace DeploymentConfiguration
                     case ActionType.ApplicationExecution:
                         throw new NotImplementedException("need to implement the general do something on a machine action");
                         break;
+                        case ActionType.CreatePackage:
+                        actionComponentGraph = section.Create<PackageCreationComponentGraph>();
+                        break;
+                        case ActionType.PackageDeployment:
+                        actionComponentGraph = section.Create<PackageDeploymentComponentGraph>();
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

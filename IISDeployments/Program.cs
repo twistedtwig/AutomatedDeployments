@@ -18,6 +18,8 @@ namespace IISDeployments
 
                 consoleParams.ConfigPath = string.IsNullOrWhiteSpace(consoleParams.ConfigPath) ? AppDomain.CurrentDomain.SetupInformation.ConfigurationFile : consoleParams.ConfigPath;
 
+                DisplayConsoleParams(consoleParams);
+
                 DeploymentStrategyComponentGraphBase deploymentComponentGraph = ConfigurationLoader.Load(consoleParams.ConfigSection, consoleParams.ConfigPath);
                 UpdateCompoentGraphWithOverLoads(deploymentComponentGraph, consoleParams);
 
@@ -109,6 +111,32 @@ namespace IISDeployments
             }
 
             return consoleParams;
+        }
+
+        private static void DisplayConsoleParams(SwitchParams consoleParams)
+        {
+            if(consoleParams.BreakOnError.HasValue)
+            {
+                Console.WriteLine(string.Format("BreakOn Error: {0}", consoleParams.BreakOnError));
+            }
+            if(consoleParams.CleanUp.HasValue)
+            {
+                Console.WriteLine(string.Format("Clean up: {0}", consoleParams.CleanUp));
+            }
+            if(!string.IsNullOrWhiteSpace(consoleParams.ConfigPath))
+            {
+                Console.WriteLine(string.Format("config path: {0}", consoleParams.ConfigPath));
+            }
+            if(!string.IsNullOrWhiteSpace(consoleParams.ConfigSection))
+            {
+                Console.WriteLine(string.Format("config section: {0}", consoleParams.ConfigSection));
+            }
+            if(consoleParams.Force.HasValue)
+            {
+                Console.WriteLine(string.Format("Force action: {0}", consoleParams.Force));
+            }
+
+            Console.WriteLine();
         }
 
         private static void UpdateCompoentGraphWithOverLoads(DeploymentStrategyComponentGraphBase deploymentComponentGraph, SwitchParams consoleParams)
