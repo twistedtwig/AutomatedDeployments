@@ -41,7 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\DeploymentCollectionException.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployFolderPackgeCreationTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalFolderPackgeCreationTask.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployProjectPackgeCreationTask.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalProjectPackgeCreationTask.cs" />
     <Compile Include="Factories\LocalRegionDeploymentTaskFactory.cs" />
+    <Compile Include="Factories\PackageCreationTaskFactory.cs" />
     <Compile Include="Factories\RegionDeploymentTaskFactoryBase.cs" />
     <Compile Include="Factories\RemoteDeploymentTaskFactory.cs" />
     <Compile Include="Tasks\DeploymentTaskBase.cs" />
@@ -70,6 +75,7 @@
     <Compile Include="Tasks\MsDeployTasks\MsDeployRemovalIisDeploymentTaskBase.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeploySiteInstallIisDeploymentTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeploySiteRemovalIisDeploymentTask.cs" />
+    <Compile Include="Tasks\ProjectPackageCreationTaskBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\FileSystem.Helper\FileSystem.Helper.csproj">

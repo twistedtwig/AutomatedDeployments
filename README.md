@@ -192,6 +192,7 @@ List of all ComponentType's:
 6.  AppCreation
 7.  AppRemoval
 8.  ApplicationExecution
+9.  CreatePackage
 
 N.B A quick note on Task ordering.  The application will try and create all tasks in the order they are given in the configuration section.  Most of the time this is logical and the desired behaviour.  However if you are trying to force a task through, such as an App Pool install and uset the "ForceInstall" element, (set to 'true'), then it is generally wise to sort the tasks using the 'ShouldSortTasks' element.  The reason being when a ForceInstall is given it will create any tasks needed to achieve that goal.  For example to force an install for an App Pool and a Web Site you would need to remove the Web Site then the App Pool, but will need to Install the App Pool before installing the Web Site.  You can either explicity create each of these Tasks, or you can use the ForceInstall and ShouldSortTasks elements.  This will create the needed Tasks and order them in the correct manor, so all applications are removed in order, files copied and lastly all installs done in the correct order.
 
@@ -409,6 +410,63 @@ The above example is a local removal, it gives the component type, source folder
     SourceContentPath           |       string              |   false
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
+
+
+5.12) Packaging an Application or folder (Component Type: CreatePackage)
+------------------------------------------------------------------------
+
+This component gives you the ability to package a project (or a folder), primary use would probably be with web apps where you want to create the deployment package.  Apart from creating web deployment packages this will also allow you to zip a folder in the same way, (it will not remove any files or folders, unlike the web deployment package).
+
+5.12.1) Packaging a web project:
+--------------------------------
+
+When packaging and project, (such as web app or a web deployment project), either locally or remotely the following Collection configuration section is required, (example is for local, more information about parameters below):
+
+```xml
+<Collection name="PackageSite">
+    <ValueItems>
+        <ValueItem key="ComponentType" value="CreatePackage"/>
+        <ValueItem key="SourceContentPath" value="C:\temp\deploy\mvctestsite\mvctestsite\mvctestsite.csproj" />        
+    </ValueItems>
+</Collection>
+```
+
+The above example will take the project file given in the "SourceContentPath" and create a package for it.  The internals of this uses MSBuild to create the package.  By default it will build the project with the Debug configuration and with all the default paths.  The example below shows some level of customization:
+
+
+```xml
+<Collection name="PackageSite">
+    <ValueItems>
+        <ValueItem key="ComponentType" value="CreatePackage"/>
+        <ValueItem key="SourceContentPath" value="C:\temp\deploy\mvctestsite\mvctestsite\mvctestsite.csproj" />
+        <ValueItem key="InternalPath" value="C:\websites\myMVCSite" />
+        <ValueItem key="ConfigurationType" value="Release" />
+        <ValueItem key="OutputLocation" value="C:\installer\testPackage.zip" />
+        <ValueItem key="ZipFileOnly" value="true" />
+    </ValueItems>
+</Collection>
+```
+
+This example changes the path that is created inside the zip package file.  I.E, it is no longer "C_C\temp\deploy\mvctestsite\mvctestsite" (with the extra folders it normally adds), it will now be "C:\websites\myMVCSite".  This is done by setting the "InternalPath" element.  This is useful for deploying to servers as normally the location of your project file is not the same path as your IIS folders.  The configuration is changed to "Release" using the "ConfigurationType" element.  The output location of the packaged zip is changed (normally it is in the "obj" folder under the project file folder then the configuration type, i.e. "Debug" or "Release" and "package" folder).  Lastly it tells the application if it should delete all the other files it generates (I.E. the xml and cmd files), and only leave the zip file, (this is defaulted to false).
+
+Below is a list of the parameters available for CreatePackage:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       CreatePackage       |   false
+    DestinationComputerName     |       string              |   false
+    DestinationUserName         |       string              |   true
+    DestinationPassword         |       string              |   true
+    ForceInstall                |       bool                |   true
+    CleanUp                     |       bool                |   true
+    SourceContentPath           |       string              |   false
+    DestinationContentPath      |       string              |   false
+    InternalPath                |       string              |   true
+    OutputLocation              |       string              |   true
+    ConfigurationType           |       string              |   true
+    ZipFileOnly                 |       string              |   true
+    MsBuildExe                  |       string              |   true (defaults to 64bit V4.0 version)
+
 
 
 

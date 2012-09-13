@@ -48,8 +48,11 @@ namespace DeploymentTask.Factories
                     case ActionType.AppRemoval:
                         deploymentTaskCollection.Add(new LocalApplicationRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
                         break;
-                    case ActionType.ApplicationExecution:
+                    case ActionType.CreatePackage:
+                            deploymentTaskCollection.Add(PackageCreationTaskFactory.Create(action as PackageCreationComponentGraph, DeploymentType.local));
                         break;
+                    case ActionType.ApplicationExecution:
+                        
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

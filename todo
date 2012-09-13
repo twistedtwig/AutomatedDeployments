@@ -2,6 +2,23 @@ what it does / should do:
 
 
 Create package task
+	- write up how this part works in the readme
+
+	- do the folder packaging (rather than project packaging so far)
+		- local
+		- remote
+		- write it up in readme
+
+
+find out how to change the path the zip folder creates:
+
+c:\users\jon.redriver\documents\visual studio 2010\Projects\MvcApplication2>msbuild MvcApplication2\MvcApplication2.csproj /target:clean /target:package /p:_PackageTempDir=C:\Package /p:PackageLocation=C:\temp\mvctesting\mytest.zip
+
+this cleans
+packages it
+the packatetempdir changes the path within the zip file
+packagelocation changes the output location of the zip file
+
 
 
 Add to readme:
@@ -32,6 +49,22 @@ create task to copy a zip package / folder to a remote server then unzip the fol
 			explode zip to path.
 
 		will probably need a working dir to do the exploding to analysis path.
+
+
+
+
+
+
+
+
+installer app - handler to set folder permissions for a given path..
+	Values like:
+
+	Path
+	Permission , read, write, etc
+	People to be given permission
+	Inheritable?
+
 
 
 
