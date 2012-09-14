@@ -1,25 +1,23 @@
+using DeploymentConfiguration.Actions;
+
 namespace DeploymentTask.Tasks.MsDeployTasks
 {
-    public class MsDeployFolderPackgeCreationTask : DeploymentTaskRoot
+    public class MsDeployFolderPackgeCreationTask : FolderPackageCreationTaskBase
     {
+        public MsDeployFolderPackgeCreationTask(PackageCreationComponentGraph actionComponentGraph) : base(actionComponentGraph)
+        {
+        }
+
+        public override string DisplayName { get { return "remote folder package creation Task"; } }
+        public override int ExpectedReturnValue { get { return 0; } }
+        public override bool RequiresAdminRights { get { return false; } }
+
         public override int Execute()
         {
-            throw new System.NotImplementedException();
-        }
+            int result = InvokeMsDeploy();
+            if (result != ExpectedReturnValue) return result;
 
-        public override string DisplayName
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public override int ExpectedReturnValue
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public override bool RequiresAdminRights
-        {
-            get { throw new System.NotImplementedException(); }
+            return  new MsDeployFileCopyDeploymentTask(CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraph, ActionComponentGraph.OutputLocation, GetFullDestinationZipFilePath())).Execute();
         }
     }
 }

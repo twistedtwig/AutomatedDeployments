@@ -35,12 +35,12 @@ namespace DeploymentTask.Factories
 
             if (deploymentType == DeploymentType.local)
             {
-                return new LocalFolderPackgeCreationTask();
+                return new LocalFolderPackgeCreationTask(action);
             }
 
             if (deploymentType == DeploymentType.msDeploy)
             {
-                return new MsDeployFolderPackgeCreationTask();
+                return new MsDeployFolderPackgeCreationTask(action);
             }
 
             throw new ArgumentOutOfRangeException("unknown deployment type for folder package creation");

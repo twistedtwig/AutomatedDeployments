@@ -1,13 +1,8 @@
 what it does / should do:
 
 
-Create package task
-	- write up how this part works in the readme
+do task to install / explode / use the package zip files
 
-	- do the folder packaging (rather than project packaging so far)
-		- local
-		- remote
-		- write it up in readme
 
 
 find out how to change the path the zip folder creates:

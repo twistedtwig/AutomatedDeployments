@@ -15,9 +15,7 @@ namespace DeploymentTask.Tasks
         {
             return File.Exists(ActionComponentGraph.SourceContentPath);
         }
-
-        protected string OutputLocationUsed { get; private set; }
-
+        
         protected int InvokeMsBuild()
         {
             if (string.IsNullOrWhiteSpace(ActionComponentGraph.MsBuildExe))
@@ -109,12 +107,5 @@ namespace DeploymentTask.Tasks
                 Directory.Delete(tempPackageFolderPath, true);
             }
         }
-    }
-
-    public class FileNameAndFolder
-    {
-        public string FileName { get; set; }
-        public string FolderName { get; set; }
-        
     }
 }

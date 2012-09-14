@@ -468,6 +468,38 @@ Below is a list of the parameters available for CreatePackage:
     MsBuildExe                  |       string              |   true (defaults to 64bit V4.0 version)
 
 
+5.12.2) Packaging a folder:
+---------------------------
+
+It is also possible to package a folder so that it follows the same idea as a web project, (is a zip file that has the file path embedded in it). There is currently no way to override the InternalPath with this process.  An example configuration collection is below:
+
+```xml
+  <Collection name="PackageFolder">
+    <ValueItems>
+      <ValueItem key="ComponentType" value="CreatePackage"/>
+      <ValueItem key="SourceContentPath" value="C:\temp\deploy\mvctestsite\mvctestsite" />
+      <ValueItem key="OutputLocation" value="C:\websites\testPackage.zip" />
+    </ValueItems>
+  </Collection>
+```
+
+The above is an example of a local folder packaging task.  It will take the "C:\temp\deploy\mvctestsite\mvctestsite" folder and create a zip file from that.  The zip file will the archive.xml and systeminfo.xml files and a Content folder, (same process as web projects above).  Under the Content folder it will have the drive and full path, "C_C\temp\deploy\mvctestsite\mvctestsite" in this case.
+
+To deploy remotely simply requires the "DestinationContentPath" element, (as well as the connection credentials as always).  Below is a list of parameters available for CreatePackage for folders:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       CreatePackage       |   false
+    DestinationComputerName     |       string              |   false
+    DestinationUserName         |       string              |   true
+    DestinationPassword         |       string              |   true
+    ForceInstall                |       bool                |   true
+    CleanUp                     |       bool                |   true
+    SourceContentPath           |       string              |   false
+    DestinationContentPath      |       string              |   false
+    OutputLocation              |       string              |   true
+    MsDeploy                    |       string              |   true (has internal default)
+
 
 
 6) Gotcha's and helpful hints
@@ -497,6 +529,8 @@ The only solution I have at this point is when you create your configuration fil
 This normally is due to IIS not having .Net V4.0 registered.  using aspnet_regiis.exe /i normally fixes this (http://msdn.microsoft.com/en-us/library/ee942158.aspx).
 
 6.5) If when executing the application it doesn't find a file that has a relative file path given, you might need to set the SETEXEPATH flag to true at the command line.
+
+6.6) If when trying to copy files to a remote server with msdeploy and no errors are returned, and no real output, check authentication credentials.
 
 
 7) Road Map

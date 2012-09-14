@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\DeploymentCollectionException.cs" />
+    <Compile Include="Tasks\FileNameAndFolder.cs" />
+    <Compile Include="Tasks\FolderPackageCreationTaskBase.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployFolderPackgeCreationTask.cs" />
     <Compile Include="Tasks\LocalTasks\LocalFolderPackgeCreationTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployProjectPackgeCreationTask.cs" />
