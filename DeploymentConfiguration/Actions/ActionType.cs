@@ -3,8 +3,8 @@ namespace DeploymentConfiguration.Actions
     public enum ActionType
     {
         CreatePackage,
+        DeployPackage,
         FileDeployment,
-        PackageDeployment,
         AppPoolCreation,
         AppPoolRemoval,
         WebSiteCreation,

@@ -51,6 +51,9 @@ namespace DeploymentTask.Factories
                     case ActionType.CreatePackage:
                         deploymentTaskCollection.Add(PackageCreationTaskFactory.Create(action as PackageCreationComponentGraph, DeploymentType.msDeploy));
                         break;
+                    case ActionType.DeployPackage:
+                        deploymentTaskCollection.Add(new MsDeployProjectPackgeDeploymentTask(action as PackageDeploymentComponentGraph));
+                        break;
                     case ActionType.ApplicationExecution:
                         
                     default:

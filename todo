@@ -1,65 +1,15 @@
-what it does / should do:
+what to do next:
+
+
+package deployment doesn't take the drive into account when using the archive.xml iisapp path value
 
 
 optional console param to set the executing folder to be the same as the exe's folder
 
 
-do task to install / explode / use the package zip files
-
-
-8) Unpackage the contents of the Package.zip file and put them in the C:\temp folder. Remove any files in the destination folder that are not present in the package.
-
-msdeploy.exe -verb:sync -source:package=C:\package.zip -dest:contentpath=C:\temp
-
-
-
-
 file / folder permissions task
 
 http://stackoverflow.com/questions/2928738/how-to-grant-permission-to-users-for-a-directory-using-command-line-in-windows
-
-
-
-find out how to change the path the zip folder creates:
-
-c:\users\jon.redriver\documents\visual studio 2010\Projects\MvcApplication2>msbuild MvcApplication2\MvcApplication2.csproj /target:clean /target:package /p:_PackageTempDir=C:\Package /p:PackageLocation=C:\temp\mvctesting\mytest.zip
-
-this cleans
-packages it
-the packatetempdir changes the path within the zip file
-packagelocation changes the output location of the zip file
-
-
-
-Add to readme:
-ziping a folder structure and sending to remote server (doesnt explode on other end):
-"C:\Program Files\IIS\Microsoft Web Deploy\msdeploy.exe" -source:iisApp='D:\Work\Lumicom\MembersApplication' -dest:package="C:\websites\aa\membersapplication.zip",computername='107.21.229.99:8173',username='Administrator',password="p;L=&?q2QE" -verb:sync
-
-
-
-
-
-
-
-create task to copy a zip package / folder to a remote server then unzip the folder.
-	this will need to have a number of steps
-		check zip file exists
-			copy zip to remote server
-		if not check its a folder
-			if folder zip it and send to server
-		
-		if neither of above throw error
-
-		allow user to provide a destination path, if none given use the destination path given inside the zip, (for local the destination folder must already exist).
-
-			this could be done by checking the config first
-			if nothing given check the zip file and find the full path (including drive) given
-
-			explode zip to path.
-
-		will probably need a working dir to do the exploding to analysis path.
-
-
 
 
 

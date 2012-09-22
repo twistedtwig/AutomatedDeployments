@@ -116,6 +116,11 @@ namespace DeploymentTask.Tasks
 
         protected static FileCopyActionComponentGraph CreateFolderCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string folderPath)
         {
+            return CreateFolderCopyActionComponentGraphFrom(iisActionComponentGraph, folderPath, iisActionComponentGraph.DestinationContentPath);
+        }
+
+        protected static FileCopyActionComponentGraph CreateFolderCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string sourceFolderPath, string destinationFolderPath)
+        {
             FileCopyActionComponentGraph fileCopyAction = new FileCopyActionComponentGraph();
             fileCopyAction.AppCmdExe = iisActionComponentGraph.AppCmdExe;
             fileCopyAction.MsDeployExe = iisActionComponentGraph.MsDeployExe;
@@ -124,8 +129,8 @@ namespace DeploymentTask.Tasks
             fileCopyAction.DestinationComputerName = iisActionComponentGraph.DestinationComputerName;
             fileCopyAction.DestinationPassword = iisActionComponentGraph.DestinationPassword;
             fileCopyAction.DestinationUserName = iisActionComponentGraph.DestinationUserName;
-            fileCopyAction.SourceContentPath = folderPath;
-            fileCopyAction.DestinationContentPath = iisActionComponentGraph.DestinationContentPath;
+            fileCopyAction.SourceContentPath = sourceFolderPath;
+            fileCopyAction.DestinationContentPath = destinationFolderPath;
             fileCopyAction.ForceInstall = iisActionComponentGraph.ForceInstall;
             return fileCopyAction;
         }

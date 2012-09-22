@@ -49,7 +49,10 @@ namespace DeploymentTask.Factories
                         deploymentTaskCollection.Add(new LocalApplicationRemovalIisDeploymentTask(action as IisActionComponentGraph));                            
                         break;
                     case ActionType.CreatePackage:
-                            deploymentTaskCollection.Add(PackageCreationTaskFactory.Create(action as PackageCreationComponentGraph, DeploymentType.local));
+                        deploymentTaskCollection.Add(PackageCreationTaskFactory.Create(action as PackageCreationComponentGraph, DeploymentType.local));
+                        break;
+                    case ActionType.DeployPackage:
+                        deploymentTaskCollection.Add(new LocalProjectPackgeDeploymentTask(action as PackageDeploymentComponentGraph));
                         break;
                     case ActionType.ApplicationExecution:
                         

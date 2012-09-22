@@ -82,7 +82,7 @@ namespace DeploymentConfiguration
                         case ActionType.CreatePackage:
                         actionComponentGraph = section.Create<PackageCreationComponentGraph>();
                         break;
-                        case ActionType.PackageDeployment:
+                        case ActionType.DeployPackage:
                         actionComponentGraph = section.Create<PackageDeploymentComponentGraph>();
                         break;
                     default:

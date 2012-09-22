@@ -193,6 +193,7 @@ List of all ComponentType's:
 7.  AppRemoval
 8.  ApplicationExecution
 9.  CreatePackage
+10. DeployPackage
 
 N.B A quick note on Task ordering.  The application will try and create all tasks in the order they are given in the configuration section.  Most of the time this is logical and the desired behaviour.  However if you are trying to force a task through, such as an App Pool install and uset the "ForceInstall" element, (set to 'true'), then it is generally wise to sort the tasks using the 'ShouldSortTasks' element.  The reason being when a ForceInstall is given it will create any tasks needed to achieve that goal.  For example to force an install for an App Pool and a Web Site you would need to remove the Web Site then the App Pool, but will need to Install the App Pool before installing the Web Site.  You can either explicity create each of these Tasks, or you can use the ForceInstall and ShouldSortTasks elements.  This will create the needed Tasks and order them in the correct manor, so all applications are removed in order, files copied and lastly all installs done in the correct order.
 
@@ -501,6 +502,36 @@ To deploy remotely simply requires the "DestinationContentPath" element, (as wel
     DestinationContentPath      |       string              |   false
     OutputLocation              |       string              |   true
     MsDeploy                    |       string              |   true (has internal default)
+
+
+
+5.13)  Deploying a Package
+--------------------------
+
+When deploying a package (zip file) either locally or remotely the following collection configuration section is required, (example is for local deployment):
+
+```xml
+<Collection name="DeployPackage">
+    <ValueItems>
+      <ValueItem key="ComponentType" value="DeployPackage"/>
+      <ValueItem key="SourceContentPath" value="C:\temp\deploy\installer\test\testPackage.zip" />
+    </ValueItems>
+</Collection>
+```
+
+The above example shows using the "DeploymentPackage" ComponentType.  For local install the minimum information required is the "SourceContentPath", which is the path the zip file.  For remote deployments the deployment details such as server name and credientials would be required.  A list of the other parameters is listed below:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       DeployPackage       |   false
+    DestinationComputerName     |       string              |   false
+    DestinationUserName         |       string              |   true
+    DestinationPassword         |       string              |   true
+    ForceInstall                |       bool                |   true
+    SourceContentPath           |       string              |   false
+    DestinationContentPath      |       string              |   true
+    
+If "ForceInstall" install is used it will ensure the deployment folder is removed before unpackaging the zip file, otherwise it will merge the two folders and files together, where conflicts occur the package files will take precedence.  The DestinationContentPath is not required, it will use the path given in the archive.xml file, (iisapp path element), this can be specified (customized) when creating the zip, (either with this application or natively with MsBuild).
 
 
 
