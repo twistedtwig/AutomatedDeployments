@@ -451,22 +451,24 @@ This example changes the path that is created inside the zip package file.  I.E,
 
 Below is a list of the parameters available for CreatePackage:
 
-    param                       |       value               |   optional
-    ________________________________________________________________________
-    ComponentType               |       CreatePackage       |   false
-    DestinationComputerName     |       string              |   false
-    DestinationUserName         |       string              |   true
-    DestinationPassword         |       string              |   true
-    ForceInstall                |       bool                |   true
-    CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
-    DestinationContentPath      |       string              |   false
-    InternalPath                |       string              |   true
-    OutputLocation              |       string              |   true
-    ConfigurationType           |       string              |   true
-    ZipFileOnly                 |       string              |   true
-    MsBuildExe                  |       string              |   true (defaults to 64bit V4.0 version)
+    param                                           |       value               |   optional
+    _______________________________________________________________________________________________________
+    ComponentType                                   |       CreatePackage       |   false
+    DestinationComputerName                         |       string              |   false
+    DestinationUserName                             |       string              |   true
+    DestinationPassword                             |       string              |   true
+    ForceInstall                                    |       bool                |   true
+    CleanUp                                         |       bool                |   true
+    SourceContentPath                               |       string              |   false
+    DestinationContentPath                          |       string              |   false
+    InternalPath                                    |       string              |   true
+    OutputLocation                                  |       string              |   true
+    ConfigurationType                               |       string              |   true
+    ZipFileOnly                                     |       string              |   true (default is false)
+    AutoParameterizationWebConfigConnectionStrings  |       string              |   true
+    MsBuildExe                                      |       string              |   true (defaults to 64bit V4.0 version)
 
+N.B.  AutoParameterizationWebConfigConnectionStrings is defaulted to false and is optional, it tells MSBuild to not change connection strings in the web config, if this is set to true it will put the connection strings into the {PACKAGENAME}.SetParameters.xml file outside of the zip file, (where {PACKAGENAME} is the name of the zip file).  If this is set to true then it is not recommended to use the package deployment as it doesn't use msdeploy directly, (msdeploy has issues when IIS is not directly involved).
 
 5.12.2) Packaging a folder:
 ---------------------------
@@ -531,6 +533,25 @@ This normally is due to IIS not having .Net V4.0 registered.  using aspnet_regii
 6.5) If when executing the application it doesn't find a file that has a relative file path given, you might need to set the SETEXEPATH flag to true at the command line.
 
 6.6) If when trying to copy files to a remote server with msdeploy and no errors are returned, and no real output, check authentication credentials.
+
+6.7) If you get the error:
+
+Error: Unable to cast object of type 'Microsoft.Web.Deployment.DeploymentProviderOptions' to type 'Microsoft.Web.Deployment.DeploymentProviderOptions'.
+
+This is often due to the fact that you have both v1 and v2 installed in which case change
+
+"C:\Program Files\IIS\Microsoft Web Deploy\msdeploy.exe" in the command line to
+
+"C:\Program Files\IIS\Microsoft Web Deploy v2\msdeploy.exe"
+
+6.8) If you get the error:
+
+Error: The application pool that you are trying to use has the 'managedRuntimeVersion' property set to 'v2.0'. This application requires 'v4.0'.
+
+This can be, (not always) related to IIS and .Net V4 not being registered.  Registering it with "aspnet_regiis" should help, (http://msdn.microsoft.com/en-us/library/k6h9cz8h(v=vs.100).aspx)
+
+cd %windir%\Microsoft.NET\Framework\v4.0.30319
+aspnet_regiis -i
 
 
 7) Road Map

@@ -7,6 +7,7 @@ namespace DeploymentConfiguration.Actions
         {
             MsBuildExe = @"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe";
             ZipFileOnly = false;
+            AutoParameterizationWebConfigConnectionStrings = false;
         }
 
         public string MsBuildExe { get; set; }
@@ -15,5 +16,6 @@ namespace DeploymentConfiguration.Actions
         public string OutputLocation { get; set; }
         public string ConfigurationType { get; set; }
         public bool ZipFileOnly { get; set; }
+        public bool AutoParameterizationWebConfigConnectionStrings { get; set; }
     }
 }

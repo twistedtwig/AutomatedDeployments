@@ -1,7 +1,22 @@
 what it does / should do:
 
 
+optional console param to set the executing folder to be the same as the exe's folder
+
+
 do task to install / explode / use the package zip files
+
+
+8) Unpackage the contents of the Package.zip file and put them in the C:\temp folder. Remove any files in the destination folder that are not present in the package.
+
+msdeploy.exe -verb:sync -source:package=C:\package.zip -dest:contentpath=C:\temp
+
+
+
+
+file / folder permissions task
+
+http://stackoverflow.com/questions/2928738/how-to-grant-permission-to-users-for-a-directory-using-command-line-in-windows
 
 
 
@@ -23,7 +38,6 @@ ziping a folder structure and sending to remote server (doesnt explode on other 
 
 
 
-optional console param to set the executing folder to be the same as the exe's folder
 
 
 

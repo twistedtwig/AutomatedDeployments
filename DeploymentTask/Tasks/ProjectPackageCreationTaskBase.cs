@@ -40,6 +40,8 @@ namespace DeploymentTask.Tasks
                 argBuilder.Append(string.Format(" /p:PackageLocation={0}", ActionComponentGraph.OutputLocation));
             }
 
+            argBuilder.Append(string.Format(" /p:AutoParameterizationWebConfigConnectionStrings={0}", ActionComponentGraph.AutoParameterizationWebConfigConnectionStrings));
+
             return InvokeExe(ActionComponentGraph.MsBuildExe, argBuilder.ToString());
         }
 
