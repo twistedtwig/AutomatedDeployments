@@ -466,7 +466,8 @@ Below is a list of the parameters available for CreatePackage:
     OutputLocation                                  |       string              |   true
     ConfigurationType                               |       string              |   true
     ZipFileOnly                                     |       string              |   true (default is false)
-    AutoParameterizationWebConfigConnectionStrings  |       string              |   true
+    AutoParameterizationWebConfigConnectionStrings  |       bool                |   true (default is false)
+    ShouldPushPackageToRemoteMachine                |       bool                |   true (default is false)
     MsBuildExe                                      |       string              |   true (defaults to 64bit V4.0 version)
 
 N.B.  AutoParameterizationWebConfigConnectionStrings is defaulted to false and is optional, it tells MSBuild to not change connection strings in the web config, if this is set to true it will put the connection strings into the {PACKAGENAME}.SetParameters.xml file outside of the zip file, (where {PACKAGENAME} is the name of the zip file).  If this is set to true then it is not recommended to use the package deployment as it doesn't use msdeploy directly, (msdeploy has issues when IIS is not directly involved).
@@ -530,10 +531,11 @@ The above example shows using the "DeploymentPackage" ComponentType.  For local 
     ForceInstall                |       bool                |   true
     SourceContentPath           |       string              |   false
     DestinationContentPath      |       string              |   true
+    AllowUseOfDestinationFolder |       bool                |   true (default value is false)
     
 If "ForceInstall" install is used it will ensure the deployment folder is removed before unpackaging the zip file, otherwise it will merge the two folders and files together, where conflicts occur the package files will take precedence.  The DestinationContentPath is not required, it will use the path given in the archive.xml file, (iisapp path element), this can be specified (customized) when creating the zip, (either with this application or natively with MsBuild).
 
-
+The "AllowUseOfDestinationFolder" property is defaulted to false.  This defines weather the "DestinationContentPath" property can be used within MsDeploy to override the path that the package will be installed at, i.e. the path in archive.xml.  If false it will use the archive.xml value, if true it will check to see if there is a value in DestinationContentPath, if so use that otherwise fall back on the archive.xml value.
 
 6) Gotcha's and helpful hints
 -----------------------------
@@ -585,7 +587,17 @@ cd %windir%\Microsoft.NET\Framework\v4.0.30319
 aspnet_regiis -i
 
 
-7) Road Map
+
+7) Examples:
+------------
+
+There are a number of examples showing how an application can be setup.
+
+7.1) Examples\MVC4-site - Shows taking a web project (MVC4 in this case) file (.csproj), building a deployment package and installing that on a remote machine.  Whilst also using two configuration files to setup the AppPool and IIS Website on the remote server.
+
+
+
+8) Road Map
 -----------
 
 There are a number of tasks I would like the application to do that it currently can't:

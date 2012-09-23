@@ -28,7 +28,7 @@ namespace DeploymentTask.Tasks
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(ActionComponentGraph.DestinationContentPath)
+                return (!string.IsNullOrWhiteSpace(ActionComponentGraph.DestinationContentPath) && ActionComponentGraph.AllowUseOfDestinationFolder)
                                 ? ActionComponentGraph.DestinationContentPath
                                 : ArchiveXmlFilePath;
             }

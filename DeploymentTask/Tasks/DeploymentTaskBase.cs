@@ -93,8 +93,8 @@ namespace DeploymentTask.Tasks
 
         protected static FileCopyActionComponentGraph CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string fileName)
         {
-            return CreateSingleFileCopyActionComponentGraphFrom(iisActionComponentGraph, 
-                Path.Combine(iisActionComponentGraph.SourceContentPath, fileName), 
+            return CreateSingleFileCopyActionComponentGraphFrom(iisActionComponentGraph,
+                Path.Combine(Directory.GetCurrentDirectory(), Path.Combine(iisActionComponentGraph.SourceContentPath, fileName)), 
                 Path.Combine(iisActionComponentGraph.DestinationContentPath, fileName));
         }
 

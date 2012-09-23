@@ -37,7 +37,7 @@ namespace DeploymentTask.Tasks
 
             if (!string.IsNullOrWhiteSpace(ActionComponentGraph.OutputLocation))
             {
-                argBuilder.Append(string.Format(" /p:PackageLocation={0}", ActionComponentGraph.OutputLocation));
+                argBuilder.Append(string.Format(" /p:PackageLocation={0}", Path.Combine(Directory.GetCurrentDirectory(), ActionComponentGraph.OutputLocation)));
             }
 
             argBuilder.Append(string.Format(" /p:AutoParameterizationWebConfigConnectionStrings={0}", ActionComponentGraph.AutoParameterizationWebConfigConnectionStrings));

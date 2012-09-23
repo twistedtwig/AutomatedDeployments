@@ -1,0 +1,1 @@
+IISDeployments.exe /CONFIGSECTION release-deployment

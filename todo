@@ -13,6 +13,8 @@ http://stackoverflow.com/questions/2928738/how-to-grant-permission-to-users-for-
 
 
 
+none of my paths will deal with "..\".  This could be an issue if users give relative paths but need to go up a level.
+
 
 
 
@@ -32,6 +34,9 @@ exe action component stuff
 
 
 Create some examples with config files.
+
+
+check the ID of the website / application in the config, change it if it is already being used.
 
 
 

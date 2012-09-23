@@ -23,18 +23,24 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             var result = InvokeMsBuild();
 
             FileNameAndFolder fileAndFolder = FindFileNameAndFolderPath();
+            string finalPath = string.Empty;
             if (ActionComponentGraph.ZipFileOnly)
             {                
                 DeleteFiles(fileAndFolder.FileName, fileAndFolder.FolderName);
                 
                 ActionComponentGraph.SourceContentPath = fileAndFolder.FolderName;
-                new MsDeployFileCopyDeploymentTask(CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraph, fileAndFolder.FileName + ".zip")).Execute();
+                finalPath = fileAndFolder.FileName + ".zip";
             }
             else
             {
                 //copy stuff to remote server... take whole folder.
-                new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, fileAndFolder.FolderName)).Execute();    
-            }            
+                finalPath = fileAndFolder.FolderName;
+            }
+
+            if (ActionComponentGraph.ShouldPushPackageToRemoteMachine)
+            {
+                new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPath)).Execute();                    
+            }
 
             return result;
 
