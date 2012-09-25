@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 
 namespace DeploymentTask.Tasks
 {
@@ -37,12 +38,20 @@ namespace DeploymentTask.Tasks
 
             if (!string.IsNullOrWhiteSpace(ActionComponentGraph.OutputLocation))
             {
-                argBuilder.Append(string.Format(" /p:PackageLocation={0}", Path.Combine(Directory.GetCurrentDirectory(), ActionComponentGraph.OutputLocation)));
+                argBuilder.Append(string.Format(" /p:PackageLocation={0}", FileHelper.MapRelativePath(Directory.GetCurrentDirectory(), ActionComponentGraph.OutputLocation)));
             }
 
             argBuilder.Append(string.Format(" /p:AutoParameterizationWebConfigConnectionStrings={0}", ActionComponentGraph.AutoParameterizationWebConfigConnectionStrings));
 
-            return InvokeExe(ActionComponentGraph.MsBuildExe, argBuilder.ToString());
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing project package creation command:");
+
+            int result = InvokeExe(ActionComponentGraph.MsBuildExe, argBuilder.ToString());
+
+            Console.WriteLine("Completed package creation.");
+            Console.WriteLine(EndSectionBreaker);
+
+            return result;
         }
 
         /// <summary>
@@ -102,7 +111,7 @@ namespace DeploymentTask.Tasks
             }
 
             //delete PackageTmp folder and all contents
-            string tempPackageFolderPath = Path.Combine(folderPath, "PackageTmp");
+            string tempPackageFolderPath = FileHelper.MapRelativePath(folderPath, "PackageTmp");
             if (Directory.Exists(tempPackageFolderPath))
             {
                 System.Console.WriteLine("Deleting folder: PackageTmp");

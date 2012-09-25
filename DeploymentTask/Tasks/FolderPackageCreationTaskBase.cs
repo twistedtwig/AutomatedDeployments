@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 
 namespace DeploymentTask.Tasks
 {
@@ -12,6 +14,9 @@ namespace DeploymentTask.Tasks
         
         protected int InvokeMsDeploy()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing folder package creation command:");
+
             if (string.IsNullOrWhiteSpace(ActionComponentGraph.MsDeployExe))
                 return -1;
 
@@ -24,7 +29,8 @@ namespace DeploymentTask.Tasks
             argBuilder.Append(" -verb:sync");
 
             int result = InvokeExe(ActionComponentGraph.MsDeployExe, argBuilder.ToString());
-            System.Console.WriteLine("Finished creating package file.");
+            Console.WriteLine("Finished creating package file.");
+            Console.WriteLine(EndSectionBreaker);
             return result;
         }
 
@@ -42,7 +48,7 @@ namespace DeploymentTask.Tasks
             if (IsDestinationPathFolder())
             {
                 FileInfo zipFile = new FileInfo(ActionComponentGraph.OutputLocation);
-                return Path.Combine(ActionComponentGraph.DestinationContentPath, zipFile.Name);
+                return FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, zipFile.Name);
             }
 
             return ActionComponentGraph.DestinationContentPath;

@@ -1,3 +1,4 @@
+using System;
 using DeploymentConfiguration.Actions;
 
 namespace DeploymentTask.Tasks.MsDeployTasks
@@ -14,6 +15,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing MSDEPLOY package creation command:");
+
             //take the project file, 
             if (!CheckProjectFileExists()) { return -1; }
 
@@ -41,6 +45,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             {
                 new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPath)).Execute();                    
             }
+
+            Console.WriteLine("Completed package creation.");
+            Console.WriteLine(EndSectionBreaker);
 
             return result;
 

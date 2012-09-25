@@ -14,6 +14,9 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing local file copy command:");
+
             if(!CheckSourceExists())
             {
                 throw new DeploymentTaskException(string.Format("Source folder not found, '{0}'", ActionComponentGraph.SourceContentPath), -1);
@@ -32,6 +35,9 @@ namespace DeploymentTask.Tasks.LocalTasks
             {                
                 throw new DeploymentTaskException(exception.Message, -1, exception);
             }
+
+            Console.WriteLine("Completed file copy.");
+            Console.WriteLine(EndSectionBreaker);
 
             return 0;
         }

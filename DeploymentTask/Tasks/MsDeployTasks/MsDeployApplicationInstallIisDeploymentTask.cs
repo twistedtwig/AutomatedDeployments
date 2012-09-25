@@ -1,5 +1,6 @@
 using System.IO;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 
 namespace DeploymentTask.Tasks.MsDeployTasks
 {
@@ -14,7 +15,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         protected override string CreateParameterString(string parameter)
         {
-            return " add app /IN < " + Path.Combine(parameter, ActionComponentGraph.PathToConfigFile);
+            return " add app /IN < " + FileHelper.MapRelativePath(parameter, ActionComponentGraph.PathToConfigFile);
         }
 
         protected override string CmdFileName { get { return "CreateApplication"; } }

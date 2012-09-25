@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 using Ionic.Zip;
 
 namespace DeploymentTask.Tasks
@@ -74,7 +75,7 @@ namespace DeploymentTask.Tasks
             {
                 if (string.IsNullOrWhiteSpace(_ArchiveXmlFilePath))
                 {
-                    string path = Path.Combine(TempLocation, "Archive.xml");
+                    string path = FileHelper.MapRelativePath(TempLocation, "Archive.xml");
                     if (!File.Exists(path))
                     {
                         throw new FileNotFoundException(path);

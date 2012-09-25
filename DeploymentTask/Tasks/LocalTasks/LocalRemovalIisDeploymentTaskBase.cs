@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
@@ -29,23 +30,26 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine(string.Format("Executing local {0}:", DisplayName));
+
             //get config file... ensure not null
-            if (!File.Exists(Path.Combine(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile)))
+            if (!File.Exists(FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile)))
             {
                 throw new FileNotFoundException(ActionComponentGraph.PathToConfigFile);
             }
 
             //get all names from it from regex.
-            IList<string> names = FindIisSettingsNamesFromConfig(Path.Combine(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile), ConfigFileNamePattern);
+            IList<string> names = FindIisSettingsNamesFromConfig(FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile), ConfigFileNamePattern);
             int result = ExpectedReturnValue;
             foreach (string name in names)
             {
                 //create tempfile to remove all pool by name given
                 string fileName = CreateRandomFileName(CmdFileName +  CleanStringOfNonFileTypeCharacters(name), CmdFileNameExtension);
-                string filePath = Path.Combine(ActionComponentGraph.SourceContentPath, fileName);
+                string filePath = FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, fileName);
                 CreateFile(filePath, CmdFileNameExe + " " + CreateParameterString(name), true);
 
-                // call msdeploy to execute appcmd file on remote machine
+                //execute cmd file
                 result = InvokeExe(filePath, string.Empty);
 
                 if (ActionComponentGraph.CleanUp)
@@ -53,6 +57,10 @@ namespace DeploymentTask.Tasks.LocalTasks
                     File.Delete(filePath);
                 }
             }
+
+            Console.WriteLine(string.Format("Completed {0}.", DisplayName));
+            Console.WriteLine(EndSectionBreaker);
+
             return result;
         }
     }

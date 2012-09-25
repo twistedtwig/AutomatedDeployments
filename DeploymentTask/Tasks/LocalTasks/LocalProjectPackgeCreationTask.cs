@@ -1,3 +1,4 @@
+using System;
 using DeploymentConfiguration.Actions;
 
 namespace DeploymentTask.Tasks.LocalTasks
@@ -14,6 +15,9 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing local project packaging command:");
+
             //take the project file, 
             if (!CheckProjectFileExists()) { return -1; }
 
@@ -27,6 +31,9 @@ namespace DeploymentTask.Tasks.LocalTasks
                 FileNameAndFolder fileAndFolder = FindFileNameAndFolderPath();
                 DeleteFiles(fileAndFolder.FileName, fileAndFolder.FolderName);
             }
+
+            Console.WriteLine("Completed project packaging.");
+            Console.WriteLine(EndSectionBreaker);
 
             return result;
         }

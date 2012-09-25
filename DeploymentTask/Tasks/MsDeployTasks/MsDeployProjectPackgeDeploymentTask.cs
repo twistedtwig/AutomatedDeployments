@@ -1,3 +1,4 @@
+using System;
 using DeploymentConfiguration.Actions;
 
 namespace DeploymentTask.Tasks.MsDeployTasks
@@ -14,6 +15,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing MSDEPLOY package deployment:");
+
             //take the zipped package file, 
             if (!CheckZipPackageFileExists()) { return -1; }
             int result = ExpectedReturnValue;
@@ -21,14 +25,15 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             UnZipFileToTempLocation();
             
             string finalPackageLocation = FindPackageFileRootLocation();
-            System.Console.WriteLine(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
+            Console.WriteLine(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
             //copy stuff to remote server... take whole folder.
             result = new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPackageLocation, DestinationPath)).Execute();
 
             //perform clean up at the end.
             CleanUpTempLocation();
-            System.Console.WriteLine("Finished Deploying package.");
-
+            Console.WriteLine("Finished Deploying package.");
+            Console.WriteLine(EndSectionBreaker);
+                
             return result;
         }
     }

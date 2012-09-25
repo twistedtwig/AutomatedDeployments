@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 
 namespace DeploymentTask.Tasks.MsDeployTasks
 {
@@ -31,17 +32,20 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine(string.Format("Executing MSDEPLOY {0}:", DisplayName));
+
             //ensure config file has been pushed to remote server.
             new MsDeployFileCopyDeploymentTask(CreateConfigFileCopyActionComponentGraphFrom(ActionComponentGraph)).Execute();
 
             string fileName = CreateRandomFileName(CmdFileName, CmdFileNameExtension);
-            string filePath = Path.Combine(ActionComponentGraph.SourceContentPath, fileName);
+            string filePath = FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, fileName);
             CreateFile(filePath, CmdFileNameExe + " " + CreateParameterString(CmdFileParameterDestinationPath), true);
             //ensure cmd file has been pushed to remote server.
             new MsDeployFileCopyDeploymentTask(CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraph, fileName)).Execute();
 
             // call msdeploy to execute appcmd file on remote machine
-            int result = InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployExecuteCmdParams(Path.Combine(ActionComponentGraph.DestinationContentPath, fileName)));
+            int result = InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployExecuteCmdParams(FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, fileName)));
 
             // clean up local and remote files
             if (ActionComponentGraph.CleanUp)
@@ -50,12 +54,15 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 File.Delete(filePath);
 
                 //delete remote file(s)
-                int tempResult = InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployDeleteFileParams(Path.Combine(ActionComponentGraph.DestinationContentPath, fileName)));
+                int tempResult = InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployDeleteFileParams(FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, fileName)));
                 if (tempResult != 0) result = tempResult;
 
-                InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployDeleteFileParams(Path.Combine(ActionComponentGraph.DestinationContentPath, ActionComponentGraph.PathToConfigFile)));
+                InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployDeleteFileParams(FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, ActionComponentGraph.PathToConfigFile)));
                 if (tempResult != 0) result = tempResult;
             }
+
+            Console.WriteLine(string.Format("Completed {0}.", DisplayName));
+            Console.WriteLine(EndSectionBreaker);
 
             return result;
         }

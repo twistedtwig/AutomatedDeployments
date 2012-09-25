@@ -1,6 +1,7 @@
 what to do next:
 
 
+
 package deployment doesn't take the drive into account when using the archive.xml iisapp path value
 
 
@@ -13,9 +14,7 @@ http://stackoverflow.com/questions/2928738/how-to-grant-permission-to-users-for-
 
 
 
-none of my paths will deal with "..\".  This could be an issue if users give relative paths but need to go up a level.
-
-
+put any issues, bugs etc into github
 
 
 installer app - handler to set folder permissions for a given path..
@@ -28,6 +27,10 @@ installer app - handler to set folder permissions for a given path..
 
 
 
+
+create a nuget package that will install it into the sln, create the folders, stubs and bat / cmd file.
+
+create article on new site about it... i.e. start blogging about it.
 
 
 exe action component stuff

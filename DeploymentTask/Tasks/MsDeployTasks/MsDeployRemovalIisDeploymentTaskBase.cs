@@ -34,6 +34,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine(string.Format("Executing MSDEPLOY {0}:", DisplayName));
+
             //get config file... ensure not null
             if (!File.Exists(Path.Combine(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile)))
             {
@@ -68,6 +71,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                     if (tempResult != 0) result = tempResult;
                 }
             }
+
+            Console.WriteLine(string.Format("Completed {0}:", DisplayName));
+            Console.WriteLine(EndSectionBreaker);
 
             return result;
         }       

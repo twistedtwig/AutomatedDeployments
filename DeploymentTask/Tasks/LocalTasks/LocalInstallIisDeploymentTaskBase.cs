@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
@@ -26,8 +27,11 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine(string.Format("Executing local {0}:", DisplayName));
+
             string fileName = CreateRandomFileName(CmdFileName, CmdFileNameExtension);
-            string filePath = Path.Combine(ActionComponentGraph.SourceContentPath, fileName);
+            string filePath = FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, fileName);
             CreateFile(filePath, CmdFileNameExe + " " + CreateParameterString(CmdFileParameterDestinationPath), true);
            
             // call msdeploy to execute appcmd file on remote machine
@@ -37,6 +41,9 @@ namespace DeploymentTask.Tasks.LocalTasks
             {
                 File.Delete(filePath);
             }
+
+            Console.WriteLine(string.Format("Completed {0}.", DisplayName));
+            Console.WriteLine(EndSectionBreaker);
 
             return result;
         }

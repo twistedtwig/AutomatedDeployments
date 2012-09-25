@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using DeploymentConfiguration.Actions;
 
@@ -15,6 +16,8 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
+            Console.WriteLine(StartSectionBreaker);
+            Console.WriteLine("Executing local project package deployment command:");
 
             //take the zipped package file, 
             if (!CheckZipPackageFileExists()) { return -1; }
@@ -30,12 +33,13 @@ namespace DeploymentTask.Tasks.LocalTasks
             }
 
             string finalPackageLocation = FindPackageFileRootLocation();
-            System.Console.WriteLine(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
+            Console.WriteLine(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
             result = new LocalFileSystemCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPackageLocation, DestinationPath)).Execute();
 
             //perform clean up at the end.
             CleanUpTempLocation();
-            System.Console.WriteLine("Finished Deploying package.");
+            Console.WriteLine("Finished Deploying package.");
+            Console.WriteLine(EndSectionBreaker);
 
             return result;
         }

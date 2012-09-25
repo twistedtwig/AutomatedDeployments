@@ -74,5 +74,30 @@ namespace FileSystem.Helper
                 }
             }
         }
+
+        public static string MapRelativePath(string p1, string p2)
+        {
+            bool hasDotDotSlash = true;
+            string path1 = p1;
+            string path2 = p2;
+            while (hasDotDotSlash)
+            {
+                hasDotDotSlash = path2.StartsWith(@"..\");
+                if (hasDotDotSlash)
+                {
+                    path2 = path2.Substring(3);
+
+                    if (path1.EndsWith(@"\"))
+                    {
+                        path1 = path1.Substring(0, path1.Length - 1);
+                    }
+
+                    path1 = path1.Substring(0, path1.LastIndexOf(@"\"));
+                }
+            }
+
+            return Path.Combine(path1, path2);
+        }
+
     }
 }

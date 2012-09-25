@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Security;
 using DeploymentConfiguration.Actions;
+using FileSystem.Helper;
 using GenericMethods;
 
 namespace DeploymentTask.Tasks
@@ -94,8 +95,8 @@ namespace DeploymentTask.Tasks
         protected static FileCopyActionComponentGraph CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string fileName)
         {
             return CreateSingleFileCopyActionComponentGraphFrom(iisActionComponentGraph,
-                Path.Combine(Directory.GetCurrentDirectory(), Path.Combine(iisActionComponentGraph.SourceContentPath, fileName)), 
-                Path.Combine(iisActionComponentGraph.DestinationContentPath, fileName));
+                FileHelper.MapRelativePath(Directory.GetCurrentDirectory(), FileHelper.MapRelativePath(iisActionComponentGraph.SourceContentPath, fileName)),
+                FileHelper.MapRelativePath(iisActionComponentGraph.DestinationContentPath, fileName));
         }
 
         protected static FileCopyActionComponentGraph CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string fullSourceFilePath, string fullDestinationFilePath)
