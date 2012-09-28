@@ -20,7 +20,7 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         protected override string CreateParameterString(string parameter)
         {
-            return " add site /IN < " + FileHelper.MapRelativePath(parameter, ActionComponentGraph.PathToConfigFile);
+            return " add site /IN < \"" + FileHelper.MapRelativePath(parameter, ActionComponentGraph.PathToConfigFile) +"\"";
         }
     }
 }

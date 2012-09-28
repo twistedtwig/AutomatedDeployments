@@ -14,7 +14,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         protected override string CreateParameterString(string parameter)
         {
-            return " add site /IN < " + Path.Combine(parameter, ActionComponentGraph.PathToConfigFile);
+            return " add site /IN < \"" + Path.Combine(parameter, ActionComponentGraph.PathToConfigFile) + "\"";
         }
 
         protected override string CmdFileName { get { return "CreateSite"; } }

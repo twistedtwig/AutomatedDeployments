@@ -24,7 +24,7 @@ namespace DeploymentTask.Tasks
 
             StringBuilder argBuilder = new StringBuilder();
 
-            argBuilder.Append(ActionComponentGraph.SourceContentPath);
+            argBuilder.Append(string.Format("\"{0}\"", FileHelper.MapRelativePath(Directory.GetCurrentDirectory(), ActionComponentGraph.SourceContentPath)));
             argBuilder.Append(" /target:clean /target:package");
             
             if(!string.IsNullOrWhiteSpace(ActionComponentGraph.ConfigurationType))
@@ -33,18 +33,19 @@ namespace DeploymentTask.Tasks
             }
             if (!string.IsNullOrWhiteSpace(ActionComponentGraph.InternalPath))
             {
-                argBuilder.Append(string.Format(" /p:_PackageTempDir={0}", ActionComponentGraph.InternalPath));
+                argBuilder.Append(string.Format(" /p:_PackageTempDir=\"{0}\"", ActionComponentGraph.InternalPath));
             }
 
             if (!string.IsNullOrWhiteSpace(ActionComponentGraph.OutputLocation))
             {
-                argBuilder.Append(string.Format(" /p:PackageLocation={0}", FileHelper.MapRelativePath(Directory.GetCurrentDirectory(), ActionComponentGraph.OutputLocation)));
+                argBuilder.Append(string.Format(" /p:PackageLocation=\"{0}\"", FileHelper.MapRelativePath(Directory.GetCurrentDirectory(), ActionComponentGraph.OutputLocation)));
             }
 
             argBuilder.Append(string.Format(" /p:AutoParameterizationWebConfigConnectionStrings={0}", ActionComponentGraph.AutoParameterizationWebConfigConnectionStrings));
 
             Console.WriteLine(StartSectionBreaker);
             Console.WriteLine("Executing project package creation command:");
+            Console.WriteLine(string.Format("{0}: {1}", ActionComponentGraph.MsBuildExe, argBuilder));
 
             int result = InvokeExe(ActionComponentGraph.MsBuildExe, argBuilder.ToString());
 
