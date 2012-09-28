@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using DeploymentConfiguration;
 using DeploymentConfiguration.Actions;
 using DeploymentConfiguration.DeploymentStrategies;
@@ -17,6 +18,7 @@ namespace IISDeployments
                 SwitchParams consoleParams = ParseParameters(args);
 
                 consoleParams.ConfigPath = string.IsNullOrWhiteSpace(consoleParams.ConfigPath) ? AppDomain.CurrentDomain.SetupInformation.ConfigurationFile : consoleParams.ConfigPath;
+                if (consoleParams.SetExePath) {  SetDirToExecutingDir(); }
 
                 DisplayConsoleParams(consoleParams);
 
@@ -136,6 +138,8 @@ namespace IISDeployments
                 Console.WriteLine(string.Format("Force action: {0}", consoleParams.Force));
             }
 
+            Console.WriteLine(string.Format("Setting current Directory to location of EXE (default=true): {0}", consoleParams.SetExePath));                
+
             Console.WriteLine();
         }
 
@@ -146,6 +150,13 @@ namespace IISDeployments
                 if (consoleParams.CleanUp.HasValue) { action.CleanUp = consoleParams.CleanUp.Value; }
                 if (consoleParams.Force.HasValue) { action.ForceInstall = consoleParams.Force.Value; }                
             }
+        }
+
+        private static void SetDirToExecutingDir()
+        {
+            string fullName = System.Reflection.Assembly.GetEntryAssembly().CodeBase;
+            string path = fullName.Substring(8, (fullName.LastIndexOf(@"/") - 8));
+            Directory.SetCurrentDirectory(path);
         }
 
     }

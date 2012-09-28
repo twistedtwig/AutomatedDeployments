@@ -100,7 +100,7 @@ This would look for a config section with the name of "MYCONFIGSECTION".  A list
     /CONFIGPATH			|		C:\MYPATHTOCONFIGFILE.CONFIG	| The full path to the configuration file
     /BREAKONERROR		|		true / false					| Should the application stop when an error occurs
     /CLEANUP            |       true / false					| Should the application delete any files it creates after running
-	/SETEXEPATH			|		true / false					| Should the applicaiton set the executing folder to the same as the exe's file path
+	/SETEXEPATH			|		true / false					| Should the applicaiton set the executing folder to the same as the exe's file path, (default true)
 	
 The above parameters are all optional and would override anything given within the configuration file.
 
