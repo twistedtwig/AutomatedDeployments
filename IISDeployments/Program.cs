@@ -6,11 +6,14 @@ using DeploymentConfiguration.DeploymentStrategies;
 using DeploymentTask;
 using DeploymentTask.Exceptions;
 using DeploymentTask.Factories;
+using Logging;
 
 namespace IISDeployments
 {
     public class Program
     {
+        private static Logger logger = Logger.GetLogger();
+
         private static void Main(string[] args)
         {
             try
@@ -32,15 +35,15 @@ namespace IISDeployments
             }
             catch (DeploymentCollectionException exception)
             {                
-                Console.WriteLine(exception.DeploymentTaskExceptions.Count <= 1 ? "There was an error" : "There were multiple errors");
+                logger.Log(exception.DeploymentTaskExceptions.Count <= 1 ? "There was an error" : "There were multiple errors");
                 foreach (DeploymentTaskException taskException in exception.DeploymentTaskExceptions)
                 {
-                    Console.WriteLine(taskException.Message + " - " + taskException.ErrorMessage);
+                    logger.Log(taskException.Message + " - " + taskException.ErrorMessage);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("something bad happened: " + ex.Message);
+                logger.Log("something bad happened: " + ex.Message);
             }            
         }
 
@@ -60,14 +63,14 @@ namespace IISDeployments
                             if (args.Length > i)
                             {
                                 consoleParams.ConfigSection = args[++i];
-                                Console.WriteLine("ConfigSection set to: " + consoleParams.ConfigSection);
+                                logger.Log("ConfigSection set to: " + consoleParams.ConfigSection);
                             }
                             break;
                         case "/CONFIGPATH":
                             if (args.Length > i)
                             {
                                 consoleParams.ConfigPath = args[++i];
-                                Console.WriteLine("ConfigPath set to: " + consoleParams.ConfigPath);
+                                logger.Log("ConfigPath set to: " + consoleParams.ConfigPath);
                             }
                             break;
                         case "/FORCE":
@@ -77,7 +80,7 @@ namespace IISDeployments
                                 if (bool.TryParse(args[++i], out val))
                                 {
                                     consoleParams.Force = val;
-                                    Console.WriteLine("Force install set to: " + consoleParams.Force);
+                                    logger.Log("Force install set to: " + consoleParams.Force);
                                 }
                             }
                             break;
@@ -88,7 +91,7 @@ namespace IISDeployments
                                 if (bool.TryParse(args[++i], out val))
                                 {
                                     consoleParams.BreakOnError = val;
-                                    Console.WriteLine("Break on Error set to: " + consoleParams.BreakOnError);
+                                    logger.Log("Break on Error set to: " + consoleParams.BreakOnError);
                                 }
                             }
                             break;
@@ -99,7 +102,19 @@ namespace IISDeployments
                                 if (bool.TryParse(args[++i], out val))
                                 {
                                     consoleParams.CleanUp = val;
-                                    Console.WriteLine("Clean up set to: " + consoleParams.CleanUp);
+                                    logger.Log("Clean up set to: " + consoleParams.CleanUp);
+                                }
+                            }
+                            break;
+                        case "/VERBOSE":
+                            if (args.Length > i)
+                            {
+                                bool val;
+                                if (bool.TryParse(args[++i], out val))
+                                {
+                                    consoleParams.Verbose = val;
+                                    logger.LoggingLevel = consoleParams.Verbose.Value ? LoggingLevel.Verbose : LoggingLevel.Normal;
+                                    logger.Log("Verbose logging set to: " + logger.LoggingLevel);
                                 }
                             }
                             break;
@@ -108,8 +123,8 @@ namespace IISDeployments
             }
             catch (Exception ex)
             {
-                Console.WriteLine("error while reading params" + ex.Message);
-                Console.WriteLine("will continue with values gained so far");
+                logger.Log("error while reading params" + ex.Message);
+                logger.Log("will continue with values gained so far");
             }
 
             return consoleParams;
@@ -119,28 +134,33 @@ namespace IISDeployments
         {
             if(consoleParams.BreakOnError.HasValue)
             {
-                Console.WriteLine(string.Format("BreakOn Error: {0}", consoleParams.BreakOnError));
+                logger.Log(string.Format("BreakOn Error: {0}", consoleParams.BreakOnError));
+            }
+            if (consoleParams.Verbose.HasValue)
+            {
+                logger.Log(string.Format("Verbose logging: {0}", consoleParams.Verbose));
             }
             if(consoleParams.CleanUp.HasValue)
             {
-                Console.WriteLine(string.Format("Clean up: {0}", consoleParams.CleanUp));
+                logger.Log(string.Format("Clean up: {0}", consoleParams.CleanUp));
             }
             if(!string.IsNullOrWhiteSpace(consoleParams.ConfigPath))
             {
-                Console.WriteLine(string.Format("config path: {0}", consoleParams.ConfigPath));
+                logger.Log(string.Format("config path: {0}", consoleParams.ConfigPath));
             }
             if(!string.IsNullOrWhiteSpace(consoleParams.ConfigSection))
             {
-                Console.WriteLine(string.Format("config section: {0}", consoleParams.ConfigSection));
+                logger.Log(string.Format("config section: {0}", consoleParams.ConfigSection));
             }
             if(consoleParams.Force.HasValue)
             {
-                Console.WriteLine(string.Format("Force action: {0}", consoleParams.Force));
+                logger.Log(string.Format("Force action: {0}", consoleParams.Force));
             }
 
-            Console.WriteLine(string.Format("Setting current Directory to location of EXE (default=true): {0}", consoleParams.SetExePath));                
+            logger.Log(string.Format("Setting current Directory to location of EXE (default=true): {0}", consoleParams.SetExePath));                
+            logger.Log("Working dir: {0}", Directory.GetCurrentDirectory());
 
-            Console.WriteLine();
+            logger.Log("");
         }
 
         private static void UpdateCompoentGraphWithOverLoads(DeploymentStrategyComponentGraphBase deploymentComponentGraph, SwitchParams consoleParams)

@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
+using Logging;
 
 namespace DeploymentTask.Tasks.MsDeployTasks
 {
     public abstract class MsDeployRemovalIisDeploymentTaskBase : IisDeploymentTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+        private readonly string MsdeployPath = string.Empty;
+
         protected MsDeployRemovalIisDeploymentTaskBase(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
             if (string.IsNullOrWhiteSpace(actionComponentGraph.AppCmdExe))
@@ -20,10 +24,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 throw new ArgumentNullException("PathToConfigFile");
             }
 
-            if (string.IsNullOrWhiteSpace(actionComponentGraph.MsDeployExe))
-            {
-                throw new ArgumentNullException("MsDeployExe");
-            }
+            MsdeployPath = FindFirstValidFileFromList(actionComponentGraph.MsDeployExeLocations, "MSDPELOY", true);
         }
 
         protected abstract string CmdFileName { get; }
@@ -34,20 +35,23 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
         public override int Execute()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine(string.Format("Executing MSDEPLOY {0}:", DisplayName));
+            logger.Log(StartSectionBreaker);
+            logger.Log(string.Format("Executing MSDEPLOY {0}:", DisplayName));
 
             //get config file... ensure not null
-            if (!File.Exists(Path.Combine(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile)))
+            string pathToConfigFile = Path.Combine(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile);
+            if (!File.Exists(pathToConfigFile))
             {
                 throw new FileNotFoundException(ActionComponentGraph.PathToConfigFile);
             }
 
+            logger.Log("Searching {0} for IIS name values", pathToConfigFile, LoggingLevel.Verbose);
             //get all names from it from regex.
-            IList<string> names = FindIisSettingsNamesFromConfig(Path.Combine(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile), ConfigFileNamePattern);
+            IList<string> names = FindIisSettingsNamesFromConfig(pathToConfigFile, ConfigFileNamePattern);
             int result = ExpectedReturnValue;
             foreach (string name in names)
             {                
+                logger.Log("Found IIS name '{0}'", name, LoggingLevel.Verbose);
                 //create tempfile to remove all pool by name given
                 string fileName = CreateRandomFileName(CmdFileName + CleanStringOfNonFileTypeCharacters(name), CmdFileNameExtension);
                 string filePath = Path.Combine(ActionComponentGraph.SourceContentPath, fileName);
@@ -56,7 +60,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 new MsDeployFileCopyDeploymentTask(CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraph, fileName)).Execute();
 
                 // call msdeploy to execute appcmd file on remote machine
-                result = InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployExecuteCmdParams(Path.Combine(ActionComponentGraph.DestinationContentPath, fileName)));
+                result = InvokeExe(MsdeployPath, GetMsDeployExecuteCmdParams(Path.Combine(ActionComponentGraph.DestinationContentPath, fileName)));
 
                 if (ActionComponentGraph.CleanUp)
                 {
@@ -64,16 +68,16 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                     File.Delete(filePath);
 
                     //delete remote file(s)
-                    int tempResult = InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployDeleteFileParams(Path.Combine(ActionComponentGraph.DestinationContentPath, fileName)));
+                    int tempResult = InvokeExe(MsdeployPath, GetMsDeployDeleteFileParams(Path.Combine(ActionComponentGraph.DestinationContentPath, fileName)));
                     if (tempResult != 0) result = tempResult;
 
-                    InvokeExe(ActionComponentGraph.MsDeployExe, GetMsDeployDeleteFileParams(Path.Combine(ActionComponentGraph.DestinationContentPath, ActionComponentGraph.PathToConfigFile)));
+                    InvokeExe(MsdeployPath, GetMsDeployDeleteFileParams(Path.Combine(ActionComponentGraph.DestinationContentPath, ActionComponentGraph.PathToConfigFile)));
                     if (tempResult != 0) result = tempResult;
                 }
             }
 
-            Console.WriteLine(string.Format("Completed {0}:", DisplayName));
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log(string.Format("Completed {0}:", DisplayName));
+            logger.Log(EndSectionBreaker);
 
             return result;
         }       

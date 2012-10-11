@@ -5,11 +5,14 @@ using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
 using Ionic.Zip;
+using Logging;
 
 namespace DeploymentTask.Tasks
 {
     public abstract class ProjectPackageDeploymentTaskBase : DeploymentTaskBase<PackageDeploymentComponentGraph>
     {
+        private static Logger logger = Logger.GetLogger();
+
         private const string Pattern = @"(<iisApp path=(['''''',""""""]){0,1}((?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.]+)\\(?:[\w]+\\)*\w([\w.])+)\2)";
         private readonly Regex Regex = new Regex(Pattern, RegexOptions.Compiled);
 
@@ -38,11 +41,13 @@ namespace DeploymentTask.Tasks
         protected void UnZipFileToTempLocation()
         {
             TempLocation = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-
+            logger.Log("UnZipFile temp location: {0}", TempLocation, LoggingLevel.Verbose);
             CleanUpTempLocation();
 
             Directory.CreateDirectory(TempLocation);
-            Console.WriteLine("unpacking zip package to: " + TempLocation);
+            logger.Log("Created Directory: {0}", TempLocation, LoggingLevel.Verbose);
+
+            logger.Log("unpacking zip package to: " + TempLocation);
             using (ZipFile zipFile = ZipFile.Read(ActionComponentGraph.SourceContentPath))
             {
                 // here, we extract every entry, but we could extract conditionally
@@ -56,6 +61,7 @@ namespace DeploymentTask.Tasks
 
         protected void CleanUpTempLocation()
         {
+            logger.Log("deleting directory and contents: {0}", TempLocation, LoggingLevel.Verbose);
             DeleteDirectory(TempLocation);
         }
 

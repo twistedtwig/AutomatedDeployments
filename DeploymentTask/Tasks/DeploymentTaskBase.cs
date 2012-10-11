@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
 using GenericMethods;
+using Logging;
 
 namespace DeploymentTask.Tasks
 {
     public abstract class DeploymentTaskBase<T> : DeploymentTaskRoot where T : ActionComponentGraphBase
     {
+        private static Logger logger = Logger.GetLogger();
         protected T ActionComponentGraph;
 
         protected DeploymentTaskBase(T actionComponentGraph)
@@ -32,6 +35,7 @@ namespace DeploymentTask.Tasks
 
         protected int InvokeExe(string pathToExe, string commandArgs)
         {
+            logger.Log("Invoking '{0}' with args '{1}'", pathToExe, commandArgs, LoggingLevel.Verbose);
             ProcessStartInfo msdeployProcess = new ProcessStartInfo(pathToExe)
             {
                 CreateNoWindow = true,
@@ -42,21 +46,25 @@ namespace DeploymentTask.Tasks
             };
 
             Process p = new Process { StartInfo = msdeployProcess, EnableRaisingEvents = true };
-            p.OutputDataReceived += (sender, args) => Console.WriteLine("received output: {0}", args.Data);
+            p.OutputDataReceived += (sender, args) => logger.Log("received output: {0}", args.Data);
 
             p.Start();
             p.BeginOutputReadLine();
             p.WaitForExit();
             p.CancelOutputRead();
+
+            logger.Log("Finished Invoking '{0}'", pathToExe, LoggingLevel.Verbose);
             return p.ExitCode;
         }
 
         protected bool CreateFile(string path, string content, bool overRideCurrent)
         {
+            logger.Log("Creating File '{0}'", path, LoggingLevel.Verbose);
             if (File.Exists(path))
             {
                 if (overRideCurrent)
                 {
+                    logger.Log("Forcing delete of file '{0}'", path, LoggingLevel.Verbose);
                     File.Delete(path);
                 }
                 else
@@ -66,14 +74,16 @@ namespace DeploymentTask.Tasks
             }
 
             if (path.Contains(@"\"))
-            {
+            {                
                 string dir = path.Substring(0, path.LastIndexOf(@"\"));
                 if (!Directory.Exists(dir))
                 {
+                    logger.Log("Creating directory '{0}' for file '{1}'", dir, path, LoggingLevel.Verbose);
                     Directory.CreateDirectory(dir);
                 }
             }
             
+            logger.Log("Writing contents to file '{0}'", path, LoggingLevel.Verbose);
             File.WriteAllText(path, content);
             return true;
         }
@@ -103,7 +113,7 @@ namespace DeploymentTask.Tasks
         {
             FileCopyActionComponentGraph fileCopyAction = new FileCopyActionComponentGraph();
             fileCopyAction.AppCmdExe = iisActionComponentGraph.AppCmdExe;
-            fileCopyAction.MsDeployExe = iisActionComponentGraph.MsDeployExe;
+            fileCopyAction.MsDeployExeLocations = iisActionComponentGraph.MsDeployExeLocations;
             fileCopyAction.ActionType = ActionType.FileDeployment;
             fileCopyAction.CleanUp = iisActionComponentGraph.CleanUp;
             fileCopyAction.DestinationComputerName = iisActionComponentGraph.DestinationComputerName;
@@ -124,7 +134,7 @@ namespace DeploymentTask.Tasks
         {
             FileCopyActionComponentGraph fileCopyAction = new FileCopyActionComponentGraph();
             fileCopyAction.AppCmdExe = iisActionComponentGraph.AppCmdExe;
-            fileCopyAction.MsDeployExe = iisActionComponentGraph.MsDeployExe;
+            fileCopyAction.MsDeployExeLocations = iisActionComponentGraph.MsDeployExeLocations;
             fileCopyAction.ActionType = ActionType.FileDeployment;
             fileCopyAction.CleanUp = iisActionComponentGraph.CleanUp;
             fileCopyAction.DestinationComputerName = iisActionComponentGraph.DestinationComputerName;
@@ -181,6 +191,39 @@ namespace DeploymentTask.Tasks
             newValue = newValue.Replace(@".", "_");
                         
             return newValue;
+        }
+
+        protected string FindFirstValidFileFromList(IEnumerable<string> list, string description = "", bool throwOnNotFound = false)
+        {
+            if(string.IsNullOrWhiteSpace(description))
+            {
+                logger.Log("trying to find a valid file path", LoggingLevel.Verbose);
+            }
+            else
+            {
+                logger.Log("Trying to find a valid locatin for {0}.", description, LoggingLevel.Verbose);                
+            }
+
+            foreach (string path in list)
+            {
+                logger.Log("checking file path for '{0}'", path, LoggingLevel.Verbose);
+                if (File.Exists(path))
+                {
+                    logger.Log("Found valid path '{0}'", path, LoggingLevel.Verbose);
+                    return path;
+                }
+            }
+
+
+            if (throwOnNotFound)
+            {
+                logger.Log("No valid path found in list", LoggingLevel.Verbose);
+                logger.Log("throwing ArgumentOutOfRangeException", LoggingLevel.Verbose);
+                throw new ArgumentOutOfRangeException();
+            }
+
+            logger.Log("No valid path found in list returning empty string", LoggingLevel.Verbose);
+            return string.Empty;
         }
 
 

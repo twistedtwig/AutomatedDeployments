@@ -3,19 +3,22 @@ using System.IO;
 using DeploymentConfiguration.Actions;
 using DeploymentTask.Exceptions;
 using FileSystem.Helper;
+using Logging;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalFileSystemCopyDeploymentTask : FileDeploymentTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+
         public LocalFileSystemCopyDeploymentTask(FileCopyActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
 
         public override int Execute()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine("Executing local file copy command:");
+            logger.Log(StartSectionBreaker);
+            logger.Log("Executing local file copy command:");
 
             if(!CheckSourceExists())
             {
@@ -36,8 +39,8 @@ namespace DeploymentTask.Tasks.LocalTasks
                 throw new DeploymentTaskException(exception.Message, -1, exception);
             }
 
-            Console.WriteLine("Completed file copy.");
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log("Completed file copy.");
+            logger.Log(EndSectionBreaker);
 
             return 0;
         }

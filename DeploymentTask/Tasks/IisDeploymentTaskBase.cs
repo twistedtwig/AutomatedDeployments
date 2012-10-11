@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
+using Logging;
 
 namespace DeploymentTask.Tasks
 {
     public abstract class IisDeploymentTaskBase : DeploymentTaskBase<IisActionComponentGraph>
     {
+        private static Logger logger = Logger.GetLogger();
+
         protected IisDeploymentTaskBase(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
@@ -71,7 +74,7 @@ namespace DeploymentTask.Tasks
 
             if (!iisSettingNames.Any())
             {
-                Console.WriteLine(string.Format("No matches found for regex '{0}' in file '{1}'", regex, pathToConfigFile));
+                logger.Log(string.Format("No matches found for regex '{0}' in file '{1}'", regex, pathToConfigFile));
             }
             return iisSettingNames;
         }

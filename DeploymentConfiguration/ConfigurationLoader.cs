@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomConfigurations;
 using DeploymentConfiguration.Actions;
@@ -41,24 +42,27 @@ namespace DeploymentConfiguration
                 deploymentStrategyComponentGraph = deployment.Create<RemoteDeploymentStrategyComponentGraphBase>();                
             }
 
+            
+
             if (!deployment.ContainsSubCollections)
             {
                 return deploymentStrategyComponentGraph;
             }
 
             //create the actions for the deployment.
-            CreateActions(deploymentStrategyComponentGraph, deployment);
+            CreateActions(deploymentStrategyComponentGraph, deployment, GetMsdeployLocations(deployment));
 
             return deploymentStrategyComponentGraph;
         }
 
-        private static void CreateActions(DeploymentStrategyComponentGraphBase deploymentStrategyComponentGraph, ConfigSection deployment)
+        private static void CreateActions(DeploymentStrategyComponentGraphBase deploymentStrategyComponentGraph, ConfigSection deployment, List<string> msdeployLocations)
         {
             foreach (ConfigSection section in deployment.Collections.GetCollections())
             {
                 if (!section.ContainsKey("ComponentType"))
                 {
-                    throw new ArgumentException("action section has no component type");
+                    //ignore sections such as MsDeploy Locations
+                    continue;
                 }
 
                 ActionComponentGraphBase actionComponentGraph;
@@ -90,8 +94,21 @@ namespace DeploymentConfiguration
                 }
 
                 actionComponentGraph.ActionType = actionType;
+                actionComponentGraph.MsDeployExeLocations.AddRange(msdeployLocations);
                 deploymentStrategyComponentGraph.Actions.Add(actionComponentGraph);
             }
+        }
+
+        private static List<string> GetMsdeployLocations(ConfigSection deployment)
+        {
+            //see if there are any msdeploylocations specified
+            List<string> msdeployLocations = new List<string>();
+            if (deployment.Collections.SectionNames.Contains("MsDeployLocations"))
+            {
+                var msdeployLocs = deployment.Collections.GetCollection("MsDeployLocations");
+                msdeployLocations.AddRange(msdeployLocs.ValuesAsDictionary.Where(x => !x.IsInherited).Select(location => location.Value));
+            }
+            return msdeployLocations;
         }
 
         internal static ActionType TryParseComponentType(string name)

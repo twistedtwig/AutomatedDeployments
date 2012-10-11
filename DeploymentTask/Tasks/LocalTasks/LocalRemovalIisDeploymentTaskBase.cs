@@ -4,11 +4,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
+using Logging;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
     public abstract class LocalRemovalIisDeploymentTaskBase : IisDeploymentTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+
         protected LocalRemovalIisDeploymentTaskBase(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
             if (string.IsNullOrWhiteSpace(actionComponentGraph.AppCmdExe))
@@ -30,8 +33,8 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine(string.Format("Executing local {0}:", DisplayName));
+            logger.Log(StartSectionBreaker);
+            logger.Log(string.Format("Executing local {0}:", DisplayName));
 
             //get config file... ensure not null
             if (!File.Exists(FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, ActionComponentGraph.PathToConfigFile)))
@@ -58,8 +61,8 @@ namespace DeploymentTask.Tasks.LocalTasks
                 }
             }
 
-            Console.WriteLine(string.Format("Completed {0}.", DisplayName));
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log(string.Format("Completed {0}.", DisplayName));
+            logger.Log(EndSectionBreaker);
 
             return result;
         }

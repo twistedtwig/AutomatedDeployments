@@ -9,6 +9,7 @@ namespace IISDeployments
         }
 
         public bool? BreakOnError { get; set; }
+        public bool? Verbose { get; set; }
         public bool? CleanUp { get; set; }
         public bool? Force { get; set; }
         public string ConfigSection { get; set; }

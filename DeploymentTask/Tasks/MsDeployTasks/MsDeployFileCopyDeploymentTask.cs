@@ -1,29 +1,24 @@
 using System;
-using System.IO;
 using System.Text;
 using DeploymentConfiguration.Actions;
+using Logging;
 
 namespace DeploymentTask.Tasks.MsDeployTasks
 {
     public class MsDeployFileCopyDeploymentTask : FileDeploymentTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+
         public MsDeployFileCopyDeploymentTask(FileCopyActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
 
         public override int Execute()
         {
+            logger.Log("Executing MSDEPLOY file copy task", LoggingLevel.Verbose);
             //need msdeploy path
-            if(string.IsNullOrWhiteSpace(ActionComponentGraph.MsDeployExe))
-            {
-                throw new ArgumentException("msdeploy path not given");
-            }
-
-            if (!File.Exists(ActionComponentGraph.MsDeployExe))
-            {
-                throw new FileNotFoundException("msdeploy.exe was not found");
-            }
-
+            string msdeployPath = FindFirstValidFileFromList(ActionComponentGraph.MsDeployExeLocations, "MSDEPLOY", true);
+            
             //invoke exe with params.
 
             StringBuilder msDeployParams = new StringBuilder();
@@ -31,14 +26,14 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             msDeployParams.Append(GetDestination());
             msDeployParams.Append(GetSync());
 
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine("Executing MSDEPLOY File Deployment command:");
-            Console.WriteLine(msDeployParams.ToString());
+            logger.Log(StartSectionBreaker);
+            logger.Log("Executing MSDEPLOY File Deployment command:");
+            logger.Log(msDeployParams.ToString());
 
-            int result = InvokeExe(ActionComponentGraph.MsDeployExe, msDeployParams.ToString());
+            int result = InvokeExe(msdeployPath, msDeployParams.ToString());
 
-            Console.WriteLine("Completed file deployment.");
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log("Completed file deployment.");
+            logger.Log(EndSectionBreaker);
 
             //if we got here things went OK, (probably)
             return result;
@@ -48,6 +43,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
         {
             if(string.IsNullOrWhiteSpace(ActionComponentGraph.SourceContentPath))
             {
+                logger.Log("", LoggingLevel.Verbose);
+                logger.Log("ActionComponentGraph.SourceContentPath file not found!", LoggingLevel.Verbose);
+                logger.Log("Throwing FileNotFoundException", LoggingLevel.Verbose);
                 throw new ArgumentException("source contentpath was empty or not given.");
             }
 
@@ -58,11 +56,17 @@ namespace DeploymentTask.Tasks.MsDeployTasks
         {
             if (string.IsNullOrWhiteSpace(ActionComponentGraph.DestinationContentPath))
             {
+                logger.Log("", LoggingLevel.Verbose);
+                logger.Log("ActionComponentGraph.DestinationContentPath file not found!", LoggingLevel.Verbose);
+                logger.Log("Throwing FileNotFoundException", LoggingLevel.Verbose);
                 throw new ArgumentException("destination contentpath was empty or not given.");
             }
 
             if (string.IsNullOrWhiteSpace(ActionComponentGraph.DestinationComputerName))
             {
+                logger.Log("", LoggingLevel.Verbose);
+                logger.Log("ActionComponentGraph.DestinationComputerName file not found!", LoggingLevel.Verbose);
+                logger.Log("Throwing FileNotFoundException", LoggingLevel.Verbose);
                 throw new ArgumentException("destination comptuername was empty or not given.");
             }
 

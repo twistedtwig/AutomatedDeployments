@@ -15,7 +15,7 @@ namespace DeploymentConfiguration.Actions
             newComponentGraph.DestinationPassword = DestinationPassword;
             newComponentGraph.DestinationUserName = DestinationUserName;
             newComponentGraph.ForceInstall = ForceInstall;
-            newComponentGraph.MsDeployExe = MsDeployExe;
+            newComponentGraph.MsDeployExeLocations = MsDeployExeLocations;
             newComponentGraph.PathToConfigFile = PathToConfigFile;
             newComponentGraph.SourceContentPath = SourceContentPath;
 

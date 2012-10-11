@@ -2,11 +2,14 @@ using System;
 using System.IO;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
+using Logging;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
     public abstract class LocalInstallIisDeploymentTaskBase : IisDeploymentTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+
         protected LocalInstallIisDeploymentTaskBase(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
             if (string.IsNullOrWhiteSpace(actionComponentGraph.AppCmdExe))
@@ -27,8 +30,8 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine(string.Format("Executing local {0}:", DisplayName));
+            logger.Log(StartSectionBreaker);
+            logger.Log(string.Format("Executing local {0}:", DisplayName));
 
             string fileName = CreateRandomFileName(CmdFileName, CmdFileNameExtension);
             string filePath = FileHelper.MapRelativePath(ActionComponentGraph.SourceContentPath, fileName);
@@ -42,8 +45,8 @@ namespace DeploymentTask.Tasks.LocalTasks
                 File.Delete(filePath);
             }
 
-            Console.WriteLine(string.Format("Completed {0}.", DisplayName));
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log(string.Format("Completed {0}.", DisplayName));
+            logger.Log(EndSectionBreaker);
 
             return result;
         }

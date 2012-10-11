@@ -1,1 +1,1 @@
-IISDeployments.exe /CONFIGSECTION release-deployment
+IISDeployments.exe /CONFIGSECTION release-deployment /VERBOSE true

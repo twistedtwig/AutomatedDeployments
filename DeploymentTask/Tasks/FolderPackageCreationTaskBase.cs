@@ -1,25 +1,28 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
+using Logging;
 
 namespace DeploymentTask.Tasks
 {
     public abstract class FolderPackageCreationTaskBase : DeploymentTaskBase<PackageCreationComponentGraph>
     {
+        private static Logger logger = Logger.GetLogger();
+
         protected FolderPackageCreationTaskBase(PackageCreationComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
         
         protected int InvokeMsDeploy()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine("Executing folder package creation command:");
+            logger.Log(StartSectionBreaker);
+            logger.Log("Executing folder package creation command:");
 
-            if (string.IsNullOrWhiteSpace(ActionComponentGraph.MsDeployExe))
+            string msdeployPath = FindFirstValidFileFromList(ActionComponentGraph.MsDeployExeLocations, "MSDEPLOY");
+            if (string.IsNullOrWhiteSpace(msdeployPath))
                 return -1;
-
+            
             //"C:\Program Files\IIS\Microsoft Web Deploy\msdeploy.exe" -source:iisApp='C:\temp\deploy\installer' -dest:package="C:\websites\aa\membersapplication.zip" -verb:sync
 
             StringBuilder argBuilder = new StringBuilder();
@@ -28,9 +31,9 @@ namespace DeploymentTask.Tasks
             argBuilder.Append(string.Format(" -dest:package='{0}'", ActionComponentGraph.OutputLocation));
             argBuilder.Append(" -verb:sync");
 
-            int result = InvokeExe(ActionComponentGraph.MsDeployExe, argBuilder.ToString());
-            Console.WriteLine("Finished creating package file.");
-            Console.WriteLine(EndSectionBreaker);
+            int result = InvokeExe(msdeployPath, argBuilder.ToString());
+            logger.Log("Finished creating package file.");
+            logger.Log(EndSectionBreaker);
             return result;
         }
 

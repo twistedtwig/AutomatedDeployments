@@ -1,6 +1,6 @@
 what to do next:
 
-
+deployment task root sorting
 
 package deployment doesn't take the drive into account when using the archive.xml iisapp path value
 

@@ -83,6 +83,8 @@ The application has a number of functions, be it a local or remote machine:
 7.  Removing App Pools from a destination machine.
 8.  Removing web sites from a destination machine.
 9.  Removing applications from a destination machine.
+10. Create project packages (normally web projects)
+11. deploy project packages.
 
 5.1) How is Automated Deployments used?
 ---------------------------------------
@@ -101,6 +103,7 @@ This would look for a config section with the name of "MYCONFIGSECTION".  A list
     /BREAKONERROR		|		true / false					| Should the application stop when an error occurs
     /CLEANUP            |       true / false					| Should the application delete any files it creates after running
 	/SETEXEPATH			|		true / false					| Should the applicaiton set the executing folder to the same as the exe's file path, (default true)
+	/VERBOSE			|		true / false					| should the application log verbosely or normally, (default is none verbose.. i.e. normal logging level)?
 	
 The above parameters are all optional and would override anything given within the configuration file.
 
@@ -127,23 +130,29 @@ Lets start by showing one quick example and then expand that to show each type o
     <Configs>
 		<ConfigurationGroup name="localtestSetup">
 			<ValueItems>
-			  <ValueItem key="MsdeployExe" value="C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe"/>
 			  <ValueItem key="AppCmdExe" value="C:\Windows\System32\inetsrv\appcmd.exe"/>
 			  <ValueItem key="DestinationComputerName" value="localhost"/>          
 			</ValueItems>
 			<Collections>        
-			  <Collection name="CopyWebsite">
-				<ValueItems>
-				  <ValueItem key="ComponentType" value="FileDeployment"/>
-				  <ValueItem key="SourceContentPath" value="C:\temp\deploy\Website"/>
-				  <ValueItem key="DestinationContentPath" value="c:\websites\deploytest"/>                        
-				</ValueItems>
-			  </Collection>     
+                <Collection name="MsDeployLocations">
+                    <ValueItems>
+                        <ValueItem key="location1" value="C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe"/>
+                        <ValueItem key="location2" value="C:\Program Files (x86)\IIS\Microsoft Web Deploy V2\msdeploy.exe"/>
+                    </ValueItems>    
+                </Collection>
+			     <Collection name="CopyWebsite">
+				    <ValueItems>
+				        <ValueItem key="ComponentType" value="FileDeployment"/>
+				        <ValueItem key="SourceContentPath" value="C:\temp\deploy\Website"/>
+				        <ValueItem key="DestinationContentPath" value="c:\websites\deploytest"/>                        
+				    </ValueItems>
+			     </Collection>     
 			</Collections>
 		</ConfigurationGroup>
     </Configs>
 </deployments>
 ```
+
 The above ConfigurationGroup is called "localtestSetup".  This is the section name that would be passed in at the command line to run this (/CONFIGSECTION=localtestSetup).  It then declares a list of items.  These are global values to the deployment and will be inherited to each child element.  The system needs to know certain bits of information:
 
 1.  where msdeploy is installed, (will default to the above if it is not given)
@@ -158,6 +167,10 @@ The minimum that is required he would be the destinationComputerName.  This tell
 After the "ValueItems" collection there is a new element called "Collections".  This holds a list of "Collection" elements.  Each of these elements is a set of values which will result in one or more Tasks being invoked.  The above example shows a File Copy Task being setup.  The first ValueItem is the "ComponentType", this tells the application what it wants to do.  In this case, deploy some files.  The next two ValueItem's give the source and destination location (folders).
 
 When the application is run it will parse the configuration file, look for the section name given as a command line parameter, find that configurationGroup and run those Tasks in order. If BREAKONERROR is set to false, it will run through all the Tasks even if some of them return errors, otherwise it will exit after the first error is encountered.
+
+A point of interest with the above xml snippet.  "AppCmdExe" is a single entry in the global ValueItems section, where as the "MsDeployLocations", (i.e. the path to MsDeploy) has its own section and has multiple entries.  The reason for this is that it depends if you are running a 32bit or 64bit machine.  As it can be in multiple places the application has the ability to check multiple locations till it finds a match then uses that.  It is not actually necessary to enter these as it has internal defaults which will add the two values everytime, but if for some reason your MsDeploy was at a different location you could add that value and it will use the first match it finds, (defaults and yours included).  The keys for each location need to be entered but it doesn't matter what they are, just note that they can not be excluded or left blank.
+
+"AppCmdExe" is also defaulted to the above location so there is no need to enter that unless yours is different to this, (only one path can be given for appCmd, I am not aware of it ever living at multiple locations).
 
 5.3) Global Configuration ValueItem's
 -------------------------------------

@@ -1,12 +1,14 @@
+using System.Collections.Generic;
+
 namespace DeploymentConfiguration.Actions
 {
     public abstract class ActionComponentGraphBase
     {
         protected ActionComponentGraphBase()
         {
+            MsDeployExeLocations = new List<string> { @"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe", @"C:\Program Files (x86)\IIS\Microsoft Web Deploy V2\msdeploy.exe" };
             AppCmdExe = @"C:\Windows\System32\inetsrv\appcmd.exe";
-            MsDeployExe = @"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe";
-
+            
             SourceContentPath = string.Empty;
             DestinationContentPath = string.Empty;
 
@@ -22,7 +24,7 @@ namespace DeploymentConfiguration.Actions
         public string DestinationContentPath { get; set; }
 
         public string AppCmdExe { get; set; }        
-        public string MsDeployExe { get; set; }
+        public List<string> MsDeployExeLocations { get; set; }
 
         public string DestinationComputerName { get; set; }
         public string DestinationUserName { get; set; }

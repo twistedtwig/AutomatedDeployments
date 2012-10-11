@@ -1,10 +1,13 @@
 using System;
 using DeploymentConfiguration.Actions;
+using Logging;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalProjectPackgeCreationTask : ProjectPackageCreationTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+
         public LocalProjectPackgeCreationTask(PackageCreationComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
@@ -15,8 +18,8 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine("Executing local project packaging command:");
+            logger.Log(StartSectionBreaker);
+            logger.Log("Executing local project packaging command:");
 
             //take the project file, 
             if (!CheckProjectFileExists()) { return -1; }
@@ -32,8 +35,8 @@ namespace DeploymentTask.Tasks.LocalTasks
                 DeleteFiles(fileAndFolder.FileName, fileAndFolder.FolderName);
             }
 
-            Console.WriteLine("Completed project packaging.");
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log("Completed project packaging.");
+            logger.Log(EndSectionBreaker);
 
             return result;
         }

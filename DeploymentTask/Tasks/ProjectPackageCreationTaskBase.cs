@@ -3,11 +3,14 @@ using System.IO;
 using System.Text;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
+using Logging;
 
 namespace DeploymentTask.Tasks
 {
     public abstract class ProjectPackageCreationTaskBase : DeploymentTaskBase<PackageCreationComponentGraph>
     {
+        private static Logger logger = Logger.GetLogger();
+
         protected ProjectPackageCreationTaskBase(PackageCreationComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
@@ -43,14 +46,14 @@ namespace DeploymentTask.Tasks
 
             argBuilder.Append(string.Format(" /p:AutoParameterizationWebConfigConnectionStrings={0}", ActionComponentGraph.AutoParameterizationWebConfigConnectionStrings));
 
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine("Executing project package creation command:");
-            Console.WriteLine(string.Format("{0}: {1}", ActionComponentGraph.MsBuildExe, argBuilder));
+            logger.Log(StartSectionBreaker);
+            logger.Log("Executing project package creation command:");
+            logger.Log(string.Format("{0}: {1}", ActionComponentGraph.MsBuildExe, argBuilder));
 
             int result = InvokeExe(ActionComponentGraph.MsBuildExe, argBuilder.ToString());
 
-            Console.WriteLine("Completed package creation.");
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log("Completed package creation.");
+            logger.Log(EndSectionBreaker);
 
             return result;
         }
@@ -94,6 +97,7 @@ namespace DeploymentTask.Tasks
 
         protected void DeleteFiles(string fileName, string folderPath)
         {
+            logger.Log("deleting files: {0}, folder {1}", fileName, folderPath, LoggingLevel.Verbose);
             if (string.IsNullOrWhiteSpace(fileName) || string.IsNullOrWhiteSpace(folderPath))
             {
                 return;
@@ -107,7 +111,7 @@ namespace DeploymentTask.Tasks
             foreach (FileInfo file in files)
             {
                 if (file.Extension.Equals(".zip")) { continue; }
-                System.Console.WriteLine("Deleting file: " + file.Name);
+                logger.Log("Deleting file: " + file.Name);
                 file.Delete();
             }
 
@@ -115,7 +119,7 @@ namespace DeploymentTask.Tasks
             string tempPackageFolderPath = FileHelper.MapRelativePath(folderPath, "PackageTmp");
             if (Directory.Exists(tempPackageFolderPath))
             {
-                System.Console.WriteLine("Deleting folder: PackageTmp");
+                logger.Log("Deleting folder: PackageTmp");
                 Directory.Delete(tempPackageFolderPath, true);
             }
         }

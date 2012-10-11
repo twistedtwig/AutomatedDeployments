@@ -1,11 +1,14 @@
 using System;
 using System.IO;
 using DeploymentConfiguration.Actions;
+using Logging;
 
 namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalProjectPackgeDeploymentTask : ProjectPackageDeploymentTaskBase
     {
+        private static Logger logger = Logger.GetLogger();
+
         public LocalProjectPackgeDeploymentTask(PackageDeploymentComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
@@ -16,8 +19,8 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         public override int Execute()
         {
-            Console.WriteLine(StartSectionBreaker);
-            Console.WriteLine("Executing local project package deployment command:");
+            logger.Log(StartSectionBreaker);
+            logger.Log("Executing local project package deployment command:");
 
             //take the zipped package file, 
             if (!CheckZipPackageFileExists()) { return -1; }
@@ -33,13 +36,13 @@ namespace DeploymentTask.Tasks.LocalTasks
             }
 
             string finalPackageLocation = FindPackageFileRootLocation();
-            Console.WriteLine(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
+            logger.Log(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
             result = new LocalFileSystemCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPackageLocation, DestinationPath)).Execute();
 
             //perform clean up at the end.
             CleanUpTempLocation();
-            Console.WriteLine("Finished Deploying package.");
-            Console.WriteLine(EndSectionBreaker);
+            logger.Log("Finished Deploying package.");
+            logger.Log(EndSectionBreaker);
 
             return result;
         }

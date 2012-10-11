@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentTask.Test", "Depl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericMethods", "Common\GenericMethods\GenericMethods.csproj", "{243FB269-48E7-42D9-A880-37B5B981783D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Common\Logging\Logging.csproj", "{A4FB06C7-B0C0-470E-9412-8C243225E1E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -180,6 +182,16 @@ Global
 		{243FB269-48E7-42D9-A880-37B5B981783D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{243FB269-48E7-42D9-A880-37B5B981783D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{243FB269-48E7-42D9-A880-37B5B981783D}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,5 +205,6 @@ Global
 		{E9707A10-7165-4BBA-96A8-B9DC1B5B2B0A} = {D22E3C08-E987-400C-AB73-A8A7B5BBF9E5}
 		{843F18EB-8B48-4648-99AE-4DD5FB6B057D} = {70D4D874-5C11-44EF-BC92-FA686423AF47}
 		{243FB269-48E7-42D9-A880-37B5B981783D} = {70D4D874-5C11-44EF-BC92-FA686423AF47}
+		{A4FB06C7-B0C0-470E-9412-8C243225E1E7} = {70D4D874-5C11-44EF-BC92-FA686423AF47}
 	EndGlobalSection
 EndGlobal
