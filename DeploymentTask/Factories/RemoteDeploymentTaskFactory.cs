@@ -18,6 +18,9 @@ namespace DeploymentTask.Factories
                     case ActionType.FileDeployment:
                         deploymentTaskCollection.Add(new MsDeployFileCopyDeploymentTask(action as FileCopyActionComponentGraph));
                         break;
+                    case ActionType.FilePermission:
+                        deploymentTaskCollection.Add(new MsDeployFilePermissionDeploymentTask(action as SetFilePermissionComponentGraph));
+                        break;
                     case ActionType.AppPoolCreation:
                         if (action.ForceInstall)
                         {

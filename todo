@@ -10,7 +10,9 @@ optional console param to set the executing folder to be the same as the exe's f
 
 file / folder permissions task
 
-http://stackoverflow.com/questions/2928738/how-to-grant-permission-to-users-for-a-directory-using-command-line-in-windows
+atm it gives modify permisisons... want to be able to remove a permission / set different permissions.
+want to be able to give a list of users for a given folder
+want to be able to give a list of folders / paths to have permissions set on it.
 
 
 

@@ -72,6 +72,9 @@ namespace DeploymentConfiguration
                     case ActionType.FileDeployment:
                         actionComponentGraph = section.Create<FileCopyActionComponentGraph>();
                         break;
+                    case ActionType.FilePermission:
+                        actionComponentGraph = section.Create<SetFilePermissionComponentGraph>();
+                        break;
                     case ActionType.AppPoolCreation:
                     case ActionType.AppPoolRemoval:
                     case ActionType.WebSiteCreation:

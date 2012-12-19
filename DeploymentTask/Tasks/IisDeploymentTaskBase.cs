@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
 using Logging;
@@ -16,40 +15,7 @@ namespace DeploymentTask.Tasks
         protected IisDeploymentTaskBase(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
-
-        protected string GetMsDeployExecuteCmdSource(string pathToCmd)
-        {
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-source:runCommand='{0}'", pathToCmd));
-        }
-
-        protected string GetMsDeployExecuteCmdDestination()
-        {
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-dest:auto,computerName='{0}',userName='{1}',password='{2}'", 
-                ActionComponentGraph.DestinationComputerName, ActionComponentGraph.DestinationUserName, ActionComponentGraph.DestinationPassword));
-        }
-
-        protected string GetMsDeployExecuteCmdSync()
-        {
-            return EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync");
-        }
-
-        protected string GetMsDeployExecuteCmdParams(string pathToCmd)
-        {
-            StringBuilder parameters = new StringBuilder();
-            parameters.Append(GetMsDeployExecuteCmdSource(pathToCmd));
-            parameters.Append(GetMsDeployExecuteCmdDestination());
-            parameters.Append(GetMsDeployExecuteCmdSync());
-
-            return parameters.ToString();
-        }
-
-
-        protected string GetMsDeployDeleteFileParams(string filePath)
-        {
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-dest:ContentPath='{0}',computerName='{1}',userName='{2}',password='{3}' -verb:delete",
-                filePath, ActionComponentGraph.DestinationComputerName, ActionComponentGraph.DestinationUserName, ActionComponentGraph.DestinationPassword));
-        }
-
+        
         protected IList<string> FindIisSettingsNamesFromConfig(string pathToConfigFile, Regex regex)
         {
             IList<string> iisSettingNames = new List<string>();

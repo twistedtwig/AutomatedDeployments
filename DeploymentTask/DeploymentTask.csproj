@@ -49,7 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\DeploymentCollectionException.cs" />
+    <Compile Include="Tasks\FilePermissionDeploymentTaskBase.cs" />
+    <Compile Include="Tasks\LocalTasks\LocalFilePermissionDeploymentTask.cs" />
     <Compile Include="Tasks\LocalTasks\LocalProjectPackgeDeploymentTask.cs" />
+    <Compile Include="Tasks\MsDeployTaskExtensions.cs" />
+    <Compile Include="Tasks\MsDeployTasks\MsDeployFilePermissionDeploymentTask.cs" />
     <Compile Include="Tasks\MsDeployTasks\MsDeployProjectPackgeDeploymentTask.cs" />
     <Compile Include="Tasks\ProjectPackageDeploymentTaskBase.cs" />
     <Compile Include="Tasks\FileNameAndFolder.cs" />

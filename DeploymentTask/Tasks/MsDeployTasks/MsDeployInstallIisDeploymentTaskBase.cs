@@ -46,7 +46,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             new MsDeployFileCopyDeploymentTask(CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraph, fileName)).Execute();
 
             // call msdeploy to execute appcmd file on remote machine
-            int result = InvokeExe(MsdeployPath, GetMsDeployExecuteCmdParams(FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, fileName)));
+            int result = InvokeExe(MsdeployPath, MsDeployTaskExtensions.GetMsDeployExecuteCmdParams(ActionComponentGraph, FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, fileName)));
 
             // clean up local and remote files
             if (ActionComponentGraph.CleanUp)
@@ -55,10 +55,10 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 File.Delete(filePath);
 
                 //delete remote file(s)
-                int tempResult = InvokeExe(MsdeployPath, GetMsDeployDeleteFileParams(FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, fileName)));
+                int tempResult = InvokeExe(MsdeployPath, MsDeployTaskExtensions.GetMsDeployDeleteFileParams(ActionComponentGraph, FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, fileName)));
                 if (tempResult != 0) result = tempResult;
 
-                InvokeExe(MsdeployPath, GetMsDeployDeleteFileParams(FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, ActionComponentGraph.PathToConfigFile)));
+                InvokeExe(MsdeployPath, MsDeployTaskExtensions.GetMsDeployDeleteFileParams(ActionComponentGraph ,FileHelper.MapRelativePath(ActionComponentGraph.DestinationContentPath, ActionComponentGraph.PathToConfigFile)));
                 if (tempResult != 0) result = tempResult;
             }
 

@@ -76,15 +76,16 @@ The application has a number of functions, be it a local or remote machine:
 
 1.  Backuping up IIS Settings to file for Source Control.
 2.  Copying files to a destination location.
-3.  Removing files from a destination location.
-4.  Setting up App Pools on a destination machine.
-5.  Setting up web sites on a destination machine.
-6.  Setting up applications on a destination machine.
-7.  Removing App Pools from a destination machine.
-8.  Removing web sites from a destination machine.
-9.  Removing applications from a destination machine.
-10. Create project packages (normally web projects)
-11. deploy project packages.
+3.  Give Full Permisisons to a given folder and its children for the given username.
+4.  Removing files from a destination location.
+5.  Setting up App Pools on a destination machine.
+6.  Setting up web sites on a destination machine.
+7.  Setting up applications on a destination machine.
+8.  Removing App Pools from a destination machine.
+9.  Removing web sites from a destination machine.
+10.  Removing applications from a destination machine.
+11. Create project packages (normally web projects)
+12. deploy project packages.
 
 5.1) How is Automated Deployments used?
 ---------------------------------------
@@ -197,16 +198,17 @@ The secions below will deal with setting up each of the ComponentType's.
 List of all ComponentType's:
 ----------------------------
 
-1.  FileDeployment        
-2.  AppPoolCreation
-3.  AppPoolRemoval
-4.  WebSiteCreation
-5.  WebsiteRemoval
-6.  AppCreation
-7.  AppRemoval
-8.  ApplicationExecution
-9.  CreatePackage
-10. DeployPackage
+1.  FileDeployment   
+2.  FilePermission     
+3.  AppPoolCreation
+4.  AppPoolRemoval
+5.  WebSiteCreation
+6.  WebsiteRemoval
+7.  AppCreation
+8.  AppRemoval
+9.  ApplicationExecution
+10.  CreatePackage
+11. DeployPackage
 
 N.B A quick note on Task ordering.  The application will try and create all tasks in the order they are given in the configuration section.  Most of the time this is logical and the desired behaviour.  However if you are trying to force a task through, such as an App Pool install and uset the "ForceInstall" element, (set to 'true'), then it is generally wise to sort the tasks using the 'ShouldSortTasks' element.  The reason being when a ForceInstall is given it will create any tasks needed to achieve that goal.  For example to force an install for an App Pool and a Web Site you would need to remove the Web Site then the App Pool, but will need to Install the App Pool before installing the Web Site.  You can either explicity create each of these Tasks, or you can use the ForceInstall and ShouldSortTasks elements.  This will create the needed Tasks and order them in the correct manor, so all applications are removed in order, files copied and lastly all installs done in the correct order.
 
@@ -243,11 +245,36 @@ Each parameter given above would need its own ValueItem.  Here is an example Fil
 </Collection>  
 ```
 
+
+5.6)  Giving Modify Permissions to a given user for a folder and all its children (Component Type: FilePermission)
+------------------------------------------------------------------------------------------------------------------
+
+At this point the system only allows you to give modify permisisons to a folder and all its children.  There is a future task to allow this to delete permisisons ang assign different permission levels.  There is another task to allow lists of either users or paths so that there isn't repeated configuration.  The parameters required are:
+
+    param                       |       value               |   optional
+    ________________________________________________________________________
+    ComponentType               |       FilePermission      |   false
+    Folder                      |       string              |   false 
+    UserName                    |       string              |   false
+
+Each parameter given above would need its own ValueItem.  Here is an example FileDeployment section:
+
+```xml
+<Collection name="SetPermissions">
+    <ValueItems>
+      <ValueItem key="ComponentType" value="FilePermission" />
+      <ValueItem key="Folder" value="C:\inetpub\Website" />
+      <ValueItem key="UserName" value="domain\username" />                        
+    </ValueItems>
+</Collection>  
+```
+
+
 If forceInstall is used it will delete all the conents of the destination folder when copying, otherwise all the files from the source location will be appended to the destination folder, (where the files are the same the source file will overwrite the destination file).
 
 N.B. with remote deployments, if you give incorrect authentication details msdeploy will hang but the system will continue and not report the error.  If there is no output from this process you can tell there is an error (issue has been logged in GITHUB).
 
-5.6) Installing an AppPool (Component Type: AppPoolCreation)
+5.7) Installing an AppPool (Component Type: AppPoolCreation)
 -------------------------------------------------------------
 
 To Install an AppPool either locally or remotely requires a Collection configuration section, such as:
@@ -276,7 +303,7 @@ The above example is a local installation, it gives the component type, source f
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
-5.7) Removing an AppPool (Component Type: AppPoolRemoval)
+5.8) Removing an AppPool (Component Type: AppPoolRemoval)
 ---------------------------------------------------------
 
 To Remove an AppPool either locally or remotely requires a Collection configuration section, such as:
@@ -306,7 +333,7 @@ The above example is a local removal, it gives the component type, source folder
     PathToConfigFile            |       string              |   false
 
 
-5.8) Installing an Application into an existing website (Component Type: AppCreation)
+5.9) Installing an Application into an existing website (Component Type: AppCreation)
 -------------------------------------------------------------------------------------
 
 To Install an applicaiton (what used to be referred to as a virtual directory) either locally or remotely requires a Collection configuration section, such as:
@@ -336,7 +363,7 @@ The above example is a local installation, it gives the component type, source f
     PathToConfigFile            |       string              |   false
 
 
-5.9) Removing an Applicaiton (Component Type: AppRemoval)
+5.10) Removing an Applicaiton (Component Type: AppRemoval)
 ---------------------------------------------------------
 
 To Remove an Application (what used to be referred to as a virtual directory) either locally or remotely requires a Collection configuration section, such as:
@@ -366,7 +393,7 @@ The above example is a local removal, it gives the component type, source folder
     PathToConfigFile            |       string              |   false
 
 
-5.10) Installing a Web Site (Component Type: WebSiteCreation)
+5.11) Installing a Web Site (Component Type: WebSiteCreation)
 -------------------------------------------------------------------------------------
 
 To Install a Web Site either locally or remotely requires a Collection configuration section, such as:
@@ -396,7 +423,7 @@ The above example is a local installation, it gives the component type, source f
     PathToConfigFile            |       string              |   false
 
 
-5.11) Removing a WebSite (Component Type: WebSiteRemoval)
+5.12) Removing a WebSite (Component Type: WebSiteRemoval)
 ---------------------------------------------------------
 
 To Remove a Web Site either locally or remotely requires a Collection configuration section, such as:
@@ -426,12 +453,12 @@ The above example is a local removal, it gives the component type, source folder
     PathToConfigFile            |       string              |   false
 
 
-5.12) Packaging an Application or folder (Component Type: CreatePackage)
+5.13) Packaging an Application or folder (Component Type: CreatePackage)
 ------------------------------------------------------------------------
 
 This component gives you the ability to package a project (or a folder), primary use would probably be with web apps where you want to create the deployment package.  Apart from creating web deployment packages this will also allow you to zip a folder in the same way, (it will not remove any files or folders, unlike the web deployment package).
 
-5.12.1) Packaging a web project:
+5.13.1) Packaging a web project:
 --------------------------------
 
 When packaging and project, (such as web app or a web deployment project), either locally or remotely the following Collection configuration section is required, (example is for local, more information about parameters below):
@@ -485,7 +512,7 @@ Below is a list of the parameters available for CreatePackage:
 
 N.B.  AutoParameterizationWebConfigConnectionStrings is defaulted to false and is optional, it tells MSBuild to not change connection strings in the web config, if this is set to true it will put the connection strings into the {PACKAGENAME}.SetParameters.xml file outside of the zip file, (where {PACKAGENAME} is the name of the zip file).  If this is set to true then it is not recommended to use the package deployment as it doesn't use msdeploy directly, (msdeploy has issues when IIS is not directly involved).
 
-5.12.2) Packaging a folder:
+5.13.2) Packaging a folder:
 ---------------------------
 
 It is also possible to package a folder so that it follows the same idea as a web project, (is a zip file that has the file path embedded in it). There is currently no way to override the InternalPath with this process.  An example configuration collection is below:
@@ -519,7 +546,7 @@ To deploy remotely simply requires the "DestinationContentPath" element, (as wel
 
 
 
-5.13)  Deploying a Package
+5.14)  Deploying a Package
 --------------------------
 
 When deploying a package (zip file) either locally or remotely the following collection configuration section is required, (example is for local deployment):

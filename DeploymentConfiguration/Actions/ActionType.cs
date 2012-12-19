@@ -5,6 +5,7 @@ namespace DeploymentConfiguration.Actions
         CreatePackage,
         DeployPackage,
         FileDeployment,
+        FilePermission,
         AppPoolCreation,
         AppPoolRemoval,
         WebSiteCreation,
