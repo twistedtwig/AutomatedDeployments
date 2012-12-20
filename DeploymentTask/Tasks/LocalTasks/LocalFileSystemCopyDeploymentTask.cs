@@ -32,6 +32,7 @@ namespace DeploymentTask.Tasks.LocalTasks
 
             try
             {
+                logger.Log(string.Format("Copying Files from: '{0}' to '{1}'", ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath));
                 FileHelper.CopyContents(ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath);
             }
             catch (Exception exception)
@@ -59,6 +60,7 @@ namespace DeploymentTask.Tasks.LocalTasks
 
         protected void DeleteDestination()
         {
+            logger.Log(string.Format("Deleting Files from: '{0}'", ActionComponentGraph.DestinationContentPath));
             Directory.Delete(ActionComponentGraph.DestinationContentPath, true);
         }
     }
