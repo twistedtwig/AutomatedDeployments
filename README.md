@@ -187,7 +187,6 @@ There are a number of settings that are global and are defined within the ValueI
     CleanUp                     |       bool                |   true        |   true
     SourceContentPath			|		string		    	|	false		|	NONE
     DestinationContentPath		|		string				|	false		|	NONE
-    MsdeployExe					|		file path			|	false		|	"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe"
     AppCmdExe					|		file path			|	false		|	"C:\Windows\System32\inetsrv\appcmd.exe"
     ShouldSortTasks             |       bool                |   true        |   false
 
