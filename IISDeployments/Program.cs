@@ -25,7 +25,7 @@ namespace IISDeployments
 
                 DisplayConsoleParams(consoleParams);
 
-                DeploymentStrategyComponentGraphBase deploymentComponentGraph = ConfigurationLoader.Load(consoleParams.ConfigSection, consoleParams.ConfigPath);
+                DeploymentStrategyComponentGraphBase deploymentComponentGraph = ConfigurationLoader.Load(consoleParams.ConfigSection, consoleParams.ConfigPath, consoleParams.ForceLocal);
                 UpdateCompoentGraphWithOverLoads(deploymentComponentGraph, consoleParams);
 
                 DeploymentTaskCollection deploymentTaskCollection = consoleParams.BreakOnError.HasValue
@@ -116,6 +116,21 @@ namespace IISDeployments
                                     logger.LoggingLevel = consoleParams.Verbose.Value ? LoggingLevel.Verbose : LoggingLevel.Normal;
                                     logger.Log("Verbose logging set to: " + logger.LoggingLevel);
                                 }
+                            }
+                            break;
+                        case "/FORCELOCAL":
+                            if (args.Length > i)
+                            {
+                                bool val;
+                                if (bool.TryParse(args[++i], out val))
+                                {
+                                    consoleParams.ForceLocal = val;
+                                    logger.Log("Force local set to: " + consoleParams.ForceLocal);
+                                }
+                            }
+                            else
+                            {
+                                consoleParams.ForceLocal = true;
                             }
                             break;
                     }

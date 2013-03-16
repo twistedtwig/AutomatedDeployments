@@ -15,6 +15,7 @@ namespace IISDeployments
         public string ConfigSection { get; set; }
         public string ConfigPath { get; set; }
         public bool SetExePath { get; set; }
+        public bool? ForceLocal { get; set; }
    
     }
 }

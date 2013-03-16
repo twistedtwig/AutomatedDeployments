@@ -9,8 +9,12 @@ namespace DeploymentConfiguration
 {
     public class ConfigurationLoader
     {
-
         public static DeploymentStrategyComponentGraphBase Load(string deploymentName, string configPath)
+        {
+            return Load(deploymentName, configPath, null);
+        }
+
+        public static DeploymentStrategyComponentGraphBase Load(string deploymentName, string configPath, bool? forceLocal)
         {
             Config deployments = new Config(configPath);
             if(!deployments.SectionNames.Contains(deploymentName))
@@ -33,7 +37,7 @@ namespace DeploymentConfiguration
 
             DeploymentStrategyComponentGraphBase deploymentStrategyComponentGraph;
 
-            if (destination.ToLower().Contains("localhost"))
+            if (destination.ToLower().Contains("localhost") || (forceLocal.HasValue && forceLocal.Value))
             {
                 deploymentStrategyComponentGraph = deployment.Create<LocalDeploymentStrategyComponentGraphBase>();
             }

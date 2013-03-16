@@ -105,6 +105,7 @@ This would look for a config section with the name of "MYCONFIGSECTION".  A list
     /CLEANUP            |       true / false					| Should the application delete any files it creates after running
 	/SETEXEPATH			|		true / false					| Should the applicaiton set the executing folder to the same as the exe's file path, (default true)
 	/VERBOSE			|		true / false					| should the application log verbosely or normally, (default is none verbose.. i.e. normal logging level)?
+    /FORCELOCAL         |       true / false                    | forces the application to install everything locally (if set to true) even if remote details are provided, (optional).
 	
 The above parameters are all optional and would override anything given within the configuration file.
 
