@@ -16,6 +16,7 @@ namespace DeploymentConfiguration.Actions
         public string InternalPath { get; set; }
         public string OutputLocation { get; set; }
         public string ConfigurationType { get; set; }
+        public string PlatformType { get; set; }
         public bool ZipFileOnly { get; set; }
         public bool AutoParameterizationWebConfigConnectionStrings { get; set; }
         public bool ShouldPushPackageToRemoteMachine { get; set; }

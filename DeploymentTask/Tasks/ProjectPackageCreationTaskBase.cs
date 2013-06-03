@@ -34,6 +34,12 @@ namespace DeploymentTask.Tasks
             {
                 argBuilder.Append(string.Format(" /p:Configuration={0}", ActionComponentGraph.ConfigurationType));
             }
+
+            if (!string.IsNullOrWhiteSpace(ActionComponentGraph.PlatformType))
+            {
+                argBuilder.Append(string.Format(" /p:Platform={0}", ActionComponentGraph.PlatformType));
+            }
+
             if (!string.IsNullOrWhiteSpace(ActionComponentGraph.InternalPath))
             {
                 argBuilder.Append(string.Format(" /p:_PackageTempDir=\"{0}\"", ActionComponentGraph.InternalPath));
