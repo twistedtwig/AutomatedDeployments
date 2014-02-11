@@ -39,8 +39,8 @@ namespace DeploymentTask.Tasks
         }
         
         protected void UnZipFileToTempLocation()
-        {
-            TempLocation = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        {            
+            TempLocation = Path.Combine(Path.GetPathRoot(Path.GetTempPath()), "temp", Guid.NewGuid().ToString());
             logger.Log("UnZipFile temp location: {0}", TempLocation, LoggingLevel.Verbose);
             CleanUpTempLocation();
 
