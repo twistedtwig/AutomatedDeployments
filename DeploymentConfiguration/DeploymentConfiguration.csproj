@@ -49,6 +49,7 @@
     <Compile Include="Actions\IisActionComponentGraph.cs" />
     <Compile Include="Actions\PackageCreationComponentGraph.cs" />
     <Compile Include="Actions\PackageDeploymentComponentGraph.cs" />
+    <Compile Include="Actions\RemoteDetailsComponentGraph.cs" />
     <Compile Include="Actions\SetFilePermissionComponentGraph.cs" />
     <Compile Include="DeploymentStrategies\DeploymentStrategyComponentGraphBase.cs" />
     <Compile Include="ConfigurationLoader.cs" />

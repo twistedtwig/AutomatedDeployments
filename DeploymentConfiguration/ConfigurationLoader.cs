@@ -52,11 +52,34 @@ namespace DeploymentConfiguration
             {
                 return deploymentStrategyComponentGraph;
             }
-
+            
             //create the actions for the deployment.
             CreateActions(deploymentStrategyComponentGraph, deployment, GetMsdeployLocations(deployment));
 
+            //update the username and password if given.
+            var remoteDetails = GetRemoteDetails(deployment);
+            if (remoteDetails != null)
+            {
+                foreach (var action in deploymentStrategyComponentGraph.Actions)
+                {
+                    action.DestinationUserName = remoteDetails.DestinationUserName;
+                    action.DestinationPassword = remoteDetails.DestinationPassword;
+                }
+            }
+
             return deploymentStrategyComponentGraph;
+        }
+
+        private static RemoteDetailsComponentGraph GetRemoteDetails(ConfigSection deployment)
+        {
+            //see if there are any remote details specified            
+            if (deployment.Collections.SectionNames.Contains("RemoteDetails"))
+            {
+                var details = deployment.Collections.GetCollection("RemoteDetails");
+                return details.Create<RemoteDetailsComponentGraph>();
+            }
+
+            return null;
         }
 
         private static void CreateActions(DeploymentStrategyComponentGraphBase deploymentStrategyComponentGraph, ConfigSection deployment, List<string> msdeployLocations)
@@ -90,10 +113,10 @@ namespace DeploymentConfiguration
                     case ActionType.ApplicationExecution:
                         throw new NotImplementedException("need to implement the general do something on a machine action");
                         break;
-                        case ActionType.CreatePackage:
+                    case ActionType.CreatePackage:
                         actionComponentGraph = section.Create<PackageCreationComponentGraph>();
                         break;
-                        case ActionType.DeployPackage:
+                    case ActionType.DeployPackage:
                         actionComponentGraph = section.Create<PackageDeploymentComponentGraph>();
                         break;
                     default:
