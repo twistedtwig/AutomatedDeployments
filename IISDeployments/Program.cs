@@ -62,6 +62,7 @@ namespace IISDeployments
             catch (Exception ex)
             {
                 logger.Log("something bad happened: " + ex.Message);
+                Environment.Exit(1);
             }            
         }
 
