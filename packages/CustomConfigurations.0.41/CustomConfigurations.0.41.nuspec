@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>CustomConfigurations</id>
+    <version>0.41</version>
+    <title>HoH - Custom Configurations</title>
+    <authors>Jon Hawkins</authors>
+    <owners>Jon Hawkins</owners>
+    <projectUrl>https://github.com/twistedtwig/CustomConfigurations</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This project is designed to allow people to define configuration in the config file (or other) and have strongly typed models returned.</description>
+    <summary>This project is designed to allow people to define configuration in the config file (or other) and have strongly typed models returned.</summary>
+    <releaseNotes />
+    <copyright>Copyright Jon Hawkins 2013</copyright>
+    <language />
+  </metadata>
+</package>

@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CustomConfigurations">
-      <HintPath>..\dependencies\CustomConfigurations.dll</HintPath>
+      <HintPath>..\packages\CustomConfigurations.0.41\lib\net40\CustomConfigurations.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,6 +56,9 @@
     <Compile Include="DeploymentStrategies\LocalDeploymentStrategyComponentGraphBase.cs" />
     <Compile Include="DeploymentStrategies\RemoteDeploymentStrategyComponentGraphBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

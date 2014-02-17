@@ -16,6 +16,9 @@ namespace IISDeployments
         public string ConfigPath { get; set; }
         public bool SetExePath { get; set; }
         public bool? ForceLocal { get; set; }
+
+        public bool? Encrypt { get; set; }
+        public bool? Decrypt { get; set; }
    
     }
 }

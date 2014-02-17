@@ -20,6 +20,24 @@ namespace IISDeployments
             {
                 SwitchParams consoleParams = ParseParameters(args);
 
+                if (consoleParams.Encrypt.HasValue || consoleParams.Decrypt.HasValue)
+                {
+                    if (consoleParams.Encrypt.HasValue)
+                    {
+                        logger.Log("Encryting the deployments section");
+                        ConfigurationLoader.EncryptDeployments();                  
+                    }
+
+                    if (consoleParams.Decrypt.HasValue)
+                    {
+                        logger.Log("Decrypting the deployments section");
+                        ConfigurationLoader.DecryptDeployments();
+                    }
+
+                    return;
+                }
+
+
                 consoleParams.ConfigPath = string.IsNullOrWhiteSpace(consoleParams.ConfigPath) ? AppDomain.CurrentDomain.SetupInformation.ConfigurationFile : consoleParams.ConfigPath;
                 if (consoleParams.SetExePath) {  SetDirToExecutingDir(); }
 
@@ -132,6 +150,12 @@ namespace IISDeployments
                             {
                                 consoleParams.ForceLocal = true;
                             }
+                            break;
+                        case "/ENCRYPT":
+                            consoleParams.Encrypt = true;
+                            break;
+                        case "/DECRYPT":
+                            consoleParams.Decrypt = true;
                             break;
                     }
                 }

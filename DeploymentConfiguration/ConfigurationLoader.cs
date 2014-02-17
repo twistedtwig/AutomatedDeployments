@@ -151,5 +151,17 @@ namespace DeploymentConfiguration
 
             throw new ArgumentException("unknown componentType given: " + name);
         }
+
+        public static void EncryptDeployments()
+        {
+            var config = new Config();
+            config.EncryptConfigurationSection("deployments");
+        }
+
+        public static void DecryptDeployments()
+        {
+            var config = new Config();
+            config.DecryptConfigurationSection("deployments");
+        }
     }    
 }

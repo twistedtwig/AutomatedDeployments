@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <configSections xdt:Transform="InsertIfMissing">
+    <section name="CustomConfig" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations" xdt:Transform="Insert" />
+  </configSections>
+
+  <CustomConfig xdt:Transform="InsertAfter(/configuration/configSections)">
+    <Configs>
+      <ConfigurationGroup name="TestGroup">
+        <ValueItems>
+          <ValueItem key="Test" value="TValue" />
+        </ValueItems>
+      </ConfigurationGroup>      
+    </Configs>
+  </CustomConfig>  
+
+</configuration>
