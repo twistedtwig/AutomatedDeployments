@@ -31,8 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CustomConfigurations">
-      <HintPath>..\packages\CustomConfigurations.0.41\lib\net40\CustomConfigurations.dll</HintPath>
+    <Reference Include="CustomConfigurations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CustomConfigurations.0.42\lib\net40\CustomConfigurations.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

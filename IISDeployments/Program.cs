@@ -20,8 +20,14 @@ namespace IISDeployments
             {
                 SwitchParams consoleParams = ParseParameters(args);
 
-                if (consoleParams.Encrypt.HasValue || consoleParams.Decrypt.HasValue)
+                if (consoleParams.Encrypt.HasValue || consoleParams.Decrypt.HasValue || consoleParams.CreateKeyFile.HasValue)
                 {
+                    if (consoleParams.CreateKeyFile.HasValue)
+                    {
+                        logger.Log("Creating encryption key");
+                        ConfigurationLoader.CreateEncryptionKey();
+                    }
+                    
                     if (consoleParams.Encrypt.HasValue)
                     {
                         logger.Log("Encryting the deployments section");
@@ -58,6 +64,7 @@ namespace IISDeployments
                 {
                     logger.Log(taskException.Message + " - " + taskException.ErrorMessage);
                 }
+                Environment.Exit(1);
             }
             catch (Exception ex)
             {
@@ -73,7 +80,7 @@ namespace IISDeployments
 
             try
             {
-
+                
                 for (int i = 0; i < args.Length; i++)
                 {
                     switch (args[i].Trim().ToUpper())
@@ -157,6 +164,9 @@ namespace IISDeployments
                             break;
                         case "/DECRYPT":
                             consoleParams.Decrypt = true;
+                            break;
+                        case "/CREATEKEY":
+                            consoleParams.CreateKeyFile = true;
                             break;
                     }
                 }

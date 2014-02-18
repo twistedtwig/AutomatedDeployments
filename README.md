@@ -579,14 +579,25 @@ If "ForceInstall" install is used it will ensure the deployment folder is remove
 
 The "AllowUseOfDestinationFolder" property is defaulted to false.  This defines weather the "DestinationContentPath" property can be used within MsDeploy to override the path that the package will be installed at, i.e. the path in archive.xml.  If false it will use the archive.xml value, if true it will check to see if there is a value in DestinationContentPath, if so use that otherwise fall back on the archive.xml value.
 
-6) Gotcha's and helpful hints
+
+6) Encrypt and Decrypting
+-------------------------
+
+The deployment settings can be encrypted and decrypted via  command line switches.
+
+/encrypt
+/decrypt
+/createkey
+
+
+7) Gotcha's and helpful hints
 -----------------------------
 
-6.1) Any appcmd (working with IIS) tasks will require admin permission.  It is best to always run the installer as admin to avoid these permission issues.
+7.1) Any appcmd (working with IIS) tasks will require admin permission.  It is best to always run the installer as admin to avoid these permission issues.
 
-6.2) Some appcmd tasks may not directly fail, (at least they do not report an unusual exit code), if the results are unexpected check the output of the installer, (pumping the installer to a log file if being used automatically is recommended).
+7.2) Some appcmd tasks may not directly fail, (at least they do not report an unusual exit code), if the results are unexpected check the output of the installer, (pumping the installer to a log file if being used automatically is recommended).
 
-6.3) When installing a website they are given an ID such as the excert below:
+7.3) When installing a website they are given an ID such as the excert below:
 
 ```xml
     <SITE SITE.NAME="mywebsite" SITE.ID="2" bindings="http/*:99:" state="Started">
@@ -601,15 +612,15 @@ message:Failed to add duplicate collection element "mywebsite"
 
 The only solution I have at this point is when you create your configuration file give it a large number to try avoid conflicts, (see road map).
 
-6.4) Error while using msdeploy, 'The application pool that you are trying to use has the 'managedRuntimeVersion' property set to 'v2.0'. This application requires 'v4.0'.':
+7.4) Error while using msdeploy, 'The application pool that you are trying to use has the 'managedRuntimeVersion' property set to 'v2.0'. This application requires 'v4.0'.':
 
 This normally is due to IIS not having .Net V4.0 registered.  using aspnet_regiis.exe /i normally fixes this (http://msdn.microsoft.com/en-us/library/ee942158.aspx).
 
-6.5) If when executing the application it doesn't find a file that has a relative file path given, you might need to set the SETEXEPATH flag to true at the command line.
+7.5) If when executing the application it doesn't find a file that has a relative file path given, you might need to set the SETEXEPATH flag to true at the command line.
 
-6.6) If when trying to copy files to a remote server with msdeploy and no errors are returned, and no real output, check authentication credentials.
+7.6) If when trying to copy files to a remote server with msdeploy and no errors are returned, and no real output, check authentication credentials.
 
-6.7) If you get the error:
+7.7) If you get the error:
 
 Error: Unable to cast object of type 'Microsoft.Web.Deployment.DeploymentProviderOptions' to type 'Microsoft.Web.Deployment.DeploymentProviderOptions'.
 
@@ -619,7 +630,7 @@ This is often due to the fact that you have both v1 and v2 installed in which ca
 
 "C:\Program Files\IIS\Microsoft Web Deploy v2\msdeploy.exe"
 
-6.8) If you get the error:
+7.8) If you get the error:
 
 Error: The application pool that you are trying to use has the 'managedRuntimeVersion' property set to 'v2.0'. This application requires 'v4.0'.
 
@@ -630,16 +641,16 @@ aspnet_regiis -i
 
 
 
-7) Examples:
+8) Examples:
 ------------
 
 There are a number of examples showing how an application can be setup.
 
-7.1) Examples\MVC4-site - Shows taking a web project (MVC4 in this case) file (.csproj), building a deployment package and installing that on a remote machine.  Whilst also using two configuration files to setup the AppPool and IIS Website on the remote server.
+8.1) Examples\MVC4-site - Shows taking a web project (MVC4 in this case) file (.csproj), building a deployment package and installing that on a remote machine.  Whilst also using two configuration files to setup the AppPool and IIS Website on the remote server.
 
 
 
-8) Road Map
+9) Road Map
 -----------
 
 There are a number of tasks I would like the application to do that it currently can't:

@@ -4,6 +4,8 @@
     <section name="CustomConfig" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations" xdt:Transform="Remove" xdt:Locator="Match(name)" />
   </configSections>
 
+  <configProtectedData  xdt:Transform="Remove"></configProtectedData>
+
   <CustomConfig  xdt:Transform="Remove"></CustomConfig>  
 
 </configuration>

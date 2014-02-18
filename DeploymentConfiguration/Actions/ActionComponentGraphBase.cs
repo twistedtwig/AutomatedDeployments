@@ -8,8 +8,8 @@ namespace DeploymentConfiguration.Actions
         {
             MsDeployExeLocations = new List<string> 
             { 
-                @"C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe", 
-                @"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe", 
+                @"C:\Program Files\IIS\Microsoft Web Deploy V2\msdeploy.exe", 
+                @"C:\Program Files (x86)\IIS\Microsoft Web Deploy V2\msdeploy.exe", 
                 @"C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe", 
                 @"C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe"
             };

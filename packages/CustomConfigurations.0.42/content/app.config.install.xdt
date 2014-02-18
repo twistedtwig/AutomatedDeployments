@@ -4,6 +4,12 @@
     <section name="CustomConfig" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations" xdt:Transform="Insert" />
   </configSections>
 
+  <configProtectedData  xdt:Transform="InsertIfMissing">
+    <providers>
+      <add name="TripleDESProtectedConfigurationProvider" type="CustomConfigurations.TripleDESProtectedConfigurationProvider, CustomConfigurations" keyFilePath="configkey.txt" />
+    </providers>
+  </configProtectedData>
+
   <CustomConfig xdt:Transform="InsertAfter(/configuration/configSections)">
     <Configs>
       <ConfigurationGroup name="TestGroup">

@@ -163,5 +163,11 @@ namespace DeploymentConfiguration
             var config = new Config();
             config.DecryptConfigurationSection("deployments");
         }
+
+        public static void CreateEncryptionKey()
+        {
+            var config = new Config();
+            config.CreateConfigKey();
+        }
     }    
 }

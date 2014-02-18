@@ -19,6 +19,7 @@ namespace IISDeployments
 
         public bool? Encrypt { get; set; }
         public bool? Decrypt { get; set; }
+        public bool? CreateKeyFile { get; set; }
    
     }
 }

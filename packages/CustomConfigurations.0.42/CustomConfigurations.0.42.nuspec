@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>CustomConfigurations</id>
-    <version>0.41</version>
+    <version>0.42</version>
     <title>HoH - Custom Configurations</title>
     <authors>Jon Hawkins</authors>
     <owners>Jon Hawkins</owners>
