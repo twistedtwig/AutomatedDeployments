@@ -6,7 +6,7 @@ namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalApplicationRemovalIisDeploymentTask : LocalRemovalIisDeploymentTaskBase
     {
-        private const string Pattern = @"(APP.NAME=(['''''',""""""]){0,1}(([\-a-z-A-Z0-9_/]|\s)+)\2)";
+        private const string Pattern = @"(APP.NAME=(['''''',""""""]){0,1}(([\-a-z-A-Z0-9_/.]|\s)+)\2)";
         private readonly Regex Regex = new Regex(Pattern, RegexOptions.Compiled);
 
         public LocalApplicationRemovalIisDeploymentTask(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)

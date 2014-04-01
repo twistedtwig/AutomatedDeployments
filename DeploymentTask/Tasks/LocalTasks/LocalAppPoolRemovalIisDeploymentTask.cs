@@ -5,7 +5,7 @@ namespace DeploymentTask.Tasks.LocalTasks
 {
     public class LocalAppPoolRemovalIisDeploymentTask : LocalRemovalIisDeploymentTaskBase
     {
-        private const string Pattern = @"(APPPOOL.NAME=(['''''',""""""]){0,1}(([a-z-A-Z0-9_-]|\s)+)\2)";
+        private const string Pattern = @"(APPPOOL.NAME=(['''''',""""""]){0,1}(([a-z-A-Z0-9-._]|\s)+)\2)";
         private readonly Regex Regex = new Regex(Pattern, RegexOptions.Compiled);
 
         public LocalAppPoolRemovalIisDeploymentTask(IisActionComponentGraph actionComponentGraph) : base(actionComponentGraph)

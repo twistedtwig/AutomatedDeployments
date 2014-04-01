@@ -188,7 +188,7 @@ There are a number of settings that are global and are defined within the ValueI
     DestinationComputerName		|		string      		|	false		| 	NONE    
     ForceInstall				|		bool				|	true		|	false
     CleanUp                     |       bool                |   true        |   true
-    SourceContentPath			|		string		    	|	false		|	NONE
+    SourceContentPath			|		string		    	|	true		|	current directory
     DestinationContentPath		|		string				|	false		|	NONE
     AppCmdExe					|		file path			|	false		|	"C:\Windows\System32\inetsrv\appcmd.exe"
     ShouldSortTasks             |       bool                |   true        |   false
@@ -232,7 +232,7 @@ There are two types of file copy, local or remote, depending on the DestinationC
     DestinationPassword			|		string				|	true
     ForceInstall				|		bool				|	true
     CleanUp                     |       bool                |   true
-    SourceContentPath			|		string		    	|	false
+    SourceContentPath			|		string		    	|	true      
     DestinationContentPath		|		string				|	false
     
 Each parameter given above would need its own ValueItem.  Here is an example FileDeployment section:
@@ -301,7 +301,7 @@ The above example is a local installation, it gives the component type, source f
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
@@ -330,7 +330,7 @@ The above example is a local removal, it gives the component type, source folder
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
@@ -360,7 +360,7 @@ The above example is a local installation, it gives the component type, source f
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
@@ -390,7 +390,7 @@ The above example is a local removal, it gives the component type, source folder
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
@@ -420,7 +420,7 @@ The above example is a local installation, it gives the component type, source f
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
@@ -450,7 +450,7 @@ The above example is a local removal, it gives the component type, source folder
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     PathToConfigFile            |       string              |   false
 
@@ -502,7 +502,7 @@ Below is a list of the parameters available for CreatePackage:
     DestinationPassword                             |       string              |   true
     ForceInstall                                    |       bool                |   true
     CleanUp                                         |       bool                |   true
-    SourceContentPath                               |       string              |   false
+    SourceContentPath                               |       string              |   true
     DestinationContentPath                          |       string              |   false
     InternalPath                                    |       string              |   true
     OutputLocation                                  |       string              |   true
@@ -541,7 +541,7 @@ To deploy remotely simply requires the "DestinationContentPath" element, (as wel
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
     CleanUp                     |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   false
     OutputLocation              |       string              |   true
     MsDeploy                    |       string              |   true (has internal default)
@@ -571,7 +571,7 @@ The above example shows using the "DeploymentPackage" ComponentType.  For local 
     DestinationUserName         |       string              |   true
     DestinationPassword         |       string              |   true
     ForceInstall                |       bool                |   true
-    SourceContentPath           |       string              |   false
+    SourceContentPath           |       string              |   true
     DestinationContentPath      |       string              |   true
     AllowUseOfDestinationFolder |       bool                |   true (default value is false)
     
