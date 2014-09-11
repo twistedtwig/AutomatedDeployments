@@ -112,19 +112,12 @@ namespace DeploymentTask.Tasks
 
         protected static FileCopyActionComponentGraph CreateSingleFileCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string fullSourceFilePath, string fullDestinationFilePath)
         {
-            FileCopyActionComponentGraph fileCopyAction = new FileCopyActionComponentGraph();
-            fileCopyAction.AppCmdExe = iisActionComponentGraph.AppCmdExe;
-            fileCopyAction.MsDeployExeLocations = iisActionComponentGraph.MsDeployExeLocations;
-            fileCopyAction.ActionType = ActionType.FileDeployment;
-            fileCopyAction.CleanUp = iisActionComponentGraph.CleanUp;
-            fileCopyAction.DestinationComputerName = iisActionComponentGraph.DestinationComputerName;
-            fileCopyAction.DestinationPassword = iisActionComponentGraph.DestinationPassword;
-            fileCopyAction.DestinationUserName = iisActionComponentGraph.DestinationUserName;
-            fileCopyAction.SourceContentPath = fullSourceFilePath;
-            fileCopyAction.DestinationContentPath = fullDestinationFilePath;
-            fileCopyAction.ForceInstall = iisActionComponentGraph.ForceInstall;
-            fileCopyAction.AllowUntrusted = iisActionComponentGraph.AllowUntrusted;
-            return fileCopyAction;
+            AutoMapper.Mapper.CreateMap<ActionComponentGraphBase, FileCopyActionComponentGraph>()
+               .ForMember(x => x.ActionType, m => m.MapFrom(a => ActionType.FileDeployment))
+               .ForMember(x => x.SourceContentPath, m => m.MapFrom(a => fullSourceFilePath))
+               .ForMember(x => x.DestinationContentPath, m => m.MapFrom(a => fullDestinationFilePath));
+
+            return AutoMapper.Mapper.Map<ActionComponentGraphBase, FileCopyActionComponentGraph>(iisActionComponentGraph);
         }
 
         protected static FileCopyActionComponentGraph CreateFolderCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string folderPath)
@@ -134,19 +127,12 @@ namespace DeploymentTask.Tasks
 
         protected static FileCopyActionComponentGraph CreateFolderCopyActionComponentGraphFrom(ActionComponentGraphBase iisActionComponentGraph, string sourceFolderPath, string destinationFolderPath)
         {
-            FileCopyActionComponentGraph fileCopyAction = new FileCopyActionComponentGraph();
-            fileCopyAction.AppCmdExe = iisActionComponentGraph.AppCmdExe;
-            fileCopyAction.MsDeployExeLocations = iisActionComponentGraph.MsDeployExeLocations;
-            fileCopyAction.ActionType = ActionType.FileDeployment;
-            fileCopyAction.CleanUp = iisActionComponentGraph.CleanUp;
-            fileCopyAction.DestinationComputerName = iisActionComponentGraph.DestinationComputerName;
-            fileCopyAction.DestinationPassword = iisActionComponentGraph.DestinationPassword;
-            fileCopyAction.DestinationUserName = iisActionComponentGraph.DestinationUserName;
-            fileCopyAction.SourceContentPath = sourceFolderPath;
-            fileCopyAction.DestinationContentPath = destinationFolderPath;
-            fileCopyAction.ForceInstall = iisActionComponentGraph.ForceInstall;
-            fileCopyAction.AllowUntrusted = iisActionComponentGraph.AllowUntrusted;
-            return fileCopyAction;
+            AutoMapper.Mapper.CreateMap<ActionComponentGraphBase, FileCopyActionComponentGraph>()
+               .ForMember(x => x.ActionType, m => m.MapFrom(a => ActionType.FileDeployment))
+               .ForMember(x => x.SourceContentPath, m => m.MapFrom(a => sourceFolderPath))
+               .ForMember(x => x.DestinationContentPath, m => m.MapFrom(a => destinationFolderPath));
+
+            return AutoMapper.Mapper.Map<ActionComponentGraphBase, FileCopyActionComponentGraph>(iisActionComponentGraph);
         }
 
 
