@@ -36,7 +36,7 @@ namespace DeploymentTask.Tasks
         protected int InvokeExe(string pathToExe, string commandArgs)
         {
             logger.Log("Invoking '{0}' with args '{1}'", pathToExe, commandArgs, LoggingLevel.Verbose);
-            ProcessStartInfo msdeployProcess = new ProcessStartInfo(pathToExe)
+            var msdeployProcess = new ProcessStartInfo(pathToExe)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
@@ -45,8 +45,9 @@ namespace DeploymentTask.Tasks
                 Arguments = commandArgs,
             };
 
-            Process p = new Process { StartInfo = msdeployProcess, EnableRaisingEvents = true };
+            var p = new Process { StartInfo = msdeployProcess, EnableRaisingEvents = true };
             p.OutputDataReceived += (sender, args) => logger.Log("received output: {0}", args.Data);
+            p.ErrorDataReceived  += (sender, args) => logger.Log("received error: {0}", args.Data);
 
             p.Start();
             p.BeginOutputReadLine();
@@ -122,6 +123,7 @@ namespace DeploymentTask.Tasks
             fileCopyAction.SourceContentPath = fullSourceFilePath;
             fileCopyAction.DestinationContentPath = fullDestinationFilePath;
             fileCopyAction.ForceInstall = iisActionComponentGraph.ForceInstall;
+            fileCopyAction.AllowUntrusted = iisActionComponentGraph.AllowUntrusted;
             return fileCopyAction;
         }
 
@@ -143,6 +145,7 @@ namespace DeploymentTask.Tasks
             fileCopyAction.SourceContentPath = sourceFolderPath;
             fileCopyAction.DestinationContentPath = destinationFolderPath;
             fileCopyAction.ForceInstall = iisActionComponentGraph.ForceInstall;
+            fileCopyAction.AllowUntrusted = iisActionComponentGraph.AllowUntrusted;
             return fileCopyAction;
         }
 

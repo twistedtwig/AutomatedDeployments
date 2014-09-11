@@ -55,6 +55,7 @@
     <ProjectReference Include="..\Common\Logging\Logging.csproj">
       <Project>{A4FB06C7-B0C0-470E-9412-8C243225E1E7}</Project>
       <Name>Logging</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
     <ProjectReference Include="..\DeploymentConfiguration\DeploymentConfiguration.csproj">
       <Project>{C31936E5-CB3E-489F-A5A5-C3D005467A55}</Project>

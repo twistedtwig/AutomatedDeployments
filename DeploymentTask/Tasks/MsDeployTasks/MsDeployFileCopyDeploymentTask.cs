@@ -25,6 +25,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             msDeployParams.Append(GetSource());
             msDeployParams.Append(GetDestination());
             msDeployParams.Append(GetSync());
+            msDeployParams.Append(EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-allowUntrusted:{0} ", ActionComponentGraph.AllowUntrusted)));
 
             logger.Log(StartSectionBreaker);
             logger.Log("Executing MSDEPLOY File Deployment command:");
@@ -97,10 +98,9 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             {
                 builder.Append("-enableRule:DoNotDeleteRule ");
             }
-            builder.Append(EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync"));
+            builder.Append(EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync,"));
             return EnsureStringhasOnlyOneTrailingWhiteSpace(builder.ToString());
         }
-
 
         public override string DisplayName
         {

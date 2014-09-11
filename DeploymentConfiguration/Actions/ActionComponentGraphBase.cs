@@ -35,5 +35,7 @@ namespace DeploymentConfiguration.Actions
         public string DestinationComputerName { get; set; }
         public string DestinationUserName { get; set; }
         public string DestinationPassword { get; set; }
+
+        public bool AllowUntrusted { get; set; }
     }
 }
