@@ -71,11 +71,16 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 throw new ArgumentException("destination comptuername was empty or not given.");
             }
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             builder.Append("-dest:");
             builder.Append("contentpath='" + ActionComponentGraph.DestinationContentPath + "'");
             builder.Append(",computername='" + ActionComponentGraph.DestinationComputerName + "'");
+
+            if (!string.IsNullOrWhiteSpace(ActionComponentGraph.AuthType))
+            {
+                builder.Append(",authType=" + ActionComponentGraph.AuthType);
+            }
 
             if (!string.IsNullOrWhiteSpace(ActionComponentGraph.DestinationUserName))
             {

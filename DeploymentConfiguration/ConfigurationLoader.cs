@@ -64,6 +64,7 @@ namespace DeploymentConfiguration
                 {
                     action.DestinationUserName = remoteDetails.DestinationUserName;
                     action.DestinationPassword = remoteDetails.DestinationPassword;
+                    action.AuthType = remoteDetails.AuthType;
                 }
             }
 
