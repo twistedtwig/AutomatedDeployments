@@ -58,6 +58,8 @@ namespace DeploymentTask.Factories
                         deploymentTaskCollection.Add(new LocalProjectPackgeDeploymentTask(action as PackageDeploymentComponentGraph));
                         break;
                     case ActionType.ApplicationExecution:
+                        deploymentTaskCollection.Add(new LocalApplicationExecutionDeploymentTask(action as ApplicationExecutionDeploymentComponentGraph));
+                        break;
                         
                     default:
                         throw new ArgumentOutOfRangeException();

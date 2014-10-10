@@ -26,12 +26,7 @@ namespace DeploymentTask.Tasks
                     throw new SecurityException("requires admin permission to execute this task");
                 }
             }
-        }
-        
-        protected string EnsureStringhasOnlyOneTrailingWhiteSpace(string value)
-        {
-            return value.Trim() + " ";
-        }
+        }             
 
         protected int InvokeExe(string pathToExe, string commandArgs)
         {

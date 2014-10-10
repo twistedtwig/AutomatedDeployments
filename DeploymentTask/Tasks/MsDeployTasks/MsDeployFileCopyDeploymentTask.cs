@@ -25,7 +25,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             msDeployParams.Append(GetSource());
             msDeployParams.Append(GetDestination());
             msDeployParams.Append(GetSync());
-            msDeployParams.Append(EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-allowUntrusted:{0} ", ActionComponentGraph.AllowUntrusted)));
+            msDeployParams.Append(MsDeployTaskExtensions.GetMsDeployAllowUntrusted(ActionComponentGraph));
 
             logger.Log(StartSectionBreaker);
             logger.Log("Executing MSDEPLOY File Deployment command:");
@@ -50,7 +50,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 throw new ArgumentException("source contentpath was empty or not given.");
             }
 
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-source:contentPath='{0}'", ActionComponentGraph.SourceContentPath));
+            return MsDeployTaskExtensions.EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-source:contentPath='{0}'", ActionComponentGraph.SourceContentPath));
         }
 
         private string GetDestination()
@@ -92,7 +92,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
                 builder.Append(",password='" + ActionComponentGraph.DestinationPassword + "'");
             }
 
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(builder.ToString());
+            return MsDeployTaskExtensions.EnsureStringhasOnlyOneTrailingWhiteSpace(builder.ToString());
         }
 
         private string GetSync()
@@ -103,8 +103,8 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             {
                 builder.Append("-enableRule:DoNotDeleteRule ");
             }
-            builder.Append(EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync,"));
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(builder.ToString());
+            builder.Append(MsDeployTaskExtensions.EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync,"));
+            return MsDeployTaskExtensions.EnsureStringhasOnlyOneTrailingWhiteSpace(builder.ToString());
         }
 
         public override string DisplayName

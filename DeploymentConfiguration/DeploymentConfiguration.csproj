@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Actions\ActionComponentGraphBase.cs" />
     <Compile Include="Actions\ActionType.cs" />
+    <Compile Include="Actions\ApplicationExecutionDeploymentComponentGraph.cs" />
     <Compile Include="Actions\FileCopyActionComponentGraph.cs" />
     <Compile Include="Actions\IisActionComponentGraph.cs" />
     <Compile Include="Actions\PackageCreationComponentGraph.cs" />

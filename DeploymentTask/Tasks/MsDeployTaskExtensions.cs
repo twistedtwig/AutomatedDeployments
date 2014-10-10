@@ -7,13 +7,30 @@ namespace DeploymentTask.Tasks
     {
         public static string GetMsDeployExecuteCmdSource(string pathToCmd)
         {
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-source:runCommand='{0}'", pathToCmd));
+            var runCmd = string.Format("-source:runCommand='{0}'", pathToCmd);
+
+            if (pathToCmd.EndsWith(".exe"))
+            {
+                runCmd += ",dontUseCommandExe=true";
+            }
+
+            return EnsureStringhasOnlyOneTrailingWhiteSpace(runCmd);
         }
 
         public static string GetMsDeployExecuteCmdDestination(ActionComponentGraphBase ActionComponentGraph)
         {
-            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-dest:auto,computerName='{0}',userName='{1}',password='{2}'",
-                ActionComponentGraph.DestinationComputerName, ActionComponentGraph.DestinationUserName, ActionComponentGraph.DestinationPassword));
+            var builder = new StringBuilder();
+            builder.Append(string.Format("-dest:auto,computerName='{0}'",ActionComponentGraph.DestinationComputerName));
+
+            if (!string.IsNullOrWhiteSpace(ActionComponentGraph.AuthType))
+            {
+                builder.Append(string.Format(",authType={0}", ActionComponentGraph.AuthType));                
+            }
+
+            builder.Append(string.Format(",userName={0}", ActionComponentGraph.DestinationUserName));
+            builder.Append(string.Format(",password={0}", ActionComponentGraph.DestinationPassword));                
+
+            return EnsureStringhasOnlyOneTrailingWhiteSpace(builder.ToString());
         }
 
         public static string GetMsDeployExecuteCmdSync()
@@ -21,7 +38,12 @@ namespace DeploymentTask.Tasks
             return EnsureStringhasOnlyOneTrailingWhiteSpace("-verb:sync");
         }
 
-        private static string EnsureStringhasOnlyOneTrailingWhiteSpace(string value)
+        public static string GetMsDeployAllowUntrusted(ActionComponentGraphBase actionComponentGraph)
+        {
+            return EnsureStringhasOnlyOneTrailingWhiteSpace(string.Format("-allowUntrusted:{0} ", actionComponentGraph.AllowUntrusted));
+        }
+
+        public static string EnsureStringhasOnlyOneTrailingWhiteSpace(string value)
         {
             return value.Trim() + " ";
         }
@@ -29,10 +51,11 @@ namespace DeploymentTask.Tasks
 
         public static string GetMsDeployExecuteCmdParams(ActionComponentGraphBase actionComponentGraph, string pathToCmd)
         {
-            StringBuilder parameters = new StringBuilder();
-            parameters.Append(MsDeployTaskExtensions.GetMsDeployExecuteCmdSource(pathToCmd));
-            parameters.Append(MsDeployTaskExtensions.GetMsDeployExecuteCmdDestination(actionComponentGraph));
-            parameters.Append(MsDeployTaskExtensions.GetMsDeployExecuteCmdSync());
+            var parameters = new StringBuilder();
+            parameters.Append(GetMsDeployExecuteCmdSource(pathToCmd));
+            parameters.Append(GetMsDeployExecuteCmdDestination(actionComponentGraph));
+            parameters.Append(GetMsDeployExecuteCmdSync());
+            parameters.Append(GetMsDeployAllowUntrusted(actionComponentGraph));
 
             return parameters.ToString();
         }

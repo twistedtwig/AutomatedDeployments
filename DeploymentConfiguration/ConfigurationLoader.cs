@@ -112,7 +112,7 @@ namespace DeploymentConfiguration
                         actionComponentGraph = section.Create<IisActionComponentGraph>();
                         break;
                     case ActionType.ApplicationExecution:
-                        throw new NotImplementedException("need to implement the general do something on a machine action");
+                        actionComponentGraph = section.Create<ApplicationExecutionDeploymentComponentGraph>();
                         break;
                     case ActionType.CreatePackage:
                         actionComponentGraph = section.Create<PackageCreationComponentGraph>();
