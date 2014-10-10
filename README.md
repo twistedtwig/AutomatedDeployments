@@ -30,7 +30,12 @@ The application has a few requirements:
 3) How to install MsDeploy?
 ---------------------------
 
-You will need MsDeploy installed and setup correctly on your production / live / destination server(s).  Here is a reasonable guide from MS: http://technet.microsoft.com/en-us/library/dd569059(v=ws.10).aspx .  The main thing to be aware of is that it needs a port opened to communicate.  By default it wants to run on port 80.  This is not great if you already have websites on there as it can / could interfere.  I have found it best to install it on port 8172 or 8173 (sometimes there is already a process running on 8172).  To install it so it is not running on port 80 you need to use the command line:
+You will need MsDeploy installed and setup correctly on your production / live / destination server(s).  Here is a reasonable guide from MS:
+
+V2:    http://technet.microsoft.com/en-us/library/dd569059(v=ws.10).aspx .  
+V3.5:  http://www.iis.net/downloads/microsoft/web-deploy
+
+The main thing to be aware of is that it needs a port opened to communicate.  By default it wants to run on port 80.  This is not great if you already have websites on there as it can / could interfere.  I have found it best to install it on port 8172 or 8173 (sometimes there is already a process running on 8172).  To install it so it is not running on port 80 you need to use the command line:
 
 msiexec /I [msi_filename] /passive ADDLOCAL=ALL LISTENURL=http://+:8172/MsDeployAgentService/
 
