@@ -13,7 +13,7 @@ namespace DeploymentTask.Tasks.LocalTasks
         {
         }
 
-        public override string DisplayName { get { return "Local project file package creation Task"; } }
+        public override string DisplayName { get { return "Local project file package Deployment Task"; } }
         public override int ExpectedReturnValue { get { return 0; } }
         public override bool RequiresAdminRights { get { return false; } }
 

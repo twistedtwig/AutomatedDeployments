@@ -12,10 +12,7 @@ namespace DeploymentTask.Tasks
     public abstract class ProjectPackageDeploymentTaskBase : DeploymentTaskBase<PackageDeploymentComponentGraph>
     {
         private static Logger logger = Logger.GetLogger();
-
-        private const string Pattern = @"(<iisApp path=(['''''',""""""]){0,1}((?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.]+)\\(?:[\w]+\\)*\w([\w.])+)\2)";
-        private readonly Regex Regex = new Regex(Pattern, RegexOptions.Compiled);
-
+        
         protected ProjectPackageDeploymentTaskBase(PackageDeploymentComponentGraph actionComponentGraph) : base(actionComponentGraph)
         {
         }
@@ -89,12 +86,13 @@ namespace DeploymentTask.Tasks
 
                     foreach (string line in File.ReadAllLines(path))
                     {
-                        Match match = Regex.Match(line);
-                        if (match.Success)
+                        var sline = line.Trim();
+                        if (sline.StartsWith(@"<iisApp path="""))
                         {
-                            _ArchiveXmlFilePath = match.Groups[3].Value;
-                            return _ArchiveXmlFilePath;
+                            sline = sline.Substring((@"<iisApp path=""").Length);
+                            return sline.Substring(0, sline.IndexOf('"'));
                         }
+                                                
                     }
 
                     throw new ArgumentNullException("IisApp Path not found in archive.xml");
