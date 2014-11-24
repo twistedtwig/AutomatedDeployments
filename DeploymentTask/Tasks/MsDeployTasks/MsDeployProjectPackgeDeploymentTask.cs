@@ -33,7 +33,7 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             result = new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPackageLocation, DestinationPath)).Execute();
 
             //perform clean up at the end.
-            CleanUpTempLocation();
+            RegisterForCleanUpTempLocation();
             logger.Log("Finished Deploying package.");
             logger.Log(EndSectionBreaker);
                 

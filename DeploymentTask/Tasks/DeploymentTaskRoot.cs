@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using DeploymentConfiguration.Actions;
 using DeploymentTask.Tasks.LocalTasks;
@@ -11,6 +12,11 @@ namespace DeploymentTask.Tasks
     /// </summary>
     public abstract class DeploymentTaskRoot : IComparable<DeploymentTaskRoot>
     {
+        protected DeploymentTaskRoot()
+        {
+            FoldersToBeCleanedUp = new List<string>();
+        }
+
         /// <summary>
         /// Executes a given deployment Task returning the "return code" from the task execution, (such as xcopy return code 0).
         /// </summary>
@@ -20,6 +26,8 @@ namespace DeploymentTask.Tasks
         public abstract string DisplayName { get; }
         public abstract int ExpectedReturnValue { get; }
         public abstract bool RequiresAdminRights { get; }
+
+        public IList<string> FoldersToBeCleanedUp { get; set; }
 
         protected bool IsAdministrator
         {

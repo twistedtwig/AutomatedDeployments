@@ -36,10 +36,15 @@ namespace DeploymentTask.Tasks
         }
         
         protected void UnZipFileToTempLocation()
-        {            
-            TempLocation = Path.Combine(Path.GetPathRoot(Path.GetTempPath()), "temp", Guid.NewGuid().ToString());
+        {
+            //only want to have one temp path, no need to keep creating new ones for each run.
+            if (string.IsNullOrWhiteSpace(TempLocation))
+            {
+                TempLocation = Path.Combine(Path.GetPathRoot(Path.GetTempPath()), "temp", Guid.NewGuid().ToString());
+            }
+
             logger.Log("UnZipFile temp location: {0}", TempLocation, LoggingLevel.Verbose);
-            CleanUpTempLocation();
+            RegisterForCleanUpTempLocation();
 
             Directory.CreateDirectory(TempLocation);
             logger.Log("Created Directory: {0}", TempLocation, LoggingLevel.Verbose);
@@ -56,10 +61,9 @@ namespace DeploymentTask.Tasks
             }
         }
 
-        protected void CleanUpTempLocation()
+        protected void RegisterForCleanUpTempLocation()
         {
-            logger.Log("deleting directory and contents: {0}", TempLocation, LoggingLevel.Verbose);
-            DeleteDirectory(TempLocation);
+            FoldersToBeCleanedUp.Add(TempLocation);
         }
 
         protected void DeleteDirectory(string path)
