@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using DeploymentConfiguration.Actions;
 using Logging;
 
@@ -26,11 +27,30 @@ namespace DeploymentTask.Tasks.MsDeployTasks
             int result = ExpectedReturnValue;
 
             UnZipFileToTempLocation();
+
+            var appOffLineFileTempPath = string.Empty;
+            var appOffLineFileFinalPath = string.Empty;
+            //take the site down whilst deploying the files
+            if (ActionComponentGraph.TakeIisDown)
+            {
+                appOffLineFileTempPath = CreateAppOffLineFile();
+                appOffLineFileFinalPath = Path.Combine(DestinationPath, AppOffLineFileName);
+                result = new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, appOffLineFileTempPath, appOffLineFileFinalPath)).Execute();
+            }
+           
             
             string finalPackageLocation = FindPackageFileRootLocation();
             logger.Log(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
             //copy stuff to remote server... take whole folder.
             result = new MsDeployFileCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPackageLocation, DestinationPath)).Execute();
+
+            //bring the site back online.
+            if (!string.IsNullOrWhiteSpace(appOffLineFileFinalPath))
+            {
+                string msdeployPath = FindFirstValidFileFromList(ActionComponentGraph.MsDeployExeLocations, "MSDEPLOY", true);
+                int tempResult = InvokeExe(msdeployPath, MsDeployTaskExtensions.GetMsDeployDeleteFileParams(ActionComponentGraph, appOffLineFileFinalPath));
+                if (tempResult != 0) result = tempResult;
+            }
 
             //perform clean up at the end.
             RegisterForCleanUpTempLocation();

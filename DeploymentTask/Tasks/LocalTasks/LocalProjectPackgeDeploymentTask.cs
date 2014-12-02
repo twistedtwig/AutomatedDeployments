@@ -27,6 +27,16 @@ namespace DeploymentTask.Tasks.LocalTasks
             int result = ExpectedReturnValue;
 
             UnZipFileToTempLocation();
+
+            var appOffLineFileTempPath = string.Empty;
+            var appOffLineFileFinalPath = string.Empty;
+            //take the site down whilst deploying the files
+            if (ActionComponentGraph.TakeIisDown)
+            {
+                appOffLineFileTempPath = CreateAppOffLineFile();
+                appOffLineFileFinalPath = Path.Combine(DestinationPath, AppOffLineFileName);
+                result = new LocalFileSystemCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, appOffLineFileTempPath, appOffLineFileFinalPath)).Execute();
+            }
             
             //if Forcing overwrite so no local files persist delete directory
             if (ActionComponentGraph.ForceInstall)
@@ -38,6 +48,13 @@ namespace DeploymentTask.Tasks.LocalTasks
             string finalPackageLocation = FindPackageFileRootLocation();
             logger.Log(string.Format("Copying package from '{0}' to '{1}'", finalPackageLocation, DestinationPath));
             result = new LocalFileSystemCopyDeploymentTask(CreateFolderCopyActionComponentGraphFrom(ActionComponentGraph, finalPackageLocation, DestinationPath)).Execute();
+
+            //bring the site back online.
+            if (!string.IsNullOrWhiteSpace(appOffLineFileFinalPath))
+            {
+                //execute a remote file removal
+                File.Delete(appOffLineFileFinalPath);
+            }
 
             //perform clean up at the end.
             RegisterForCleanUpTempLocation();

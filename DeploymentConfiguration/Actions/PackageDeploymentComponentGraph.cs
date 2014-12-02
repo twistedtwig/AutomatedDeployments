@@ -8,6 +8,7 @@ namespace DeploymentConfiguration.Actions
         }
 
         public bool AllowUseOfDestinationFolder { get; set; }
+        public bool TakeIisDown { get; set; }
 
     }
 }

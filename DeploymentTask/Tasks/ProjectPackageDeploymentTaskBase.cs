@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using DeploymentConfiguration.Actions;
 using FileSystem.Helper;
 using Ionic.Zip;
@@ -37,18 +36,11 @@ namespace DeploymentTask.Tasks
         
         protected void UnZipFileToTempLocation()
         {
-            //only want to have one temp path, no need to keep creating new ones for each run.
-            if (string.IsNullOrWhiteSpace(TempLocation))
-            {
-                TempLocation = Path.Combine(Path.GetPathRoot(Path.GetTempPath()), "temp", Guid.NewGuid().ToString());
-            }
+            GetTempLocation();
 
             logger.Log("UnZipFile temp location: {0}", TempLocation, LoggingLevel.Verbose);
-            RegisterForCleanUpTempLocation();
-
-            Directory.CreateDirectory(TempLocation);
-            logger.Log("Created Directory: {0}", TempLocation, LoggingLevel.Verbose);
-
+            
+            
             logger.Log("unpacking zip package to: " + TempLocation);
             using (ZipFile zipFile = ZipFile.Read(ActionComponentGraph.SourceContentPath))
             {
@@ -58,6 +50,18 @@ namespace DeploymentTask.Tasks
                 {
                     e.Extract(TempLocation, ExtractExistingFileAction.OverwriteSilently);
                 }
+            }
+        }
+
+        private void GetTempLocation()
+        {
+            //only want to have one temp path, no need to keep creating new ones for each run.
+            if (string.IsNullOrWhiteSpace(TempLocation))
+            {
+                TempLocation = Path.Combine(Path.GetPathRoot(Path.GetTempPath()), "temp", Guid.NewGuid().ToString());
+                RegisterForCleanUpTempLocation();
+                Directory.CreateDirectory(TempLocation);
+                logger.Log("Created Directory: {0}", TempLocation, LoggingLevel.Verbose);
             }
         }
 
@@ -136,6 +140,18 @@ namespace DeploymentTask.Tasks
             //that next folder should be the root.
             return currentDir.FullName;
         }
-       
+
+
+        protected string AppOffLineFileName { get { return "app_offline.htm"; } }
+
+        protected string CreateAppOffLineFile()
+        {
+            GetTempLocation();
+            string filePath = Path.Combine(TempLocation, AppOffLineFileName);
+            //using is here so that the file stream is closed straight away.
+            using (File.Create(filePath)) { }
+            return filePath;
+        }
+        
     }
 }

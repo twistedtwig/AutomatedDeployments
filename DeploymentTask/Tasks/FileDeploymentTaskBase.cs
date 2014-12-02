@@ -15,6 +15,11 @@ namespace DeploymentTask.Tasks
             return Directory.Exists(ActionComponentGraph.SourceContentPath);
         }
 
+        protected bool IsSinglefile()
+        {
+            return File.Exists(ActionComponentGraph.SourceContentPath);
+        }
+
         public int CompareFileComponentGraph(FileDeploymentTaskBase other)
         {
             if (other== null) return -1;

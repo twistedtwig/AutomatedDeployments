@@ -20,7 +20,7 @@ namespace DeploymentTask.Tasks.LocalTasks
             logger.Log(StartSectionBreaker);
             logger.Log("Executing local file copy command:");
 
-            if(!CheckSourceExists())
+            if(!CheckSourceExists() && !IsSinglefile())
             {
                 throw new DeploymentTaskException(string.Format("Source folder not found, '{0}'", ActionComponentGraph.SourceContentPath), -1);
             }
@@ -33,7 +33,15 @@ namespace DeploymentTask.Tasks.LocalTasks
             try
             {
                 logger.Log(string.Format("Copying Files from: '{0}' to '{1}'", ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath));
-                FileHelper.CopyContents(ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath);
+
+                if (IsSinglefile())
+                {
+                    File.Copy(ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath, true);
+                }
+                else
+                {
+                    FileHelper.CopyContents(ActionComponentGraph.SourceContentPath, ActionComponentGraph.DestinationContentPath);                    
+                }
             }
             catch (Exception exception)
             {                
