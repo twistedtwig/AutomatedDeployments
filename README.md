@@ -81,7 +81,7 @@ The application has a number of functions, be it a local or remote machine:
 
 1.  Backuping up IIS Settings to file for Source Control.
 2.  Copying files to a destination location.
-3.  Give Full Permisisons to a given folder and its children for the given username.
+3.  Give Full permissions to a given folder and its children for the given username.
 4.  Removing files from a destination location.
 5.  Setting up App Pools on a destination machine.
 6.  Setting up web sites on a destination machine.
