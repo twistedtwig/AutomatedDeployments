@@ -35,11 +35,13 @@ You will need MsDeploy installed and setup correctly on your production / live /
 V2:    http://technet.microsoft.com/en-us/library/dd569059(v=ws.10).aspx .  
 V3.5:  http://www.iis.net/downloads/microsoft/web-deploy
 
-The main thing to be aware of is that it needs a port opened to communicate.  By default it wants to run on port 80.  This is not great if you already have websites on there as it can / could interfere.  I have found it best to install it on port 8172 or 8173 (sometimes there is already a process running on 8172).  To install it so it is not running on port 80 you need to use the command line:
+The main thing to be aware of is that it needs a port opened to communicate.  By default it wants to run on port 80, later versions of IIS and MS Deploy play nicely together and should be able to both use the same port as they use URL handlers to share nicely. If you are using an older IIS / MsDeploy this is not so great if you already have websites on there as it can / could interfere.  I have found it best to install it on port 8172 or 8173 (sometimes there is already a process running on 8172).  To install it so it is not running on port 80 you need to use the command line:
 
 msiexec /I [msi_filename] /passive ADDLOCAL=ALL LISTENURL=http://+:8172/MsDeployAgentService/
 
 This will need to be run on cmd that is running as admin.  If / when it installs and it rolls back it is possible something is already running on that port, try 8173 instead.  Remember to open the firewall as well to allow traffic in.
+
+For newer IIS installations, should be able to use web platform installer without any issue.
 
 4) How to add your IIS configuration to Source Control?
 -------------------------------------------------------
