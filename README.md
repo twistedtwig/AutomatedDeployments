@@ -39,7 +39,7 @@ The main thing to be aware of is that it needs a port opened to communicate.  By
 
 msiexec /I [msi_filename] /passive ADDLOCAL=ALL LISTENURL=http://+:8172/MsDeployAgentService/
 
-This will need to be run on cmd that is running as admin.  If when it installs it rolls back it is pretty possible something is already running on that port, try 8173 instead.  Remember to open the firewall as well to allow traffic in.
+This will need to be run on cmd that is running as admin.  If / when it installs and it rolls back it is possible something is already running on that port, try 8173 instead.  Remember to open the firewall as well to allow traffic in.
 
 4) How to add your IIS configuration to Source Control?
 -------------------------------------------------------
