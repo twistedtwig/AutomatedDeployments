@@ -5,9 +5,14 @@ namespace DeploymentTask.Tasks
 {
     public static class MsDeployTaskExtensions
     {
-        public static string GetMsDeployExecuteCmdSource(string pathToCmd)
+        public static string GetMsDeployExecuteCmdSource(string pathToCmd, int? waitInterval = null)
         {
             var runCmd = string.Format("-source:runCommand='{0}'", pathToCmd);
+
+            if (waitInterval.HasValue && waitInterval.Value > 1)
+            {
+                runCmd += ",waitinterval=" + waitInterval.Value;
+            }
 
             if (pathToCmd.EndsWith(".exe"))
             {
@@ -48,11 +53,10 @@ namespace DeploymentTask.Tasks
             return value.Trim() + " ";
         }
 
-
-        public static string GetMsDeployExecuteCmdParams(ActionComponentGraphBase actionComponentGraph, string pathToCmd)
+        public static string GetMsDeployExecuteCmdParams(ActionComponentGraphBase actionComponentGraph, string pathToCmd, int? waitInterval = null)
         {
             var parameters = new StringBuilder();
-            parameters.Append(GetMsDeployExecuteCmdSource(pathToCmd));
+            parameters.Append(GetMsDeployExecuteCmdSource(pathToCmd, waitInterval));
             parameters.Append(GetMsDeployExecuteCmdDestination(actionComponentGraph));
             parameters.Append(GetMsDeployExecuteCmdSync());
             parameters.Append(GetMsDeployAllowUntrusted(actionComponentGraph));

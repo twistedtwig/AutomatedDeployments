@@ -654,6 +654,7 @@ This can be, (not always) related to IIS and .Net V4 not being registered.  Regi
 cd %windir%\Microsoft.NET\Framework\v4.0.30319
 aspnet_regiis -i
 
+7.9) If the application is throwing errors but there is no helpful information being output then there are two things that could help.  use the verbose flag to see all the commands IISDeployments is running with msdeploy.  Take the individual MsDeploy commands and run them directly in the terminal.  MsDeploy seems to output some text outside of normal standard out or error out.  I have not been able to capture this text.  For example if you are getting unable to connect or 401 you may not see this in the application.
 
 
 8) Examples:

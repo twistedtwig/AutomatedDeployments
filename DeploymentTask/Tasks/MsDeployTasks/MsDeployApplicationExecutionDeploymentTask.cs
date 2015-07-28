@@ -19,7 +19,10 @@ namespace DeploymentTask.Tasks.MsDeployTasks
 
 
             // call msdeploy to execute application file on remote machine
-            int result = InvokeExe(msdeployPath, MsDeployTaskExtensions.GetMsDeployExecuteCmdParams(ActionComponentGraph, ActionComponentGraph.SourceContentPath));
+            var msDeployExecuteCmdParams = MsDeployTaskExtensions.GetMsDeployExecuteCmdParams(ActionComponentGraph, ActionComponentGraph.SourceContentPath, ActionComponentGraph.WaitInterval);
+
+
+            int result = InvokeExe(msdeployPath, msDeployExecuteCmdParams);
 
             // clean up local and remote files
             if (ActionComponentGraph.CleanUp)
