@@ -43,6 +43,14 @@ This will need to be run on cmd that is running as admin.  If / when it installs
 
 For newer IIS installations, should be able to use web platform installer without any issue.
 
+If you get 401 issues try the information below:
+
+http://althoffchronicles.blogspot.co.uk/2013/05/msdeployagentservice-401.html
+
+and 
+
+http://blog.dotnetframework.org/2010/10/29/401-not-authorized-for-msdeploy%E2%80%8F-msdeployagentservice/
+
 4) How to add your IIS configuration to Source Control?
 -------------------------------------------------------
 
